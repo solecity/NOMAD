@@ -1,0 +1,164 @@
+
+/* GENERAL */                             /*     ////////////////////////////////////////////////////     */
+.modal-header {
+    background-color: #9fc490;
+}
+
+.btn {
+    background-color: #9fc490;
+}
+
+.btn:hover {
+    background-color: #9fc490b6;
+}
+
+.btn-secondary:active {
+    border: none;
+    background-color: black !important;
+}
+
+.btn-secondary {
+    margin-left: 10px;
+}
+
+.fa {
+    color: #9fc490;
+}
+
+
+/* NAV BAR */                             /*     ////////////////////////////////////////////////////     */
+.navbar-custom .nav-item:hover .nav-link {
+    color: #0000006b;
+}
+
+.navbar-custom .dropdown-menu {
+    border-top: solid 3px #9fc490;
+}
+
+.navbar-custom .dropdown-item:hover{
+    color: #9fc490;
+    background-color: rgba(255,255,255,.5);
+}
+
+
+/* TOP BAR */                             /*     ////////////////////////////////////////////////////     */
+.bar {
+    background-color: black;
+}
+
+
+/* MODAL */                               /*     ////////////////////////////////////////////////////     */
+.modal-dialog {
+    width: 800px; 
+}
+
+.photo {			  
+    margin: auto;
+    max-height: 260px;
+    max-width: 190px;
+}
+
+.photo img {
+    margin-bottom: 30px;
+}
+
+.btn-edit i:hover {
+    color: #9fc490b6;
+}
+
+.btn-edit i:active {
+    color: black;
+}
+
+
+/* STATISTICS */                          /*     ////////////////////////////////////////////////////     */
+.statistics {
+    margin-top: 40px;
+}
+
+.statistics h6 {
+    padding-left: 0px;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.statistics p {
+    font-size: 16px;
+}
+
+.progress {
+    margin: 5px 0px 0px 14px;
+}
+
+.counter {
+    margin: 10px 0px;
+}
+
+
+/* CONFIG */                              /*     ////////////////////////////////////////////////////     */
+.middle {
+    margin: 100px auto;
+    min-height: 520px;
+}
+
+.nav-link {
+    color: black;
+}
+
+.nav-link:hover {
+    color: gray;
+}
+
+#frmCategories .form-group, #frmTags .form-group, #frmConfig .form-group {
+    display: inline-block;
+    margin: 60px 20px 20px 0px;
+}
+
+#inputLatitude, #inputLongitude {
+    display: inline-block;
+}
+
+.buttons {			  
+    margin-top: 20px;			   
+}
+
+.thead-dark th {
+    font-weight: 400;
+    font-size: 18px;
+}
+
+
+/* FOOTER */                              /*     ////////////////////////////////////////////////////     */
+.footer-1 {    
+    background-color: #757575;
+    color: rgb(230, 230, 230);
+    width: 100%;
+    margin: 40px 0px 0px 0px;
+    padding: 20px 0px 20px 0px;
+    font-size: 14px;
+    font-weight: 300;
+    text-align: justify;
+}
+
+.footer-1 th {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.footer-2 {    
+    background-color: #636363;
+    color: rgb(230, 230, 230);
+    margin: 0px;
+    padding: 15px 0px 2px 0px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.footer-2 p {
+    text-align: center;
+}
+
+#tableFooter {
+    width: 60%;
+    margin: auto;
+}

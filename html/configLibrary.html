@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Nomad</title>
+
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.11/css/all.css" integrity="sha384-p2jx59pefphTFIpeqCcISO9MdVfIm4pNnsL08A6v5vaQc4owkQqxMV8kg4Yvhaw/" crossorigin="anonymous">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" type="text/css" href="../css/general.css">
+        <link rel="stylesheet" type="text/css" href="../css/config.css">
+
+        <!-- Favicon -->
+        <link rel="icon" href="../images/favicon_b.png" type="image/png" sizes="16x16">
+
+        <!-- Custom Font -->
+        <link href="https://fonts.googleapis.com/css?family=Yantramanav:100,300,400,500,700,900" rel="stylesheet">
+    </head>
+
+    <body>
+        <!-- NAV BAR -->
+        <div class="container-fluid top col-lg-8">
+            <nav class="navbar navbar-expand-lg navbar-custom">
+                <a class="navbar-brand" href="../index.html">
+                    <img src="../images/icon_b.png" height="50"/>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+                    <img src="../images/menu_b.png" width="28"/>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavId">
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                        <li class="nav-item text">
+                            <a id="optHome" class="nav-link" href="../index.html">Início</a>
+                        </li>
+                        <li class="nav-item text">
+                            <a id="optCatalog" class="nav-link" href="categories.html">Catálogo</a>
+                        </li>
+                        <li class="nav-item text">
+                            <a id="optMap" class="nav-link" href="map.html">Bibliotecas</a>
+                        </li>
+
+                        <!-- SEARCH -->
+                        <li id="optSearch" class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="../images/search.png" height="32" width="32">
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownId">
+                                <input type="search" id="inputSearch" class="form-control" aria-describedby="searchId">
+                            </div>
+                        </li>
+
+                        <!-- PROFILE -->
+                        <li id="optUser" class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="../images/profile_a.png" id="userIconLogIn" width="32"/>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownId">
+                                <a id="optLogin" class="dropdown-item" data-toggle="modal" data-target="#loginModal" href="#">Log in</a>
+                                <a id="optRegister" class="dropdown-item" data-toggle="modal" data-target="#registerModal" href="#">Registar</a>
+                                <a id="optProfile" class="dropdown-item" href="userProfile.html">Perfil</a>
+                                <a id="optHistory" class="dropdown-item" href="userHistory.html">Histórico</a>
+                                <a id="optPreferences" class="dropdown-item" href="userPreferences.html">Preferências</a>
+                                <a id="optLogout" class="dropdown-item" href="#">Log Out</a>
+                            </div>
+                        </li>
+
+                        <!-- NOTIFICATIONS -->
+                        <li id="optAlerts" class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="../images/notification.png" width="32"/>
+                            </a>
+                            <div id="notificationPanel" class="dropdown-menu">
+                                <!-- CATEGORIES -->
+                                <a class="dropdown-header accordion" data-toggle="collapse" data-target="#panelCategories" aria-expanded="true" aria-controls="panelCategories"><h6>Categorias<span id="badgeCategories" class="badge"></span></h6></a>
+                                <div class="panel">
+                                    <table class="table-notifications">
+                                        <tbody id='panelCategories'></tbody>
+                                    </table>
+                                </div>
+                                <div class="dropdown-divider"></div>
+
+                                <!-- TAGS -->
+                                <a class="dropdown-header accordion" data-toggle="collapse" data-target="#panelTags" aria-expanded="true" aria-controls="panelTags"><h6>Tags<span id="badgeTags" class="badge"></span></h6></a>
+                                <div class="panel">
+                                    <table class="table-notifications">
+                                        <tbody id='panelTags'></tbody>
+                                    </table>
+                                </div>
+                                <div class="dropdown-divider"></div>
+
+                                <!-- BOOKS -->
+                                <a class="dropdown-header accordion" data-toggle="collapse" data-target="#panelBooks" aria-expanded="true" aria-controls="panelBooks"><h6>Books<span id="badgeBooks" class="badge"></span></h6></a>
+                                <div class="panel">
+                                    <table class="table-notifications">
+                                        <tbody id='panelBooks'></tbody>
+                                    </table>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                
+                                <!-- LIBRARIES -->
+                                <a class="dropdown-header accordion" data-toggle="collapse" data-target="#panelLibraries" aria-expanded="true" aria-controls="panelLibraries"><h6>Bibliotecas<span id="badgeLibraries" class="badge"></span></h6></a>
+                                <div class="panel">
+                                    <table class="table-notifications">
+                                        <tbody id='panelLibraries'></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </li>
+
+                        <!-- DONATE -->
+                        <li id="optDonate" class="nav-item">
+                            <a class="nav-link" data-toggle="modal" data-target="#modalDonate" href="#">
+                                <img src="../images/donate.png" height="32"/>
+                            </a>
+                        </li>
+
+                        <!-- CONFIG-->
+                        <li id="optConfig" class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="../images/config_b.png" width="32"/>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownId">
+                                <a id="optConfigBooks" class="dropdown-item" href="configBook.html">Gestor de Livros</a>
+                                <a id="optConfigGeneral" class="dropdown-item" href="configGeneral.html">Configurações Gerais</a>
+                                <a id="optConfigUsers" class="dropdown-item" href="configUser.html">Gestor de Utilizadores</a>
+                                <a id="optConfigLibraries" class="dropdown-item" href="configLibrary.html">Gestor de Bibliotecas</a>
+                                <a id="optStatistics" class="dropdown-item" href="statistics.html">Estatísticas</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <!-- TOP BAR BACK OFFICE-->
+        <div class="bar">
+        </div>
+
+        <!-- CONFIG -->
+        <div class="container-fluid middle col-lg-7">
+            <h1>Gestor de Bibliotecas</h1>
+
+            <!-- FORM NEW LIBRARY -->
+            <form id="frmLibraries">
+                <div class="row col-md-12">
+                    <div class="form-group col-md-5">
+                        <label for="inputCity">Cidade</label>
+                        <select id="inputCity" class="form-control ">
+                            <option value="">...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-5">
+                        <label for="inputParish">Freguesia</label>
+                        <select id="inputParish" class="form-control">
+                            <option value="">...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-10">
+                        <label for="inputAddress">Morada</label>
+                        <input type="text" value="" class="form-control" id="inputAddress" required>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="inputCoordinates">Coordenadas</label>
+                        <div class="row">
+                            <div id="inputCoordinates" class="form-group col-md-12">
+                                <input type="number" step="any" placeholder="latitude" class="form-control col-md-5" id="inputLatitude" readonly>
+                                <input type="number" step="any" placeholder="longitude" class="form-control col-md-5" id="inputLongitude" readonly>
+                            </div>
+                        </div>
+                    </div>     
+                    
+                    <div class="form-group col-md-4">
+                        <label for="inputBookCapacity">Capacidade de Livros</label>
+                        <input type="number" value="7" min="1" max="999" class="form-control" id="inputBookCapacity" min="1" required>
+                    </div>
+                </div>
+
+                <!-- BUTTONS-->
+                <div class="form-group buttons col-md-6">
+                    <button type="submit" class="btn btn-secondary mr-2">Adicionar</button>
+                    <button type="reset" class="btn btn-secondary">Limpar formulário</button>
+                </div>
+            </form>
+
+            <!-- TABLE LIBRARIES -->
+            <div class="form-group col-md-12">
+                <div class="table-responsive">
+                    <table id="tblLibraries" class="table table-curved table-sm"></table>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer-1">
+            <div class="container-fluid footer-1 col-lg-7">
+                <div class="row">
+                    <div class="nomad-info col-md-6">
+                        <h4>Sobre Nós</h4>
+                        <p>NOMAD é um gestor online de bibliotecas de rua. Este projeto foi desenvolvido em ambiente académico durante o curso de Tecnologias e Sistemas de Informação para a Web.</p>
+                    </div>
+                    <div class="nomad-info col-md-4">
+                        <h4>Contacte-nos</h4>
+                        <p>bibliotecas_nomad@nomad.pt</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-2">
+            <p>Website criado por Mariana Moreira, Isabela da Costa e Inês Moreira</p>
+        </div>
+
+        <!-- MODAL VIEW LIBRARY -->
+        <div class="modal fade" id="viewLibraryModal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="modalTitleId" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title" id="modalTitleId">Detalhes</h4>
+                        <button type="button" id="btnClose" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"></span><i class="fa fa-times"></i></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="frmViewLibrary">
+                            <div class="row">
+                                <!-- CITY -->
+                                <div class="form-group col-md-6">
+                                    <label for="viewLibraryCity">Cidade</label>
+                                    <input type="text" class="form-control" id="viewLibraryCity" readonly>
+                                </div>
+            
+                                <!-- PARISH -->
+                                <div class="form-group col-md-6">
+                                    <label for="viewLibraryParish">Freguesia</label>
+                                    <input type="text" class="form-control" id="viewLibraryParish" readonly>
+                                </div>
+            
+                                <!-- ADDRESS -->
+                                <div class="form-group col-md-12">
+                                    <label for="viewLibraryAddress">Morada</label>
+                                    <input type="text" class="form-control" id="viewLibraryAddress">
+                                </div>
+            
+                                <!-- COORDINATES -->
+                                <div class="form-group col-md-7">
+                                    <label for="viewLibraryCoordinates">Coordenadas</label>
+                                    <div class="row">
+                                        <div id="viewLibraryCoordinates" class="form-group col-md-6">
+                                            <input type="number" id="viewLibraryLatitude" class="form-control"  step="any" placeholder="latitude" readonly>
+                                        </div>
+                                        <div id="viewLibraryCoordinates" class="form-group col-md-6" style="padding-left: 0px;">
+                                            <input type="number" id="viewLibraryLongitude" class="form-control"  step="any" placeholder="longitude" readonly>
+                                        </div>
+                                    </div>
+                                </div>     
+                                
+                                <!-- BOOK CAPACITY -->
+                                <div class="form-group col-md-5">
+                                    <label for="viewLibraryBookCapacity">Capacidade de Livros</label>
+                                    <input type="number" value="7" min="1" max="999" class="form-control" id="viewLibraryBookCapacity" min="1">
+                                </div>
+
+                                <!-- BUTTONS -->
+                                <div class="form-group buttons col-md-12">
+                                    <input type="submit" id="btnSubmit" class="btn btn-modal btn-secondary" value="Submeter"/>
+                                    <button type="button" id="btnEdit" class="btn btn-modal btn-edit"><i class="fa fa-pen-square fa-2x"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Others JS -->
+        <script src="../node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwpPEcOyiz4v8GA9Hwo4W_LYlYQmfArS0"></script>
+
+        <!-- Custom JS -->
+        <script src="../js/portugal.js"></script>
+        <script src="../js/models.js"></script>
+        <script src="../js/configLibrary.js"></script>
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
+</html>

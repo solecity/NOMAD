@@ -1,0 +1,683 @@
+
+/* GENERAL */                             /*     ////////////////////////////////////////////////////     */
+.modal-header {
+    background-color: #8fc8dd;
+}
+
+.middle-catalog, .middle-user {
+    margin-top: 60px;
+    margin-bottom: 60px;
+    padding: 0px 0px 40px 0px;
+    min-height: 460px;
+}
+
+.bottom {
+    margin-top: 120px;
+}
+
+.inner {
+    min-height: 200px;
+    padding-left: 4%;
+}
+
+.btn {
+    background-color: #FFD892;
+}
+
+.btn:hover {
+    background-color: rgba(255, 217, 146, 0.603);
+}
+
+.btn-primary:active {
+    background-color: #8fc8dd !important;
+}
+
+.fa {
+    color: #FFD892;
+}
+
+
+/* NAV BAR */                             /*     ////////////////////////////////////////////////////     */
+.navbar-custom .nav-item.active .nav-link {
+    color: #f5a698;
+    font-weight: 700;
+}
+
+.navbar-custom .nav-item:hover .nav-link {
+    color: #f5a69891;
+}
+
+.navbar-custom .dropdown-menu {
+    border-top: solid 3px #8fc8dd;
+}
+
+.navbar-custom .dropdown-item:hover{
+    color: #8fc8dd;
+    background-color: rgba(255,255,255,.5);
+}
+
+
+/* MODAL LOG IN */ /* MODAL DONATE */                     /*     ////////////////////////////////////////////////////     */
+#modalDonateDescription {
+    display: block;
+}
+
+.viewURL {
+    margin: auto;
+}
+
+#modalViewCover {
+    min-height: 200px;
+    float: right;
+}
+
+#donateStep3 {
+    padding: 0%;
+}
+
+.step3 {
+    padding: 0px;
+}
+
+#btnSubmit {
+    margin: 0px;
+}
+
+
+/* TOP BAR */                             /*     ////////////////////////////////////////////////////     */
+.carousel {
+    margin: auto;
+    width: auto;
+}
+
+.bar {
+    background-color: #8fc8dd;
+}
+
+.midoffice {
+    background-color: #ba9378;
+}
+
+.empty {
+    height: 83px;
+}
+
+.bar h1 {
+    text-align: center;
+    color: white;
+    margin: 0;
+    font-weight: 300;
+}
+
+.bar i {
+    float: left;
+}
+
+
+/* NOTIFICATIONS */                       /*     ////////////////////////////////////////////////////     */
+.accordion {
+    cursor: pointer;
+    padding: 8px 5px 2px 5px;
+    width: 100%;
+    text-align: left;
+    vertical-align: middle;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
+
+.accordion:hover {
+    background-color: rgba(255, 217, 146, 0.603);
+}
+
+#notificationPanel {
+    min-width: 300px;
+}
+
+.panel {
+    margin: 0px;
+    padding: 0px;
+    background-color: rgb(250, 244, 233);
+}
+
+.table-notifications {
+    margin: 10px;
+}
+
+.table-notifications a {
+    text-decoration: none;
+    color: black;
+}
+
+.table-notifications h6 {
+    font-size: 16px;
+    margin: 0px;
+}
+
+.table-notifications p {
+    font-size: 14px;
+    margin: 0px;
+}
+
+.cover-small {
+    vertical-align: top;
+    max-width: 50px;
+    margin: 0px 5px 0px 0px;
+}
+
+
+
+/* HOMEPAGE */                            /*     ////////////////////////////////////////////////////     */
+.tippy-tooltip.custom-theme {
+    background-color: white;
+    box-shadow: 0 4px 8px -1px rgba(0,32,128,.2), 0 8px 24px -2px rgba(0,128,255,.1);
+    font-weight: 300;
+    color: #333;
+}
+
+.tippy-popper[x-placement^=top] .tippy-tooltip.custom-theme .tippy-arrow {
+    border-top: 7px solid white;
+}
+
+.tippy-tooltip.custom-theme .tippy-content {
+    margin: 10px 0px;
+}
+
+.book a {
+    color: black;
+    text-decoration: none;
+}
+
+#badgeNumbers {
+    position: absolute;
+    background: rgb(255, 51, 51);
+    height: 3rem;
+    top: -1rem;
+    right: -1rem;
+    width: 3rem;
+    text-align: center;
+    line-height: 3rem;;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    color: white;
+}
+
+
+
+/* CATALOG */                             /*     ////////////////////////////////////////////////////     */
+.category-favourite {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+}
+
+.category-filter p {
+    padding: 10px;
+}
+
+/* filter */
+#frmFilter, #catalogBooks {
+    margin: auto;
+}
+
+#frmFilter .btn {
+    margin-top: 20px;
+}
+
+/* books catalog */
+#catalogBooks {
+    margin: 40px 0px;
+}
+
+.book {
+    display: inline-block;
+    vertical-align: top;
+    padding: 0px;
+    margin-right: 3%;
+}
+
+.book h5, .book p {
+    font-weight: 300;
+    margin: 10px 0px 0px 0px;
+}
+
+.book h5{    
+    font-weight: 400;
+}
+
+.category-empty, .new-category {
+    margin: 0% 3% 3% 0%;
+    height: 125px;
+    float: left;
+}
+
+.category-empty {
+    border: solid 1px gray;
+}
+
+.new-category {
+    background-color: gray;
+    padding: 2% 0%;
+    text-align: center;
+}
+
+.new-category a {
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+}
+
+.new-row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+/* BOOK LIST */ /* BOOK SELECT */
+#categoryTitle {
+    margin: auto;
+}
+
+#linkCategorias {
+    margin: auto;
+    color: white;
+    font-size: 35px;
+    margin-left: 50px;
+}
+
+.fa-chevron-left {
+    color: white;
+}
+
+.filter a {
+    text-decoration: none;
+    color: black;
+    font-size: 22px;
+    background-color: rebeccapurple;
+}
+
+.filter .btn {
+    margin: 0px;
+    background-color: transparent;
+    float: right;
+}
+
+#btnContainer {
+    text-align: right;
+    margin-bottom: 15px;
+}
+
+#btnList .fa, #btnGrid .fa, #btnList, #btnGrid {
+    color: white;
+}
+
+/* book info */
+.col {
+    padding: 0px;
+}
+
+.select-book {
+    margin: auto;
+    margin-top: 60px;
+}
+
+.select-book p {
+    margin-bottom: 0px;
+}
+
+#viewCover, #viewBookCover {
+    max-width: 180px;
+}
+
+#stars {
+    width: 110px;
+    margin: auto;
+}
+
+.fa-star {
+    margin-right: 3%;
+    color:rgb(156, 156, 156);
+}
+
+.checked {
+    color:rgb(255, 202, 88)
+}
+
+/* comments */
+.rounded-circle {
+    width: 40px !important;
+    height: 40px !important;
+    padding: 0px;
+}
+
+#tblAddComment {
+    margin: 20px 0px 40px 0px;
+    vertical-align: top;
+}
+
+#tblMoreComments p{
+    padding-top: 10px;
+}
+
+.last-row button{
+    float: right;
+}
+
+#btnAddComment, #btnCancelComment, #btnAddComment:hover, #btnCancelComment:hover {
+    background-color: transparent;
+}
+
+#btnAddComment i {
+    color: #FFD892;
+}
+
+#btnAddComment i:hover {
+    color: rgba(255, 217, 146, 0.603);
+}
+
+#btnCancelComment i {
+    color: #f5a698;
+}
+
+#btnCancelComment i:hover {
+    color: #f5a69891;
+}
+
+#btnCancelComment:focus, #btnAddComment:focus {
+    background-color: transparent !important;
+}
+
+.comment-user-info {
+    width: 64px;
+    text-align: center;
+}
+
+.more-items .btn {
+    background-color: transparent !important;
+    margin-left: 10px;
+    padding: 0px;
+    color: #8fc8dd;
+    float: right;
+}
+
+.more-items .btn:hover {
+    border: none;
+    background-color: transparent;
+    color: #8fc8ddb7;
+}
+
+/* request */  /* notify */
+#tblBooks {
+    margin-top: 20px;
+}
+
+#th{
+    background-color: #8fc8dd;
+    color: white;
+    font-weight: 600;
+    border-bottom: none;
+}
+
+.btn-center {
+    max-width: 80px;
+}
+
+.request, .notify {
+    font-weight: 400;
+    font-size: 16px;
+    color: #f5a698 !important;
+    text-decoration: none !important;
+}
+
+.request:hover, .notify:hover, {
+    color: #f5a69891 !important;
+}
+
+
+/* MAP */                                 /*     ////////////////////////////////////////////////////     */
+#inputMap {
+    width: 1000px;
+    height: 500px;
+    margin: 60px auto;
+}
+
+
+/* USER */                                /*     ////////////////////////////////////////////////////     */
+.user-area {
+    background-color: rgba(208, 239, 250, 0.992);
+    /*background-color: rgb(255, 241, 215);*/
+    padding: 80px 0px !important;
+    margin: 0px;
+}
+
+.middle-user {
+    background-color: white;
+    margin: 0px auto;
+    min-height: 520px;
+    border-radius: 10px;
+}
+
+#menuUser {
+    background-color: white;
+    border-bottom: solid 2px #dddddd;
+    margin-bottom: 50px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#menuUser .nav-link {
+    color: black;
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.nav-link:hover {
+    color: rgba(255, 255, 255, 0.623);
+}
+
+#menuUser .active {
+    font-weight: 400;
+}
+
+
+/* profile */
+#frmProfile {
+    margin: auto 5%;
+}
+
+#frmProfile input {
+    margin-bottom: 25px;
+}
+
+#btnChangePhoto{
+    margin-top: 0px !important;
+}
+
+.photo {
+    margin: 0%;
+}
+
+#viewPhoto {
+    height: 180px;
+    width: 180px;
+}
+
+.fa-credit-card {    
+    font-size: 1.6em;
+}
+
+.btn-edit i:hover {
+    color: rgba(255, 217, 146, 0.603);
+}
+
+.btn-edit i:active {
+    color: #8fc8dd;
+}
+
+.middle-user .table-responsive {
+    overflow: auto;
+}
+
+
+/* history */
+.history {
+    display: inline-block;
+    padding: 0px;
+    margin: auto 5%;
+}
+
+.right {
+    margin: 0px;
+}
+
+.history h3 {
+    padding-left: 10%;
+    margin-bottom: 20px;
+    text-align: justify;
+    font-size: 24px;
+    font-weight: 300;
+}
+
+.list-box {
+    height: 320px;
+    margin: auto;
+    padding: 15px 15px 0px 15px;
+    border: solid 2px #dddddd;
+    overflow-y: scroll;
+}
+
+.table-history {
+    margin: 0px;
+}
+
+.table-history td {
+    padding: 15px 5px;
+    border: none;
+}
+
+.table-history p {
+    margin-bottom: 0px;
+    font-size: 14px;
+}
+
+.table-history .fa-book {
+    color: #8ec8dd;
+}
+
+.table-history .fa-star {
+    color: #ffd892;
+}
+
+.scrollbar-info::-webkit-scrollbar-track {
+  background-color: #dddddd;
+}
+
+.scrollbar-info::-webkit-scrollbar {
+  width: 12px;
+}
+
+.scrollbar-info::-webkit-scrollbar-thumb {
+  background-color: #8fc8dd;
+}
+
+#modalRatingBookDetails h4, #modalRequestBookDetails h4 {
+    font-weight: 300;
+    margin: 20px 0px 10px 0px;
+}
+
+#modalRatingBookDetails h6, #modalRequestBookDetails h6 {
+    margin-bottom: 40px;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    background: #dddddd;
+    outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 25px;
+    background: #ffd892;
+    cursor: pointer;
+}
+
+#addRating {
+    margin: 10px auto;
+}
+
+#frmDeliveries label {
+    text-align: left !important;
+}
+
+
+/* preferences */
+.table-preferences {
+    padding: 0px 2%;
+}
+
+.table-preferences thead {
+    background-color: #e7e7e7;
+    border: none;
+}
+
+.table-preferences tr {
+    border-top: none;
+    border-bottom: solid 1px #e7e7e7;
+}
+
+#inputNotificationTag, #inputNotificationLibrary {
+    margin-bottom: 10px;
+}
+
+.preferences {
+    margin: auto;
+    padding: 0px;
+}
+
+.input-group {
+    padding-left: 2%;
+}
+
+.inline-preferences {
+    padding: 0px;
+}
+
+.preferences label {
+    margin-bottom: 20px;
+}
+
+#selectPreferences {
+    background-color: #ffd892;
+    color: white;
+    height: 40px;
+    font-size: 20px;
+    border: none;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+#inputPreference {
+    height: 40px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-left: none;
+}
+
+
+
+/* CONFIG BOOKS */                        /*     ////////////////////////////////////////////////////     */
+.thead-midoffice {
+    background-color: #9e9e9e;
+    color: white;
+}
+
+.thead-midoffice th {
+    font-weight: 400;
+    font-size: 18px;
+}

@@ -1,0 +1,235 @@
+
+/* BODY */                                /*     ////////////////////////////////////////////////////     */
+body {
+    font-family: 'Yantramanav', sans-serif;
+    font-weight: 300;
+    background-color: white;
+    margin: 0px;
+
+/*
+    background-image: url("../images/2.png");
+    height: 100%;
+    background-position: top;
+    background-repeat: no-repeat;*/
+}
+
+/* GENERAL */                             /*     ////////////////////////////////////////////////////     */
+.modal-header {
+    padding: 10px;
+}
+
+#modalTitleId {
+    font-weight: 400;
+    font-size: 32px;
+    margin: auto;
+    padding-left: 8%;
+    color: white;
+}
+
+.modal-title {
+    margin: 8px auto;
+
+}
+
+.modal-footer {
+    border: none;
+}
+
+.close {
+    opacity: 0.8 !important;
+    margin: 0px !important;
+}
+
+.inline {
+    display: inline-block;
+    margin: 0px;
+}
+
+.btn {
+    height: 40px;
+    margin: auto;
+    border: none;
+    font-size: 18px;
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+		
+.btn-modal {
+    margin: 0px;
+    float: right;
+}
+
+.edit {
+    margin: 30px 0px 0px 0px;
+    padding: 0px;
+}
+
+.btn-edit {
+    padding: 0px;    
+    background-color: transparent !important;
+}
+
+.btn-edit:hover, .btn-edit:active {
+    border: none;
+    background-color: transparent !important;
+}
+
+h1 {
+    margin: 60px 0px 40px 0px;
+    font-size: 34px;
+    font-weight: 300;
+}
+
+img {
+    margin: 0px;
+}
+
+.fa-times {
+    color: white !important;
+}
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: #ebebeb;
+    border: none;
+    opacity: 1;
+}
+
+
+/* NAV BAR */                             /*     ////////////////////////////////////////////////////     */
+.top {
+    padding: 20px 0px 20px 0px;
+}
+
+.navbar-custom .navbar-nav .nav-link {
+    color:black;
+    font-weight: 400;
+}
+
+.navbar-custom .dropdown-menu {
+    border-radius: 0;
+    border-bottom: none;
+    border-right: none;
+    border-left: none;
+}
+
+.navbar-custom .dropdown-item:hover{
+    color: #8fc8dd;
+    background-color: rgba(255,255,255,.5);
+}
+
+.nav-item {
+    margin-left: 10px;
+}
+
+.text {
+    margin-top: 5px;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+#userIconLogIn {
+    border-radius: 100%;
+}
+
+/* NOTIFICATIONS */
+.panel {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+}
+
+
+/* TOP BAR */                             /*     ////////////////////////////////////////////////////     */
+.bar {
+    padding: 20px 0px 20px 0px;
+}
+
+
+/* TABLES */
+table {
+    margin-top: 40px;
+}
+
+.table-curved {
+    border-radius: 6px;
+    border-left:0px;
+    text-align: center;
+}
+
+.table-curved th {
+    border-top: none;
+    padding: 10px;
+    font-weight: 300;
+    font-size: 16px;
+}
+
+.table-curved th:first-child {
+    border-radius: 6px 0 0 0;
+}
+
+.table-curved th:last-child {
+    border-radius: 0 6px 0 0;
+}
+
+.table-curved th:only-child{
+    border-radius: 6px 6px 0 0;
+}
+
+.table-curved tr {
+    font-weight: 300;
+    font-size: 14px;
+}
+
+.table-curved td {
+    padding: 10px;
+}
+
+#tblCategories, #tblTags, #tblBooks, #tblLibraries {
+    text-align: justify;
+}
+
+
+
+/* FOOTER */                              /*     ////////////////////////////////////////////////////     */
+.footer-1 {
+    background-color: #8a8a8a;
+    color: white;
+    margin: auto;
+    padding: 15px 0px 10px 0px;
+    font-size: 15px;
+    font-weight: 300;
+    text-align: justify;
+}
+
+.nomad-info {
+    margin: 0px auto;
+}
+
+.footer-1 h4 {
+    font-size: 20px;
+    font-weight: 400;
+    padding: 10px 0px;
+}
+
+.footer-2 {    
+    background-color: #707070;
+    color: white;
+    margin: 0px;
+    padding: 15px 0px 2px 0px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.footer-2 p {
+    text-align: center;
+}
+
+#tableFooter {
+    width: 60%;
+    margin: auto;
+}

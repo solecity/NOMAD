@@ -26,7 +26,7 @@
     let bookCurrent = 0
     let config = { 
             id: 1,
-            requestDays: 7,
+            requestDays: 1,
             fineValue: 2,
             fineMax: 20
     }
@@ -47,7 +47,7 @@
             this.userPermissions = userPermissions
             this.userStatus = userStatus
             this.fineValue = fineValue
-            this._lastLogIn = ""
+            this._lastLogin = ""
         }
         
         // ID
@@ -107,16 +107,15 @@
         get fineValue() {
             return this._fineValue
         }
-
         set fineValue(newFineValue) {
             this._fineValue = newFineValue
         }
 
         // LAST LOG IN
-        get lastLogIn() {
+        get lastLogin() {
             return this._lastLogIn
         }
-        set lastLogIn(newLastLogIn) {
+        set lastLogin(newLastLogIn) {
             this._lastLogIn = newLastLogIn
         }
 
@@ -128,6 +127,159 @@
                 lastId = users[users.length - 1].id
             }
             return lastId
+        }
+
+        // CALCULATE FINE VALUE
+        static calculateFineValue(days) {   
+            let tempFineValue = 0
+            
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].id == userCurrent) { 
+                    if (days > config.requestDays) {
+                        if (users[i].fineValue < config.fineMax) {
+                            tempFineValue = users[i].fineValue + (days * config.fineValue)       
+                            if (tempFineValue < config.fineMax) {
+                                users[i].fineValue = tempFineValue
+                            }
+                            else {
+                                users[i].fineValue = config.fineMax
+                            }
+                        }   
+                        else {
+                            users[i].fineValue = config.fineMax
+                        }
+                    }
+                }
+            }
+        }
+
+        // CALCULATE FINE VALUE BY REQUEST
+        static calculateFineValueByRequest(days) {    
+            let cont = 0
+            
+            for (let j = 0; j < users.length; j++) {
+                if (users[j].id == userCurrent) {
+                    for (let i = 0; i < days; i++) {
+                        if (users[j].fineValue < config.fineMax) {
+                            if (days > config.requestDays) {
+                                cont = days * config.fineValue
+
+                                if (cont < config.fineMax) {
+                                    return cont
+                                }
+                                else {
+                                    return config.fineMax
+                                }
+                            }
+                        }
+                        else {
+                            return config.fineMax
+                        }
+                    }
+                }
+            }
+        }
+
+        // CONVERT PERMISSIONS VALUE
+        static convertPermissions(permissions) {
+            switch (permissions) {
+                case 0:
+                    return "Administrador"
+                    break
+                case 1:
+                    return "Operador"
+                    break
+                case 2:
+                    return "Standard"
+                    break
+            }
+        }
+
+        // CHECK USER FINE BY PERMISSIONS
+        static checkFineByPermissions(permissions, fine) {
+            if (permissions == 2) {
+                return fine
+            }
+            else {
+                return "---"
+            }
+        }
+
+        // GET USER NAME BY ID
+        static getUserNameById(id) {
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].id == id) {
+                    return users[i].userName
+                }                  
+            }
+        }
+
+        // GET USER ID BY EMAIL
+        static getUserIdByEmail(email) {
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].userEmail == email) {
+                    return users[i].id
+                }
+            }
+        }
+
+        // VIEW USER ICON
+        static viewUserPhotoById(id) {
+            for (let i = 0; i < users.length; i++) {
+                if(users[i].id == id){
+                    return users[i].userPhoto
+                }
+            }
+        }
+
+        // VIEW USER FROM ID
+        static viewUserById(id) {
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].id == id) {
+                    viewUserName.value= users[i].userName
+                    viewUserEmail.value = users[i].userEmail
+                    viewUserPassword.value =  users[i].userPassword
+                    viewUserFine.value =  users[i].fineValue
+                    viewUserPermissions.value =  users[i].userPermissions
+                    viewUserPhoto.setAttribute("src", users[i].userPhoto)
+                }                  
+            }
+        }
+
+        // EDIT USER PERMISSIONS FROM ID
+        static editUserPermissionsById(id) {
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].id == id) {
+                    users[i].userPermissions = parseInt(viewUserPermissions.value)
+                }
+            }
+        }
+
+        // EDIT USER PHOTO BY USER ID
+        static editUserPhotoById(id, photo) {
+            for (let i = 0; i < users.length; i++) {
+                if(users[i].id == id) {
+                    users[i].userPhoto = photo
+                }
+            }
+        }
+
+        // EDIT USER PHOTO BY USER ID
+        static editUserPasswordById(id, password) {
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].id == id) {
+                    users[i].userPassword = password
+                }
+            }
+        }
+
+        // REMOVE USER FROM ID
+        static removeUserById(id) {
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].id == id) {
+                    users.splice(i, 1)
+                }
+            }
         }
     }
 
@@ -169,6 +321,15 @@
                 }                  
             }
         }
+
+        // REMOVE CATEGORY BY ID
+        static removeCategoryById(id) {
+            for (let i = 0; i < categories.length; i++) {
+                if(categories[i].id == id) {
+                    categories.splice(i, 1)
+                }                  
+            }
+        }
     }
 
     /* tag */
@@ -200,6 +361,36 @@
             }
 
             return lastId
+        }
+
+        // GET TAG NAME BY ID
+        static getTagById(id) {
+            for (let i = 0; i < tags.length; i++) {
+                if(tags[i].id == id) {
+                    return tags[i].name
+                }
+            }
+        }
+
+        // GET TAG LIST BY ID
+        static getTagsById(id) {
+            let tempArray = []
+
+            for (let i = 0; i < tags.length; i++) {
+                if(tags[i].id == id) {
+                    tempArray.push(tags[i].name)
+                }
+            }
+            return tempArray
+        }
+
+        // REMOVE TAG FROM ID
+        static removeTagById(id) {
+            for (let i = 0; i < tags.length; i++) {
+                if(tags[i].id == id) {
+                    tags.splice(i, 1)
+                }                  
+            }
         }
     }
 
@@ -355,6 +546,203 @@
             let tempRating = parseInt(ratings.reduce(function(a, b) { return a + b }))
             return tempRating / (ratings.length - 1)
         }
+
+        // GET BOOK TITLE BY ID
+        static getBookTitleById(id) {        
+            for (let i = 0; i < books.length; i++) {
+                if (books[i].id == id) {
+                    return books[i].bookTitle
+                }                  
+            }
+        }
+
+        // GET BOOK AUTHORS BY ID
+        static getBookAuthorsById(id) {
+            for (let i = 0; i < books.length; i++) {
+                if(books[i].id == id) {
+                    return books[i].bookAuthors
+                }
+            }
+        }
+
+        // GET BOOK CATEGORY BY ID
+        static getBookCategoryById(id) {
+            for (let i = 0; i < books.length; i++) {
+                if(books[i].id == id) {
+                    return books[i].bookCategory
+                }
+            }
+        }
+
+        // GET BOOK TAG BY ID
+        static getBookTagsById(id) {
+            for (let i = 0; i < books.length; i++) {
+                if(books[i].id == id) {
+                    return books[i].bookTags
+                }
+            }
+        }
+
+        // GET BOOK LIBRARY BY ID
+        static getBookLibraryById(id) {
+            for (let i = 0; i < books.length; i++) {
+                if(books[i].id == id) {
+                    return books[i].libraryId
+                }
+            }
+        }
+
+        // GET BOOK COVER BY ID
+        static getBookCoverById(id) {
+            for (let i = 0; i < books.length; i++) {
+                if(books[i].id == id) {
+                    return books[i].bookCover
+                }
+            }
+        }
+
+        // GET BOOK TAGS BY CATEGORY
+        static getBookTagsByCategory(id) {
+            let tempArray = []
+
+            for (let i = 0; i < books.length; i++) {
+                if (books[i].bookCategory == id) {
+                    tempArray.push(books[i].bookTags)
+                }
+            }
+            tempArray = tempArray.reduce((a, b) => a.concat(b), [])
+
+            let newArray = [...new Set(tempArray)]
+
+            return newArray
+        }
+        
+        // GET BOOK AUTHORS BY CATEGORY
+        static getBookAuthorsByCategory(id) {
+            let tempArray = []
+
+            for (let i = 0; i < books.length; i++) {
+                if (books[i].bookCategory == id) {
+                    tempArray.push(books[i].bookAuthors)
+                }
+            }
+            let newArray = [...new Set(tempArray)]
+
+            return newArray
+        }
+        
+        // GET BOOK LIBRARY BY CATEGORY
+        static getBookLibraryByCategory(id) {
+            let tempArray = []
+
+            for (let i = 0; i < books.length; i++) {
+                if (books[i].bookCategory == id) {
+                    tempArray.push(books[i].libraryId)
+                }                  
+            }
+            let newArray = [...new Set(tempArray)]
+
+            return newArray
+        } 
+
+        // GET BOOKS WITH SAME TITLE
+        static getSimilarBooks(id) {
+            let tempArray = []
+
+            for (let i = 0; i < books.length; i++) {
+                if (books[i].bookTitle == Book.getBookTitleById(id)) {
+                    let tempBook = { 
+                            id: books[i].id,
+                            title: books[i].bookTitle,
+                            library: books[i].libraryId
+                    }                
+                    tempArray.push(tempBook)
+                }
+            }
+            return tempArray
+        }
+
+        // VIEW BOOK BY ID
+        static viewBookById(id) {
+            let tempTags = []
+
+            for (let i = 0; i < books.length; i++) {
+                if(books[i].id == id) {
+                    viewBookTitle.value = books[i].bookTitle
+                    viewBookAuthors.value = books[i].bookAuthors
+                    viewBookPublisher.value = books[i].bookPublisher
+                    viewBookYear.value = books[i].bookYear
+                    viewBookPages.value = books[i].bookPages
+
+                    // load de todas as categorias, tags e bibliotecas 
+                    // passar a select as que estao no livro correspondente
+
+                    for (let i = 0; i < categories.length; i++) {
+                        addCategoriesToModal()                        
+                    }
+    
+                    for (let i = 0; i < tags.length; i++) {                        
+                        addTagsToModal()                        
+                    }
+    
+                    for (let i = 0; i < libraries.length; i++) {                        
+                        viewBookCity.innerHTML = addCitiesToModal()
+                        viewBookParish.innerHTML = addParishToModal(viewBookCity.value)   
+                    }
+
+                    viewBookCity.selectedIndex = books[i].libraryId
+                    viewBookParish.selectedIndex = Library.getParishById(Library.getLibraryParishById(books[i].libraryId))
+                    viewBookCategory.selectedIndex = books[i].bookCategory
+                    
+                    for (let j = 0; j < books[i].bookTags; j++) {
+                        viewBookTags.selectedIndex = (books[i].bookTags)[j]
+                    }    
+
+                    viewBookCondition.value = books[i].bookCondition
+                    viewBookDonor.value = books[i].bookDonor
+                    viewBookDonate.value = books[i].bookDonation
+                    viewBookCover.src = books[i].bookCover
+                    viewBookDescription.value = books[i].bookDescription
+                }                  
+            }
+        }
+        
+        // REMOVE BOOK BY ID
+        static removeBookById(id) {
+            for (let i = 0; i < books.length; i++) {
+                if (books[i].id == id) {
+                    books.splice(i, 1)
+                }                  
+            }
+        }
+        
+        // REMOVE BOOK BY LIBRARY ID
+        static removeBookByLibraryId(id) {
+            for (let i = books.length - 1; i >= 0 ; i--) {
+                if (books[i].libraryId == id) {
+                    books.splice(i, 1)
+                }
+            }
+        }
+
+        // RATE BOOK BY ID
+        static rateBookById(id) {
+            for (let i = 0; i < books.length; i++) {
+                if (books[i].id == id) {
+                    console.log(books[i].id)
+                    books[i].bookRatings.push(parseInt(modalRatingInput.value))
+                }                    
+            }
+        }
+
+        // UPDATE DELIVERED BOOK LIBRARY ID
+        static updateBookLibraryId(id, libraryId) {
+            for (let i = 0; i < books.length; i++) {
+                if (books[i].id == id) {
+                    books[i].libraryId = libraryId
+                }
+            }
+        }
     }
 
     /* comment */
@@ -401,7 +789,8 @@
 
             if (comments.length > 0) {
                 lastId = comments[comments.length - 1].id
-            }            
+            }
+            
             return lastId
         }
     }
@@ -420,6 +809,7 @@
         get id() {
         return this._id
         }
+
 
         // USER ID
         get userId() {
@@ -460,7 +850,57 @@
             if (requests.length != 0) {
                 lastId = requests[requests.length - 1].id
             }
+
             return lastId
+        }
+        
+        // GET BOOK ID BY ID
+        static getBookById(id) {
+            for (let i = 0; i < requests.length; i++) {
+                if (requests[i].id == id) {
+                    return requests[i].bookId
+                }                  
+            }
+        }
+        
+        // UPDATE DELIVERY DATE BY REQUEST ID
+        static receiveRequestBookById(id) {
+            for (let i = 0; i < requests.length; i++) {
+                if (requests[i].id == id && requests[i].userId == userCurrent) {
+                    requests[i].deliveryDate = getCurrentDate()
+                }
+            }
+        }
+
+        // REMOVE REQUEST BY USER ID
+        static removeRequestByUserId(id) {
+            for (let i = requests.length - 1; i >= 0 ; i--) {
+                if (requests[i].userId == id) {
+                    requests.splice(i, 1)
+                }
+            }
+        }
+
+        // REMOVE REQUEST BY BOOK ID
+        static removeRequestByBookId(id) {
+            for (let i = requests.length - 1; i >= 0 ; i--) {
+                if (requests[i].bookId == id) {
+                    requests.splice(i, 1)
+                }
+            }
+        }
+
+        // CALCULATE TIME WITH BOOK
+        static timeAcumulation(id) {
+            let timeToDays = 0
+
+            for (let i = 0; i < requests.length; i++) {
+                if (requests[i].id == id) {
+                    let time = Math.abs((new Date(requests[i].requestDate)).getTime() - (new Date(requests[i].deliveryDate)).getTime())
+                    timeToDays = Math.ceil(time / (1000 * 3600 * 24))
+                }
+            }
+            return timeToDays
         }
     }
 
@@ -562,8 +1002,211 @@
 
             if (wishlists.length > 0) {
                 lastId = wishlists[wishlists.length - 1].id
-            }            
+            }
+            
             return lastId
+        }
+
+        // GET CATEGORY LIST BY USER ID
+        static getCategoriesByUserId(id) {
+            let tempArray = []
+
+            for (let i = 0; i < wishlists.length; i++) {
+                if (wishlists[i].userId == id) {
+                    tempArray = wishlists[i].categoryList
+                }
+            }
+            return tempArray
+        }
+
+        // GET TAG LIST BY USER ID
+        static getTagsByUserId(id) {
+            let tempArray = []
+
+            for (let i = 0; i < wishlists.length; i++) {
+                if (wishlists[i].userId == id) {
+                    tempArray = wishlists[i].tagList
+                }
+            }
+            return tempArray
+        }
+
+        // GET LIBRARY LIST BY USER ID
+        static getLibrariesByUserId(id) {
+            let tempArray = []
+
+            for (let i = 0; i < wishlists.length; i++) {
+                if (wishlists[i].userId == id) {
+                    tempArray = wishlists[i].libraryList
+                }
+            }
+            return tempArray
+        }
+
+        // GET BOOK LIST BY CATEGORY AND USER ID
+        static getBooksByCategoryUserId(id) {
+            for (let i = 0; i < wishlists.length; i++) {
+                if (wishlists[i].userId == id) {
+                    return wishlists[i].notificationsCategories
+                }
+            }
+            return []
+        }
+
+        // GET BOOK LIST BY TAG AND USER ID
+        static getBooksByTagUserId(id) {
+            for (let i = 0; i < wishlists.length; i++) {
+                if (wishlists[i].userId == id) {
+                    return wishlists[i].notificationsTags
+                }
+            }
+            return []
+        }
+
+        // GET BOOK LIST BY USER ID
+        static getBooksByUserId(id) {
+            for (let i = 0; i < wishlists.length; i++) {
+                if (wishlists[i].userId == id) {
+                    return wishlists[i].notificationsBooks
+                }
+            }
+            return []
+        }
+
+        // GET BOOK LIST BY LIBRARY AND USER ID
+        static getBooksByLibraryUserId(id) {
+            for (let i = 0; i < wishlists.length; i++) {
+                if (wishlists[i].userId == id) {
+                    return wishlists[i].notificationsLibraries
+                }
+            }
+            return []
+        }
+
+        // REMOVE WISHLIST CATEGORY PREFERENCE BY USER ID
+        static removePreferencesByCategoryId(id) {
+            let tempArray = []
+            
+            for (let i = 0; i < wishlists.length; i++) {
+                if (wishlists[i].userId == userCurrent) {
+                    tempArray = wishlists[i].categoryList
+                }
+            }
+
+            for (let i = tempArray.length; i >= 0 ; i--) {
+                if (tempArray[i] == id) {
+                    tempArray.splice(i, 1)
+                }
+            }
+            return tempArray
+        }
+
+        // REMOVE WISHLIST TAG PREFERENCE BY USER ID
+        static removePreferencesByTagId(id) {
+            let tempArray = []
+            
+            for (let i = 0; i < wishlists.length; i++) {
+                if (wishlists[i].userId == userCurrent) {
+                    tempArray = wishlists[i].tagList
+                }
+            }
+
+            for (let i = tempArray.length; i >= 0 ; i--) {
+                if (tempArray[i] == id) {
+                    tempArray.splice(i, 1)
+                }
+            }
+            return tempArray
+        }
+
+        // REMOVE WISHLIST TAG PREFERENCE BY USER ID
+        static removePreferencesByLibraryId(id) {
+            let tempArray = []
+            
+            for (let i = 0; i < wishlists.length; i++) {
+                if (wishlists[i].userId == userCurrent) {
+                    tempArray = wishlists[i].libraryList
+                }
+            }
+
+            for (let i = tempArray.length; i >= 0 ; i--) {
+                if (tempArray[i] == id) {
+                    tempArray.splice(i, 1)
+                }
+            }
+            return tempArray
+        }
+
+        // REMOVE WISHLIST CATEGORY BY ID
+        static removeWishlistCategoriesById(id) {
+            for (let i = 0; i < wishlistCategories.length; i++) {
+                if (wishlistCategories[i] == id) {
+                    wishlistCategories.splice(i, 1)
+                }
+            }
+        }
+
+        // REMOVE WISHLIST TAG BY ID
+        static removeWishlistTagsById(id) {
+            for (let i = wishlistTags.length; i >= 0; i--) {
+                if (wishlistTags[i] == id) {
+                    wishlistTags.splice(i, 1)
+                }
+            }
+        }
+
+        // REMOVE WISHLIST BOOK BY ID
+        static removeWishlistBooksById(id) {
+            for (let i = wishlistBooks.length; i >= 0; i--) {
+                if (wishlistBooks[i] == id) {
+                    wishlistBooks.splice(i, 1)
+                }
+            }
+        }
+
+        // REMOVE WISHLIST LIBRARY BY ID
+        static removeWishlistLibrariesById(id) {
+            for (let i = wishlistLibraries.length; i >= 0; i--) {
+                if (wishlistLibraries[i] == id) {
+                    wishlistLibraries.splice(i, 1)
+                }
+            }
+        }
+
+        // EDIT WISHLIST TAGS BY USER ID
+        static editWishlistCategoriesByUserId(id, categories) {
+            for (let i = 0; i < wishlists.length; i++) {
+                if (wishlists[i].userId == id) {
+                    wishlists[i].notificationsCategories = categories
+                }
+            }
+        }
+
+        // EDIT WISHLIST TAGS BY USER ID
+        static editWishlistTagsByUserId(id, tags) {
+            for (let i = 0; i < wishlists.length; i++) {
+                if(wishlists[i].userId == id) {
+                    wishlists[i].notificationsTags = tags
+                }
+            }
+        }
+
+        // EDIT WISHLIST BOOKS BY USER ID
+        static editWishlistBooksByUserId(id) {
+            for (let i = 0; i < wishlists.length; i++) {     
+                if (wishlists[i].userId == id) {
+                    wishlists[i].notificationsBooks = wishlistBooks
+                }
+            }
+        }
+
+        // EDIT WISHLIST LIBRARIES BY USER ID
+        static editWishlistLibrariesByUserId(id, libraries) {
+            for (let i = 0; i < wishlists.length; i++) {
+                if(wishlists[i].userId == id) {
+                    wishlists[i].notificationsLibraries = libraries
+                }
+            }
         }
     }
 
@@ -642,6 +1285,24 @@
             return lastId
         }
 
+        // GET LIBRARY PARISH BY ID
+        static getLibraryParishById(id) {
+            for (let i = 0; i < libraries.length; i++) {
+                if (libraries[i].id == id) {
+                    return libraries[i].parish
+                }                  
+            }
+        }
+
+        // GET LIBRARY CITY BY ID
+        static getLibraryCityById(id) {
+            for (let i = 0; i < libraries.length; i++) {
+                if (libraries[i].id == id) {
+                    return libraries[i].city
+                }                  
+            }
+        }
+
         // GET LIBRARY ID BY PARISH AND CITY
         static getLibraryIdByLocation(city, parish) {
             for (let i = 0; i < libraries.length; i++) {
@@ -672,6 +1333,39 @@
                 }                  
             }
         }
+
+        // VIEW LIBRARY FROM ID
+        static viewLibraryById(id) {
+            for (let i = 0; i < libraries.length; i++) {
+                if (libraries[i].id == id) {
+                    viewLibraryCity.value = Library.getCityById(libraries[i].city)
+                    viewLibraryParish.value = Library.getParishById(libraries[i].parish)
+                    viewLibraryAddress.value = libraries[i].address
+                    viewLibraryLatitude.value =  libraries[i].latitude  
+                    viewLibraryLongitude.value =  libraries[i].longitude
+                    viewLibraryBookCapacity.value =  libraries[i].bookCapacity  
+                }                  
+            }
+        }
+
+        // EDIT LIBRARY FROM ID
+        static editLibraryById(id) {
+            for (let i = 0; i < libraries.length; i++) {
+                if (libraries[i].id == id) {
+                    libraries[i].address = viewLibraryAddress.value
+                    libraries[i].bookCapacity = parseInt(viewLibraryBookCapacity.value)
+                }                  
+            }
+        }
+
+        // REMOVE LIBRARY FROM ID
+        static removeLibraryById(id) {
+            for (let i = 0; i < libraries.length; i++) {
+                if (libraries[i].id == id) {
+                    libraries.splice(i, 1)
+                }
+            }
+        } 
     }
 //
 
@@ -1409,18 +2103,304 @@
             }
         }*/
     }
+//
 
 
+// --------------------------------------
+// MODAL
+
+    /* categories */
+    function addCategoriesToModal() {
+        let strHtml = "<option value=''>...</option>"    
+
+        for (let i = 0; i < categories.length; i++) {
+            strHtml += `<option value='${categories[i].id}'>${convertFirstToUpperCase(categories[i].name)}</option>`             
+        }
+        return strHtml
+    }
+
+    /* tags */
+    function addTagsToModal() {
+        let strHtml = ""    
+
+        for (let i = 0; i < tags.length; i++) {
+            strHtml += `<option value='${tags[i].id}'>${convertFirstToUpperCase(tags[i].name)}</option>`
+        }
+        return strHtml
+    }
+
+    /* cities */
+    function addCitiesToModal() {
+        let strHtml = "<option value=''>...</option>"
+        let tempCity = []
+
+        for (let i = 0; i < libraries.length; i++) {
+            tempCity.push(libraries[i].city)
+        }
+
+        tempCity.sort()
+
+        let newArray = [...new Set(tempCity)]
+
+        for (let i = 0; i < newArray.length; i++) {
+            strHtml += `<option value='${newArray[i]}'>${Library.getCityById(newArray[i])}</option>`
+        }
+        return strHtml
+    }
+
+    /* parishes */
+    function addParishToModal(inputCity) {
+        let strHtml = "<option value=''>...</option>"    
+
+        for (let i = 0; i < libraries.length; i++) {
+            if (libraries[i].city == inputCity) {
+                strHtml += `<option value='${libraries[i].parish}'>${Library.getParishById(libraries[i].parish)}</option>`
+            }
+        }
+        return strHtml
+    }
+//
 
 
+// --------------------------------------
+// DONATE BOOK MODAL
 
+    /* inputs */
+    let modalDonateTitle = document.getElementById("modalDonateTitle")
+    let modalDonateAuthors = document.getElementById("modalDonateAuthors")
+    let modalDonatePublisher = document.getElementById("modalDonatePublisher")
+    let modalDonateYear = document.getElementById("modalDonateYear")
+    let modalDonatePages = document.getElementById("modalDonatePages")
+    let modalDonateCity = document.getElementById("modalDonateCity")
+    let modalDonateParish = document.getElementById("modalDonateParish")
+    let modalDonateCategories = document.getElementById("modalDonateCategories")
+    let modalDonateTags = document.getElementById("modalDonateTags")
+    let modalDonateCondition = document.getElementById("modalDonateCondition")
+    let modalDonateDonor = document.getElementById("modalDonateDonor")
+    let modalDonateDate = document.getElementById("modalDonateDate")
+    let modalDonateCover = document.getElementById("modalDonateCover")
+    let modalDonateDescription = document.getElementById("modalDonateDescription")
+    let modalViewCover = document.getElementById("modalViewCover")
 
+    /* steps */
+    let donateStep1 = document.getElementById("donateStep1")
+    let donateStep2 = document.getElementById("donateStep2")
+    let donateStep3 = document.getElementById("donateStep3")
 
+    /* buttons */
+    let btnNext = document.getElementById("btnNext")
+    let btnPrevious = document.getElementById("btnPrevious")
+    let btnSubmit = document.getElementById("btnSubmit")
+    
+    /* items visible */
+    function viewDonateStep(count) {
+        if (count == 0) {
+            donateStep1.style.display = "block"
+            donateStep2.style.display = "none"
+            donateStep3.style.display = "none"
+            btnNext.style.display = "block"
+            btnPrevious.style.display = "none"
+            btnSubmit.style.display = "none"
+        }
+        else if (count == 1) {
+            donateStep1.style.display = "none"
+            donateStep2.style.display = "block"
+            donateStep3.style.display = "none"
+            btnNext.style.display = "block"
+            btnPrevious.style.display = "block"
+            btnSubmit.style.display = "none"
+        }
+        else if (count == 2) {
+            donateStep1.style.display = "none"
+            donateStep2.style.display = "none"
+            donateStep3.style.display = "block"
+            btnNext.style.display = "none"
+            btnPrevious.style.display = "block"
+            btnSubmit.style.display = "block"
+        }
+    }
 
+    /* view cover */
+    function viewInputCover() {
+        modalViewCover.src = modalDonateCover.value
+    }
 
+    /* fill books notifications by categories */
+    function addNotificationsCategories() {
+        let strCategories = ""
 
+        for (let i = 0; i < wishlistCategories.length; i++) {
+            let tempCategories = Book.getBookCategoryById(wishlistCategories[i])
 
+            strCategories += `<tr>
+                                <td>
+                                    <a href=${bookSelect()}><img id='${wishlistCategories[i]}' class='cover-small book-page' src='${Book.getBookCoverById(wishlistCategories[i])}'></a>
+                                </td>
+                                <td>
+                                    <a href=${bookSelect()} id='${wishlistCategories[i]}' class='book-page'>
+                                        <h6>Novo livro adicionado</strong></h6>
+                                        <p>${Book.getBookTitleById(wishlistCategories[i])}</p>
+                                        <p><strong>Categoria: ${convertFirstToUpperCase(Category.getCategoryById(tempCategories))}</strong></p>
+                                    </a>
+                                </td>
+                                <td><a id='${wishlistCategories[i]}' class='remove'><i class='fa fa-times-circle'></i></a></td>
+                            </tr>`
+        }
 
+        panelCategories.innerHTML = strCategories
+        badgeCategories.innerHTML = wishlistCategories.length
+
+        /* remove notification by category */
+        let removeNotification = document.getElementsByClassName("remove")
+
+        for (let i = 0; i < removeNotification.length; i++) {
+            removeNotification[i].addEventListener("click", function() {
+                let notificationId = removeNotification[i].getAttribute("id")
+
+                Wishlist.removeWishlistCategoriesById(notificationId)
+                Wishlist.editWishlistCategoriesByUserId(userCurrent)
+
+                localStorage.setItem("wishlists", JSON.stringify(wishlists))
+                location.reload()
+            })
+        }
+    }
+
+    /* fill books notifications by tags */
+    function addNotificationsTags() {
+        let strTags = ""
+
+        for (let i = 0; i < wishlistTags.length; i++) {
+            let tempTags = Book.getBookTagsById(wishlistTags[i])
+
+            strTags += `<tr>
+                            <td>
+                                <a href=${bookSelect()}><img id='${wishlistTags[i]}' class='cover-small book-page' src='${Book.getBookCoverById(tempTags[i])}'></a>
+                            </td>
+                            <td>
+                                <a href=${bookSelect()} id='${wishlistTags[i]}' class='book-page'>
+                                    <h6>Novo livro adicionado</strong></h6>
+                                    <p>${Book.getBookTitleById(wishlistTags[i])}</p>
+                                    <p><strong>Tags: ${Tag.getTagById(tempTags)}</strong></p>
+                                </a>
+                            </td>
+                            <td><a id='${wishlistTags[i]}' class='remove'><i class='fa fa-times-circle'></i></a></td>
+                        </tr>`
+        }
+
+        panelTags.innerHTML = strTags
+        badgeTags.innerHTML = wishlistTags.length
+
+        /* remove notification by category */
+        let removeNotification = document.getElementsByClassName("remove")
+
+        for (let i = 0; i < removeNotification.length; i++) {
+            removeNotification[i].addEventListener("click", function() {
+                let notificationId = removeNotification[i].getAttribute("id")
+
+                Wishlist.removeWishlistTagsById(notificationId)
+                Wishlist.editWishlistTagsByUserId(userCurrent)
+
+                localStorage.setItem("wishlists", JSON.stringify(wishlists))
+                location.reload()
+            })
+        }
+    }
+
+    /* fill books notifications */
+    function addNotificationsBooks() {
+        let strBooks = ""
+
+        for (let i = 0; i < wishlistBooks.length; i++) {
+            strBooks += `<tr>
+                            <td>
+                                <a href=${bookSelect()}><img id='${wishlistBooks[i]}' class='cover-small book-page' src='${Book.getBookCoverById(wishlistBooks[i])}'></a>
+                            </td>
+                            <td>
+                                <a href=${bookSelect()} id='${wishlistBooks[i]}' class='book-page'>
+                                    <h6>Novo livro adicionado</strong></h6>
+                                    <p>${Book.getBookTitleById(wishlistBooks[i])}</p>
+                                </a>Tags
+                            </td>
+                            <td><a id='${wishlistBooks[i]}' class='remove'><i class='fa fa-times-circle'></i></a></td>
+                        </tr>`
+        }
+
+        panelBooks.innerHTML = strBooks
+        badgeBooks.innerHTML = wishlistBooks.length
+
+        /* remove notification by category */
+        let removeNotification = document.getElementsByClassName("remove")
+
+        for (let i = 0; i < removeNotification.length; i++) {
+            removeNotification[i].addEventListener("click", function() {
+                let notificationId = removeNotification[i].getAttribute("id")
+
+                Wishlist.removeWishlistBooksById(notificationId)
+                Wishlist.editWishlistBooksByUserId(userCurrent)
+
+                localStorage.setItem("wishlists", JSON.stringify(wishlists))
+                location.reload()
+            })
+        }
+    }
+
+    /* fill books notifications by libraries */
+    function addNotificationsLibraries() {
+        let strLibraries = ""
+
+        for (let i = 0; i < wishlistLibraries.length; i++) {
+            let tempLibraries = Book.getBookLibraryById(wishlistLibraries[i])
+            
+            strLibraries += `<tr>
+                                <td>
+                                    <a href=${bookSelect()}><img id='${wishlistLibraries[i]}' class='cover-small book-page' src='${Book.getBookCoverById(wishlistLibraries[i])}'></a>
+                                </td>
+                                <td>
+                                    <a href=${bookSelect()} id='${wishlistLibraries[i]}' class='book-page'>
+                                        <h6>Novo livro adicionado</strong></h6>
+                                        <p>${Book.getBookTitleById(wishlistLibraries[i])}</p>
+                                        <p><strong>Biblioteca: ${Library.getCityById((Library.getLibraryCityById(tempLibraries)))}, ${Library.getParishById((Library.getLibraryParishById(tempLibraries)))}</strong></p>
+                                    </a>
+                                </td>
+                                <td><a id='${wishlistLibraries[i]}' class='remove'><i class='fa fa-times-circle'></i></a></td>
+                            </tr>`
+        }
+
+        panelLibraries.innerHTML = strLibraries
+        badgeLibraries.innerHTML = wishlistLibraries.length
+
+        /* remove notification by category */
+        let removeNotification = document.getElementsByClassName("remove")
+
+        for (let i = 0; i < removeNotification.length; i++) {
+            removeNotification[i].addEventListener("click", function() {
+                let notificationId = removeNotification[i].getAttribute("id")
+
+                Wishlist.removeWishlistLibrariesById(notificationId)
+                Wishlist.editWishlistLibrariesByUserId(userCurrent)
+
+                localStorage.setItem("wishlists", JSON.stringify(wishlists))
+                location.reload()
+            })
+        }
+    }
+
+    /* go to selected book */
+    function bookSelect() {
+        // checks which html page is open
+        let pagePath = (window.location.pathname).substring((window.location.pathname).lastIndexOf('/') + 1)
+        let tempPath = ""
+
+        if (pagePath != "index.html") {
+            tempPath = "bookSelect.html"
+        }
+        else {
+            tempPath = "html/bookSelect.html"
+        }
+
+        return tempPath
+    }
 //
 
 
@@ -1509,7 +2489,7 @@
     let btnNext = document.getElementById("btnNext")
     let btnPrevious = document.getElementById("btnPrevious")
     let btnSubmit = document.getElementById("btnSubmit")
-    
+
     /* items visible */
     function viewDonateStep(count) {
         if (count == 0) {
@@ -1542,9 +2522,54 @@
     function viewInputCover() {
         modalViewCover.src = modalDonateCover.value
     }
-        
+
+    /* set new notification */
+    function injectNotification(inputCategory, inputTags, bookId, inputLibrary) {
+
+        /* add new book notification to user wishlists by categories */
+        for (let j = 0; j < inputCategory.length; j++) {
+            for (let i = 0; i < wishlists.length; i++) {
+                let tempCategory = parseInt(inputCategory)
+                let tempArray = wishlists[i].categoryList
+
+                if (tempArray.includes(tempCategory)) {
+                    wishlists[i].notificationsCategories.push(bookId)
+                }
+            }
+        }
+
+        /* add new book notification to user wishlists by tags */
+        for (let j = 0; j < inputTags.length; j++) {
+            for (let i = 0; i < wishlists.length; i++) {                
+                let tempTags = parseInt(inputTags)
+                let tempArray = wishlists[i].tagList
+                
+                if (tempArray.includes(tempTags)) {
+                    wishlists[i].notificationsTags.push(bookId)
+                }
+            }
+        }
+
+        /* add new book notification to user wishlists by library */
+        for (let j = 0; j < inputLibrary.length; j++) {
+            for (let i = 0; i < wishlists.length; i++) {                
+                let tempLibrary = parseInt(inputLibrary)
+                let tempArray = wishlists[i].libraryList
+                
+                if (tempArray.includes(tempLibrary)) {
+                    wishlists[i].notificationsLibraries.push(bookId)
+                }
+            }
+        }
+    }
+//
+
+
+// --------------------------------------
+// VALIDATION
+
     /* new book */
-    function checkBookValid() {
+    function checkNewBookValid() {
         let arrayTags = []
         let strError = ""
 
@@ -1583,6 +2608,7 @@
                                     Library.getLibraryIdByLocation(modalDonateCity.value, modalDonateParish.value))
             
             saveBook(newBook)
+            injectNotification(modalDonateCategories.value, arrayTags, newBook.id, modalDonateParish.value)
 
             swal({
                 type: 'success',
@@ -1613,7 +2639,7 @@
 
     /* link for book page */
     let bookPage = document.getElementsByClassName("book-page")
-    
+
     /* select category to title */
     function addCategoryCurrentTitle(id) {
         let categoryTitle = document.getElementById("categoryTitle")
@@ -1622,6 +2648,8 @@
         categoryTitle.innerHTML += `<h1 id='${id}'>${tempCategory.toUpperCase()}</h1>`
     }
 
+
+    console.log(bookPage)
     /* select book */
     function getSelectBook() {
         for (let i = 0; i < bookPage.length; i++) {
@@ -1650,7 +2678,8 @@
                     strHtml += "<span><i class='fa fa-star'></i></span>"
                 }
             }
-        }        
+        }
+        
         return strHtml
     }
 

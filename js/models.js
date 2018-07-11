@@ -24,8 +24,7 @@
 
     let categoryCurrent = 0
     let bookCurrent = 0
-    let config = { 
-            id: 1,
+    let config = {
             requestDays: 1,
             fineValue: 2,
             fineMax: 20
@@ -130,7 +129,7 @@
         }
 
         // CALCULATE FINE VALUE
-        static calculateFineValue(days) {   
+        static calculateFineValue(days) {
             let tempFineValue = 0
             
             for (let i = 0; i < users.length; i++) {
@@ -381,6 +380,7 @@
                     tempArray.push(tags[i].name)
                 }
             }
+
             return tempArray
         }
 
@@ -640,10 +640,62 @@
                     tempArray.push(books[i].libraryId)
                 }                  
             }
-            let newArray = [...new Set(tempArray)]
 
+            let newArray = [...new Set(tempArray)]
             return newArray
-        } 
+        }
+
+        // GET BOOKS BY TAG
+        static getBooksByTag(tag, category) {
+            let tempArray = []
+
+            for (let i = 0; i < books.length; i++) {
+                if (books[i].bookTags.includes(parseInt(tag)) && books[i].bookCategory == category) {
+                    tempArray.push(books[i])
+                }
+            }
+            return tempArray
+        }
+
+        // GET BOOKS BY Author
+        static getBooksByAuthor(author, category) {
+            let tempArray = []
+
+            for (let i = 0; i < books.length; i++) {
+                if (books[i].bookAuthors.includes(author) && books[i].bookCategory == category) {
+                    tempArray.push(books[i])
+                }
+            }
+            return tempArray
+        }
+
+        // GET BOOKS BY CITY
+        /*static getBooksByCity(ids, category) {
+            let tempArray = []
+
+            for (let i = 0; i < books.length; i++) {
+                if (books[i].bookCategory == category) {
+                    for (let j = 0; j < ids.length; j++) {
+                        if (books[i].libraryId == ids[j]) {
+                            tempArray.push(books[i])
+                        }
+                    }
+                }
+            }
+            return tempArray
+        }*/
+
+        // GET BOOKS BY LIBRARY ID
+        static getBooksByLibrary(library, category) {
+            let tempArray = []
+
+            for (let i = 0; i < books.length; i++) {
+                if (books[i].libraryId == library && books[i].bookCategory == category) {
+                    tempArray.push(books[i])
+                }
+            }
+            return tempArray
+        }
 
         // GET BOOKS WITH SAME TITLE
         static getSimilarBooks(id) {
@@ -809,7 +861,6 @@
         get id() {
         return this._id
         }
-
 
         // USER ID
         get userId() {
@@ -1303,6 +1354,19 @@
             }
         }
 
+        // GET LIBRARY ID BY CITY
+        static getLibraryIdByCity(city) {
+            let tempArray = []
+            
+            for (let i = 0; i < libraries.length; i++) {
+                if(libraries[i].city == city) {
+                    tempArray.push(libraries[i].id)
+                }
+            }
+
+            return tempArray
+        }
+
         // GET LIBRARY ID BY PARISH AND CITY
         static getLibraryIdByLocation(city, parish) {
             for (let i = 0; i < libraries.length; i++) {
@@ -1574,7 +1638,7 @@
         books.push(book07)
         book08 = new Book("Livro do Desassossego", ["Fernando Pessoa"], "Assírio & Alvim", "2017", 480, 2, [15], "Bom", "Gustavo", "2017-02-07", "https://img.wook.pt/images/livro-do-desassossego-fernando-pessoa/MXwxMTIzNzI5MXwxNjEyODE1OHwxNTA4ODg2MDAwMDAw/502x", "O que temos aqui não é um livro mas a sua subversão e negação, o livro em potência, o livro em plena ruína, o livro-sonho, o livro-desespero, o anti-livro, além de qualquer literatura. O que temos nestas páginas é o génio de Pessoa no seu auge.", [0, 4, 5, 3, 4], 4)
         books.push(book08)
-        book09 = new Book("Os Lusíadas", ["Luís de Camões"], "Porto Editora", "2017", 288, 1, [6, 15, 11], "Bom", "Diogo", "2015-12-07", "https://img.wook.pt/images/os-lusiadas-luis-de-camoes/MXwyMTQ1MTU5fDE2NzcxMzYwfDE1MTEzOTUyMDAwMDA=/502x", "A ação central da obra é a viagem de Vasco da Gama para a Índia. Dela se serve o poeta para nos oferecer a visão épica de toda a História de Portugal até à sua época, ora sendo ele o narrador, ora transferindo essa tarefa para figuras da viagem. Para outras figuras - as míticas - transfere os discursos que projetam a ação no futuro em forma profética. O Poema interpreta os anseios dos humanistas numa linha de continuidade das epopeias clássicas, cantando o triunfo do Homem contra as forças da Natureza, e do Homem que <<deu novos mundos ao Mundo>>, iniciando assim um novo período da História.", [0, 3, 4, 3], 2)
+        book09 = new Book("Os Lusíadas", ["Luís de Camões"], "Porto Editora", "2017", 288, 1, [6, 15, 22], "Bom", "Diogo", "2015-12-07", "https://img.wook.pt/images/os-lusiadas-luis-de-camoes/MXwyMTQ1MTU5fDE2NzcxMzYwfDE1MTEzOTUyMDAwMDA=/502x", "A ação central da obra é a viagem de Vasco da Gama para a Índia. Dela se serve o poeta para nos oferecer a visão épica de toda a História de Portugal até à sua época, ora sendo ele o narrador, ora transferindo essa tarefa para figuras da viagem. Para outras figuras - as míticas - transfere os discursos que projetam a ação no futuro em forma profética. O Poema interpreta os anseios dos humanistas numa linha de continuidade das epopeias clássicas, cantando o triunfo do Homem contra as forças da Natureza, e do Homem que <<deu novos mundos ao Mundo>>, iniciando assim um novo período da História.", [0, 3, 4, 3], 2)
         books.push(book09)
         book10 = new Book("Leite e Mel", ["Rupi Kaur"], "Lua de Papel", "2017", 208, 6, [6, 2], "Fraco", "Gabriela", "2016-02-07", "https://img.wook.pt/images/leite-e-mel-rupi-kaur/MXwxOTE3MzM5MHwxNDk1NzkyOHwxNTIwNDY3MjAwMDAw/502x", "Leite e Mel é um conjunto de poesias sobre o amor, a perda, o abuso infantil e, finalmente, a cura. Transporta os leitores para momentos difíceis da vida, mas leva-os a descobrir neles a doçura e a fragilidade da vida, porque a doçura está em todo o lado, se estivermos abertos a recebê-la. Leite e Mel é uma história de sobrevivência através da poesia. Para a autora, é o sangue, suor e lágrimas dos seus vinte e um anos.", [0, 1, 2, 1, 3], 1)
         books.push(book10)
@@ -2028,8 +2092,8 @@
 
     /* log out */  
     optLogout.addEventListener("click", function () {
-        userCurrent = sessionStorage.setItem("userCurrent", -1)
-        userPermissions = sessionStorage.setItem("userPermissions", -1)
+        sessionStorage.setItem("userCurrent", -1)
+        sessionStorage.setItem("userPermissions", -1)
         homePage()
     })
 
@@ -2102,127 +2166,6 @@
                 addNotificationsLibraries()
             }
         }*/
-    }
-//
-
-
-// --------------------------------------
-// MODAL
-
-    /* categories */
-    function addCategoriesToModal() {
-        let strHtml = "<option value=''>...</option>"    
-
-        for (let i = 0; i < categories.length; i++) {
-            strHtml += `<option value='${categories[i].id}'>${convertFirstToUpperCase(categories[i].name)}</option>`             
-        }
-        return strHtml
-    }
-
-    /* tags */
-    function addTagsToModal() {
-        let strHtml = ""    
-
-        for (let i = 0; i < tags.length; i++) {
-            strHtml += `<option value='${tags[i].id}'>${convertFirstToUpperCase(tags[i].name)}</option>`
-        }
-        return strHtml
-    }
-
-    /* cities */
-    function addCitiesToModal() {
-        let strHtml = "<option value=''>...</option>"
-        let tempCity = []
-
-        for (let i = 0; i < libraries.length; i++) {
-            tempCity.push(libraries[i].city)
-        }
-
-        tempCity.sort()
-
-        let newArray = [...new Set(tempCity)]
-
-        for (let i = 0; i < newArray.length; i++) {
-            strHtml += `<option value='${newArray[i]}'>${Library.getCityById(newArray[i])}</option>`
-        }
-        return strHtml
-    }
-
-    /* parishes */
-    function addParishToModal(inputCity) {
-        let strHtml = "<option value=''>...</option>"    
-
-        for (let i = 0; i < libraries.length; i++) {
-            if (libraries[i].city == inputCity) {
-                strHtml += `<option value='${libraries[i].parish}'>${Library.getParishById(libraries[i].parish)}</option>`
-            }
-        }
-        return strHtml
-    }
-//
-
-
-// --------------------------------------
-// DONATE BOOK MODAL
-
-    /* inputs */
-    let modalDonateTitle = document.getElementById("modalDonateTitle")
-    let modalDonateAuthors = document.getElementById("modalDonateAuthors")
-    let modalDonatePublisher = document.getElementById("modalDonatePublisher")
-    let modalDonateYear = document.getElementById("modalDonateYear")
-    let modalDonatePages = document.getElementById("modalDonatePages")
-    let modalDonateCity = document.getElementById("modalDonateCity")
-    let modalDonateParish = document.getElementById("modalDonateParish")
-    let modalDonateCategories = document.getElementById("modalDonateCategories")
-    let modalDonateTags = document.getElementById("modalDonateTags")
-    let modalDonateCondition = document.getElementById("modalDonateCondition")
-    let modalDonateDonor = document.getElementById("modalDonateDonor")
-    let modalDonateDate = document.getElementById("modalDonateDate")
-    let modalDonateCover = document.getElementById("modalDonateCover")
-    let modalDonateDescription = document.getElementById("modalDonateDescription")
-    let modalViewCover = document.getElementById("modalViewCover")
-
-    /* steps */
-    let donateStep1 = document.getElementById("donateStep1")
-    let donateStep2 = document.getElementById("donateStep2")
-    let donateStep3 = document.getElementById("donateStep3")
-
-    /* buttons */
-    let btnNext = document.getElementById("btnNext")
-    let btnPrevious = document.getElementById("btnPrevious")
-    let btnSubmit = document.getElementById("btnSubmit")
-    
-    /* items visible */
-    function viewDonateStep(count) {
-        if (count == 0) {
-            donateStep1.style.display = "block"
-            donateStep2.style.display = "none"
-            donateStep3.style.display = "none"
-            btnNext.style.display = "block"
-            btnPrevious.style.display = "none"
-            btnSubmit.style.display = "none"
-        }
-        else if (count == 1) {
-            donateStep1.style.display = "none"
-            donateStep2.style.display = "block"
-            donateStep3.style.display = "none"
-            btnNext.style.display = "block"
-            btnPrevious.style.display = "block"
-            btnSubmit.style.display = "none"
-        }
-        else if (count == 2) {
-            donateStep1.style.display = "none"
-            donateStep2.style.display = "none"
-            donateStep3.style.display = "block"
-            btnNext.style.display = "none"
-            btnPrevious.style.display = "block"
-            btnSubmit.style.display = "block"
-        }
-    }
-
-    /* view cover */
-    function viewInputCover() {
-        modalViewCover.src = modalDonateCover.value
     }
 
     /* fill books notifications by categories */
@@ -2461,7 +2404,7 @@
 
 
 // --------------------------------------
-// DONATE
+// DONATE BOOK
 
     /* inputs */
     let modalDonateTitle = document.getElementById("modalDonateTitle")
@@ -2489,9 +2432,13 @@
     let btnNext = document.getElementById("btnNext")
     let btnPrevious = document.getElementById("btnPrevious")
     let btnSubmit = document.getElementById("btnSubmit")
-
+    
     /* items visible */
     function viewDonateStep(count) {
+        let step1 = document.getElementById("step1")
+        let step2 = document.getElementById("step2")
+        let step3 = document.getElementById("step3")
+
         if (count == 0) {
             donateStep1.style.display = "block"
             donateStep2.style.display = "none"
@@ -2499,6 +2446,10 @@
             btnNext.style.display = "block"
             btnPrevious.style.display = "none"
             btnSubmit.style.display = "none"
+            
+            step1.className = step1.className.replace(/(?:^|\s)far(?!\S)/, "fas")
+            step2.className = step2.className.replace(/(?:^|\s)fas(?!\S)/, "far")
+            step3.className = step3.className.replace(/(?:^|\s)fas(?!\S)/, "far")
         }
         else if (count == 1) {
             donateStep1.style.display = "none"
@@ -2507,6 +2458,10 @@
             btnNext.style.display = "block"
             btnPrevious.style.display = "block"
             btnSubmit.style.display = "none"
+            
+            step1.className = step1.className.replace(/(?:^|\s)fas(?!\S)/, "far")
+            step2.className = step2.className.replace(/(?:^|\s)far(?!\S)/, "fas")
+            step3.className = step3.className.replace(/(?:^|\s)fas(?!\S)/, "far")
         }
         else if (count == 2) {
             donateStep1.style.display = "none"
@@ -2515,6 +2470,10 @@
             btnNext.style.display = "none"
             btnPrevious.style.display = "block"
             btnSubmit.style.display = "block"
+            
+            step1.className = step1.className.replace(/(?:^|\s)fas(?!\S)/, "far")
+            step2.className = step2.className.replace(/(?:^|\s)fas(?!\S)/, "far")
+            step3.className = step3.className.replace(/(?:^|\s)far(?!\S)/, "fas")
         }
     }
 
@@ -2523,41 +2482,41 @@
         modalViewCover.src = modalDonateCover.value
     }
 
-    /* set new notification */
-    function injectNotification(inputCategory, inputTags, bookId, inputLibrary) {
+    /* set new notification */                                  // ??????????????????????????????????????
+    function injectNotification(category, tags, book, library) {
 
-        /* add new book notification to user wishlists by categories */
-        for (let j = 0; j < inputCategory.length; j++) {
+        // add new book notification to user wishlists by categories
+        for (let j = 0; j < category.length; j++) {
             for (let i = 0; i < wishlists.length; i++) {
-                let tempCategory = parseInt(inputCategory)
+                let tempCategory = parseInt(category)
                 let tempArray = wishlists[i].categoryList
 
                 if (tempArray.includes(tempCategory)) {
-                    wishlists[i].notificationsCategories.push(bookId)
+                    wishlists[i].notificationsCategories.push(book)
                 }
             }
         }
 
-        /* add new book notification to user wishlists by tags */
-        for (let j = 0; j < inputTags.length; j++) {
+        // add new book notification to user wishlists by tags
+        for (let j = 0; j < tags.length; j++) {
             for (let i = 0; i < wishlists.length; i++) {                
-                let tempTags = parseInt(inputTags)
+                let tempTags = parseInt(tags)
                 let tempArray = wishlists[i].tagList
                 
                 if (tempArray.includes(tempTags)) {
-                    wishlists[i].notificationsTags.push(bookId)
+                    wishlists[i].notificationsTags.push(book)
                 }
             }
         }
 
-        /* add new book notification to user wishlists by library */
-        for (let j = 0; j < inputLibrary.length; j++) {
+        // add new book notification to user wishlists by library
+        for (let j = 0; j < library.length; j++) {
             for (let i = 0; i < wishlists.length; i++) {                
-                let tempLibrary = parseInt(inputLibrary)
+                let tempLibrary = parseInt(library)
                 let tempArray = wishlists[i].libraryList
                 
                 if (tempArray.includes(tempLibrary)) {
-                    wishlists[i].notificationsLibraries.push(bookId)
+                    wishlists[i].notificationsLibraries.push(book)
                 }
             }
         }
@@ -2592,8 +2551,10 @@
         }
 
         if (strError == "") {
+            arrayAuthors = (modalDonateAuthors.value).split(",")
+
             let newBook = new Book(modalDonateTitle.value, 
-                                    modalDonateAuthors.value,
+                                    arrayAuthors,
                                     modalDonatePublisher.value,
                                     modalDonateYear.value,
                                     modalDonatePages.value,
@@ -2608,7 +2569,7 @@
                                     Library.getLibraryIdByLocation(modalDonateCity.value, modalDonateParish.value))
             
             saveBook(newBook)
-            injectNotification(modalDonateCategories.value, arrayTags, newBook.id, modalDonateParish.value)
+            //injectNotification(modalDonateCategories.value, arrayTags, newBook.id, modalDonateParish.value)
 
             swal({
                 type: 'success',
@@ -2641,15 +2602,13 @@
     let bookPage = document.getElementsByClassName("book-page")
 
     /* select category to title */
-    function addCategoryCurrentTitle(id) {
+    function addSelectCategoryToTitle(id) {
         let categoryTitle = document.getElementById("categoryTitle")
         let tempCategory = Category.getCategoryById(id)  // gets category name
 
         categoryTitle.innerHTML += `<h1 id='${id}'>${tempCategory.toUpperCase()}</h1>`
     }
 
-
-    console.log(bookPage)
     /* select book */
     function getSelectBook() {
         for (let i = 0; i < bookPage.length; i++) {
@@ -2678,8 +2637,7 @@
                     strHtml += "<span><i class='fa fa-star'></i></span>"
                 }
             }
-        }
-        
+        }        
         return strHtml
     }
 

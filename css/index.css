@@ -32,7 +32,7 @@
     background-color: #8fc8dd !important;
 }
 
-.fa {
+.fa, .fa-circle {
     color: #FFD892;
 }
 

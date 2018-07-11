@@ -159,60 +159,71 @@
                     <i class="fa fa-filter ml-4 mr-2 mb-6"></i>Filtar
                 </a>
             </div>-->
-        
+
+            <!-- FILTER -->
             <form id="frmFilter" class="inner">
-                <!-- FILTER BY TAG -->
-                <div class="form-group">
+                <!-- BY TAG -->
+                <div class="input-group mb-3" style="padding-left: 0px;">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="filterTag">Tags</label>
+                    </div>
                     <select id="filterTag" class="form-control">
                     </select>
                 </div>
 
-                <!-- FILTER BY AUTHOR -->
-                <div class="form-group">
+                <!-- BY AUTHOR -->
+                <div class="input-group mb-3" style="padding-left: 0px;">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="filterTag">Autores</label>
+                    </div>
                     <select id="filterAuthor" class="form-control">
                     </select>
                 </div>
 
-                <!-- FILTER BY LIBRARY -->
-                <div class="row">
-                    <div class="form-group inline col-md-6">
-                        <select id="filterLibraryCity" class="form-control">
-                        </select>
+                <!-- BY LIBRARY -->
+                <div class="input-group mb-3" style="padding-left: 0px;">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="filterTag">Cidade</label>
                     </div>
-                    <div class="form-group col-md-6">
-                        <select id="filterLibraryParish" class="form-control">
-                            <option value="">Freguesia</option>
-                        </select>
+                    <select id="filterLibraryCity" class="form-control">
+                    </select>
+
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="filterTag">Freguesia</label>
                     </div>
+                    <select id="filterLibraryParish" class="form-control">
+                        <option value="" selected hidden>...</option>
+                    </select>
+                </div>
+                
+                <!-- BUTTON -->         
+                <input type="submit" class="btn btn-primary" value="Filtrar"/>
+                <input type="reset" class="btn btn-primary" value="Limpar"/>
+            </form>
+
+            <div class="d-flex flex-row-reverse mb-3">
+
+                <!-- VIEW MODE -->
+                <div class="inline ml-3 mb-3">
+                    <button id="btnList" class="btn"><i class="fa fa-bars"></i></button> 
+                    <button id="btnGrid" class="btn"><i class="fa fa-th-large"></i></button>
                 </div>
 
                 <!-- SORT -->
-                <div class="form-group">
+                <div class="inline mb-3">
                     <select id="selectSort" class="form-control">
-                        <option value="">Ordenar por</option>
-                        <option value="Título">Título</option>
-                        <option value="Pontuação">Pontuação</option>
-                        <option value="Data de doação">Data de doação</option>
+                        <option value="sortNew">Novidades</option>
+                        <option value="sortAZ">Título A-Z</option>
+                        <option value="sortZA">Título Z-A</option>
+                        <option value="sortHighestRate">Maior pontuação</option>
+                        <option value="sortLowestRate">Menor pontuação</option>
+                        <option value="sortOld">Mais antigos</option>
                     </select>
                 </div>
-
-                <!-- INVERT SORT -->
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="chbInvertSort">
-                    <label class="form-check-label" for="exampleCheck1">Ordem decrescente</label>
-                </div>
-                
-                <!-- BUTTON -->
-                <button type="button" id="btnFilter" class="btn btn-primary">Filtrar</button>
-            </form>
-            
-            <div id="btnContainer" class="col align-self-end">
-                <button id="btnList" class="btn"><i class="fa fa-bars"></i> List</button> 
-                <button id="btnGrid" class="btn"><i class="fa fa-th-large"></i> Grid</button>
             </div>
 
             <!-- BOOKS -->
-            <div id="catalogBooks" class="inner">      
+            <div id="booksCatalog" class="inner">      
             </div>
         </div>
 

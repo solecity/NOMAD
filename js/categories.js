@@ -22,18 +22,17 @@ function addLoadEvent(func) {
 // CATALOG
 
     /* favourites */
-    function addCategoriesFavourites() {
+    function addCategoriesFavourites(favouritesLength) {
         let strHtml = "<h1>Favoritas</h1>"
         let tempIds = []
         let tempCategories = []
 
-        // searchs the wishlist array for the current user category list
-        for (let i = 0; i < wishlists.length; i++) {
-            if (wishlists[i].userId == userCurrent) {
-                tempIds = wishlists[i].categoryList
+        // searchs the user array for the current user favourite categories
+        for (let i = 0; i < users.length; i++) {
+            if (users[i].id == userCurrent) {
+                tempIds = users[i].favourites
             }
         }
-
         
         if (tempIds.length != 0) {
             for (let i = 0; i < tempIds.length; i++) {
@@ -53,6 +52,7 @@ function addLoadEvent(func) {
                 return (txtA < txtB) ? -1 : (txtA > txtB) ? 1 : 0
             })
 
+            // fils categories catalog with favourites
             for (let i = 0; i < sortFavourites.length; i++) {
                 if (i == 0) {
                     strHtml += "<div class='row new-row text-center' style='margin: auto;'>"
@@ -75,7 +75,7 @@ function addLoadEvent(func) {
                         strHtml += "</div>"
                     }
                 }
-                categoriesFavourites.innerHTML = strHtml                
+                categoriesFavourites.innerHTML = strHtml
         
                 // removes selected category from favourites
                 let favouriteRemove = document.getElementsByClassName("remove")
@@ -83,16 +83,18 @@ function addLoadEvent(func) {
                 for (let i = 0; i < favouriteRemove.length; i++) {
                     favouriteRemove[i].addEventListener("click", function() {
                         let categoryId = parseInt(favouriteRemove[i].getAttribute("id"))
-                        let newCategories = Wishlist.removePreferencesByCategoryId(categoryId)
+                        let newCategories = User.removeFavouriteCategoryById(categoryId)
+                        favouritesLength = User.getFavouritesLengthById(userCurrent)
 
-                        for (let i = 0; i < wishlists.length; i++) {
-                            if (wishlists[i].userId == userCurrent) {
-                                Wishlist.editWishlistCategoriesByUserId(userCurrent, newCategories)
-                                localStorage.setItem("wishlists", JSON.stringify(wishlists))
-                            }
+                        User.editFavouritesById(newCategories)
+                        localStorage.setItem("users", JSON.stringify(users))
+                        //addCategoriesFavourites(favouritesLength)
+                        location.reload()
+
+                        if (favouritesLength < 5) {
+                            $(".add").attr("href", "#")
+                            addAllCategories(favouritesLength)
                         }
-                        
-                        addCategoriesFavourites()
                     })
                 }
             }
@@ -113,15 +115,10 @@ function addLoadEvent(func) {
                 categoriesFavourites.innerHTML = strHtml
             }
         }
-
-        // se clicar no botao guarda num array na local storage
-        // associar array de favoritas ao user id
-        // ao chegar a 5 pára
-        // se na cruz remove a categoria dos favoritos
     }
 
     /* all */
-    function addAllCategories() {
+    function addAllCategories(favouritesLength) {
         let strHtml = "<h1>Todas</h1>"
         let sortCategories = [...categories].sort()
 
@@ -139,7 +136,7 @@ function addLoadEvent(func) {
             }
 
             strHtml += `<div class='new-category rounded col-md-2'>
-                            <a id='${sortCategories[i].id}' href='#' class='category-favourite'><i class='fas fa-heart'></i></a><br>
+                            <a id='${sortCategories[i].id}' href='#' class='add category-favourite'><i class='fas fa-heart'></i></a><br>
                             <a id='${sortCategories[i].id}' href='bookList.html' class='category-filter'>
                                 <p>${convertFirstToUpperCase(sortCategories[i].name)}</p>
                             </a>
@@ -150,7 +147,28 @@ function addLoadEvent(func) {
             }
 
             categoriesAll.innerHTML = strHtml
-        }
+        
+            // adds selected category to favourites
+            let favouriteAdd = document.getElementsByClassName("add")
+
+            for (let i = 0; i < favouriteAdd.length; i++) {
+                favouriteAdd[i].addEventListener("click", function() {
+                    let categoryId = parseInt(favouriteAdd[i].getAttribute("id"))
+                    favouritesLength = User.getFavouritesLengthById(userCurrent)
+
+                    if (favouritesLength < 5) {
+                        User.addFavouriteCategoryById(categoryId)
+                        localStorage.setItem("users", JSON.stringify(users))
+                        //addCategoriesFavourites(favouritesLength)
+                        location.reload()
+                    }
+
+                    if (favouritesLength > 4) {
+                        $(".add").removeAttr("href")
+                    }
+                })
+            }
+        }        
     }
 //
 
@@ -205,6 +223,7 @@ addLoadEvent(function() {
         let categoryFilter = document.getElementsByClassName("category-filter")
         let categoriesFavourites = document.getElementById("categoriesFavourites")
         let categoriesAll = document.getElementById("categoriesAll")
+        let favouritesLength = User.getFavouritesLengthById(userCurrent)
     //
 
 
@@ -225,8 +244,12 @@ addLoadEvent(function() {
         }
 
         /* categories */
-        addCategoriesFavourites()
-        addAllCategories()
+        addCategoriesFavourites(favouritesLength)
+        addAllCategories(favouritesLength)
+
+        if (favouritesLength > 4) {
+            $(".add").removeAttr("href")
+        }
     //
 
     

@@ -37,7 +37,7 @@
 
     /* user */
     class User {
-        constructor(userName, userEmail, userPassword, userPhoto, userPermissions, userStatus, fineValue) {
+        constructor(userName, userEmail, userPassword, userPhoto, userPermissions, userStatus, fineValue, favourites) {
             this._id = User.getLastId() + 1
             this.userName = userName
             this.userEmail = userEmail
@@ -45,7 +45,8 @@
             this.userPhoto = userPhoto
             this.userPermissions = userPermissions
             this.userStatus = userStatus
-            this.fineValue = fineValue
+            this.fineValue = fineValue            
+            this.favourites = favourites
             this._lastLogin = ""
         }
         
@@ -108,6 +109,14 @@
         }
         set fineValue(newFineValue) {
             this._fineValue = newFineValue
+        }
+
+        // FAVOURITE CATEGORIES
+        get favourites() {
+            return this._favourites
+        }
+        set favourites(newFavourites) {
+            this._favourites = newFavourites
         }
 
         // LAST LOG IN
@@ -222,7 +231,16 @@
             }
         }
 
-        // VIEW USER ICON
+        // GET FAVOURITES LENGTH ID BY EMAIL
+        static getFavouritesLengthById(id) {
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].id == id) {
+                    return users[i].favourites.length
+                }
+            }
+        }
+
+        // VIEW USER ICON BY ID
         static viewUserPhotoById(id) {
             for (let i = 0; i < users.length; i++) {
                 if(users[i].id == id){
@@ -231,7 +249,7 @@
             }
         }
 
-        // VIEW USER FROM ID
+        // VIEW USER BY ID
         static viewUserById(id) {
             for (let i = 0; i < users.length; i++) {
                 if (users[i].id == id) {
@@ -245,7 +263,7 @@
             }
         }
 
-        // EDIT USER PERMISSIONS FROM ID
+        // EDIT USER PERMISSIONS BY ID
         static editUserPermissionsById(id) {
             for (let i = 0; i < users.length; i++) {
                 if (users[i].id == id) {
@@ -254,7 +272,7 @@
             }
         }
 
-        // EDIT USER PHOTO BY USER ID
+        // EDIT USER PHOTO BY ID
         static editUserPhotoById(id, photo) {
             for (let i = 0; i < users.length; i++) {
                 if(users[i].id == id) {
@@ -263,7 +281,7 @@
             }
         }
 
-        // EDIT USER PHOTO BY USER ID
+        // EDIT USER PHOTO BY ID
         static editUserPasswordById(id, password) {
             for (let i = 0; i < users.length; i++) {
                 if (users[i].id == id) {
@@ -272,7 +290,43 @@
             }
         }
 
-        // REMOVE USER FROM ID
+        // EDIT FAVOURITES BY ID
+        static editFavouritesById(categories) {
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].id == userCurrent) {
+                    users[i].favourites = categories
+                }
+            }
+        }
+
+        // ADD FAVOURITE CATEGORY BY ID
+        static addFavouriteCategoryById(id) {
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].id == userCurrent && users[i].favourites.includes(id) == false) {
+                    users[i].favourites.push(id)
+                }
+            }
+        }
+
+        // REMOVE FAVOURITE CATEGORY BY ID
+        static removeFavouriteCategoryById(id) {
+            let tempArray = []
+            
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].id == userCurrent) {
+                    tempArray = users[i].favourites
+                }
+            }
+
+            for (let i = tempArray.length; i >= 0 ; i--) {
+                if (tempArray[i] == id) {
+                    tempArray.splice(i, 1)
+                }
+            }
+            return tempArray
+        }
+
+        // REMOVE USER BY ID
         static removeUserById(id) {
             for (let i = 0; i < users.length; i++) {
                 if (users[i].id == id) {
@@ -1447,23 +1501,23 @@
     let user07 = ""
     let user08 = ""
     
-                        // userName, userEmail, userPassword, userPhoto, userPermissions, status, fineValue, last login
+                        // userName, userEmail, userPassword, userPhoto, userPermissions, status, fineValue, favourites, last login
     if (!localStorage.users) {
-        user01 = new User("Administrador", "admin@nomad.pt", 12345, "https://image.flaticon.com/icons/svg/270/270023.svg", 0, 1, 0, "2018-06-02")
+        user01 = new User("Administrador", "admin@nomad.pt", 12345, "https://image.flaticon.com/icons/svg/270/270023.svg", 0, 1, 0, [], "2018-06-02")
         users.push(user01)
-        user02 = new User("Operador", "operador@nomad.pt", 12345, "https://image.flaticon.com/icons/svg/183/183334.svg", 1, 1, 0, "2018-06-02")
+        user02 = new User("Operador", "operador@nomad.pt", 12345, "https://image.flaticon.com/icons/svg/183/183334.svg", 1, 1, 0, [], "2018-06-02")
         users.push(user02)
-        user03 = new User("Samuel Nunes","samNune@hotmail.com", 12345, "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&h=350", 2, 1, 0, "2018-06-02")
+        user03 = new User("Samuel Nunes","samNune@hotmail.com", 12345, "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&h=350", 2, 1, 0, [2, 3], "2018-06-02")
         users.push(user03)
-        user04 = new User("Fernando Mendes","oGordo@sapo.pt", 12345, "https://cdn.vidas.pt/images/2011-04/img_650x412$2011_04_17_18_09_00_49374.jpg", 2, 1, 6, "2018-06-02")
+        user04 = new User("Fernando Mendes","oGordo@sapo.pt", 12345, "https://cdn.vidas.pt/images/2011-04/img_650x412$2011_04_17_18_09_00_49374.jpg", 2, 1, 6, [], "2018-06-02")
         users.push(user04)
-        user05 = new User("Raquel Reis","raquelreis@nomad.pt", 12345, "https://pbs.twimg.com/profile_images/980917732077129729/jfdmbd45_400x400.jpg", 1, 1, 0, "2018-06-02")
+        user05 = new User("Raquel Reis","raquelreis@nomad.pt", 12345, "https://pbs.twimg.com/profile_images/980917732077129729/jfdmbd45_400x400.jpg", 1, 1, 0, [], "2018-06-02")
         users.push(user05)
-        user06 = new User("João Martins", "joaomartins@nomad.com", 12345, "https://3p1h6530guu23dls791jsg13-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/nice-guys.jpeg", 1, 1, 0, "2018-06-02")
+        user06 = new User("João Martins", "joaomartins@nomad.com", 12345, "https://3p1h6530guu23dls791jsg13-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/nice-guys.jpeg", 1, 1, 0, [], "2018-06-02")
         users.push(user06)
-        user07 = new User("Maria Gomes", "mariagomes@nomad.pt", 12345, "http://cdn.agensite.online/arquivos/83/conteudo/posts/169293.jpg", 1, 1, 0, "2018-06-02")
+        user07 = new User("Maria Gomes", "mariagomes@nomad.pt", 12345, "http://cdn.agensite.online/arquivos/83/conteudo/posts/169293.jpg", 1, 1, 0, [], "2018-06-02")
         users.push(user07)
-        user08 = new User("Oscar Fernandes", "oscarfernandes@nomad.pt", 12345, "http://www.homemalpha.com.br/wp-content/uploads/2011/08/Homem-confiante.jpg", 1, 1, 0, "2018-06-02")
+        user08 = new User("Oscar Fernandes", "oscarfernandes@nomad.pt", 12345, "http://www.homemalpha.com.br/wp-content/uploads/2011/08/Homem-confiante.jpg", 1, 1, 0, [], "2018-06-02")
         users.push(user08)
     }
 
@@ -1776,7 +1830,8 @@
                                         tempArray[i]._userPhoto,
                                         tempArray[i]._userPermissions,
                                         tempArray[i]._userStatus,
-                                        tempArray[i]._fineValue)
+                                        tempArray[i]._fineValue,
+                                        tempArray[i]._favourites)
                 users.push(newUser)
             }
         }

@@ -296,6 +296,12 @@
                     <div class="modal-body">                            
                         <form id="frmDonate" name="frmDonate">
                             <div class="row col-md-12" style="margin: auto;">
+                                <div id="showStep" style="margin: auto;">
+                                    <i id="step1" class='far fa-circle mr-4'></i>
+                                    <i id="step2" class='far fa-circle mr-4'></i>
+                                    <i id="step3" class='far fa-circle'></i>
+                                </div>
+
                                 <div id="donateStep1">
                                     <!-- TITLE -->
                                     <div class="form-group">
@@ -354,16 +360,7 @@
                                             <select id="modalDonateCategories" class="form-control inline">
                                             </select>
                                         </div>
-
-                                        <!-- TAG -->
-                                        <div class="form-group col-md-6">
-                                            <label for="modalDonateTags">Tag</label>
-                                            <select id="modalDonateTags" class="form-control inline" size="4" multiple>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row">
+                                        
                                         <!-- CONDITION -->
                                         <div class="form-group col-md-6">
                                             <label for="modalDonateCondition">Estado</label>
@@ -373,8 +370,16 @@
                                                 <option value="Fraco">Fraco</option>
                                             </select>
                                         </div>
+
+                                        <!-- TAGS -->
+                                        <div class="form-group col-md-12">
+                                            <label for="modalDonateTags">Tags</label>
+                                            <select id="modalDonateTags" class="form-control inline" size="3" multiple>
+                                            </select>
+                                        </div>
                                     </div>
                                     <hr>
+
                                     <div class="row last-row">
                                         <!-- DONOR NAME -->
                                         <div class="form-group col-md-6">

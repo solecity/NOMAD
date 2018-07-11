@@ -23,7 +23,7 @@
 // VALIDATION
 
     /* log in */
-    function checkLogInValid(email, pass) {    
+    function checkLoginValid(email, pass) {    
         for (let i = 0; i < users.length; i++) {        
             if (users[i].userEmail == email && users[i].userPassword == pass) {
                 userCurrent = users[i].id
@@ -97,7 +97,7 @@
 // INDEX
 
     /* popular books */
-    function addPopularBooksToIndex() {
+    function addPopularBooks() {
 
         // prevents original array from new sorting
         let sortBooksRating = [...books].sort()
@@ -153,7 +153,7 @@
     }
 
     /* recent books */
-    function addRecentBooksToIndex() {
+    function addRecentBooks() {
         
         // prevents original array from new sorting
         let sortBooksRecent = [...books].sort()
@@ -243,7 +243,7 @@ addLoadEvent(function() {
         loadConfig()
         console.log(config)
 
-        /* populate */        
+        /* populate local storage */        
         if (window.localStorage.length != 0) {
             populateStorage()
         }
@@ -294,8 +294,8 @@ addLoadEvent(function() {
         }
 
         /* index */
-        addPopularBooksToIndex()
-        addRecentBooksToIndex()
+        addPopularBooks()
+        addRecentBooks()
         getSelectBook()
     //
 
@@ -339,7 +339,7 @@ addLoadEvent(function() {
             
         /* log in */
         frmLogin.addEventListener("submit", function(event) {
-            checkLogInValid(modalLoginEmail.value, modalLoginPassword.value)
+            checkLoginValid(modalLoginEmail.value, modalLoginPassword.value)
             event.preventDefault()
         })
             
@@ -357,19 +357,17 @@ addLoadEvent(function() {
 
             if (checkNewUserValid(newUser) == true) {
                 frmRegister.reset()
-            }            
+            }
+
             event.preventDefault()
         })
 
         /* donate book */
-        frmDonate.addEventListener("submit", function(event){
+        frmDonate.addEventListener("submit", function(event) {
             checkNewBookValid()
-
-            if (checkNewBookValid() == true) {
-                frmDonate.reset()
-            }
-            addRecentBooksToIndex()
-
+            frmDonate.reset()
+            
+            addRecentBooks()
             event.preventDefault()
         })
 
@@ -419,5 +417,4 @@ addLoadEvent(function() {
             event.preventDefault()
         })
     //
-
 })

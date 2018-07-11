@@ -835,8 +835,10 @@
         static rateBookById(id) {
             for (let i = 0; i < books.length; i++) {
                 if (books[i].id == id) {
-                    console.log(books[i].id)
+                    console.log("input:   " + parseInt(modalRatingInput.value))
                     books[i].bookRatings.push(parseInt(modalRatingInput.value))
+                    console.log("books[i].bookRatings")
+                    console.log(books[i].bookRatings)
                 }                    
             }
         }

@@ -162,65 +162,76 @@
 
             <!-- FILTER -->
             <form id="frmFilter" class="inner">
-                <!-- BY TAG -->
-                <div class="input-group mb-3" style="padding-left: 0px;">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="filterTag">Tags</label>
+                <div class="row">
+                    <!-- BY TAG -->
+                    <div class="input-group col-md-6 mb-3" style="padding-left: 0px;">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="filterTag">Tags</label>
+                        </div>
+                        <select id="filterTag" class="form-control">
+                        </select>
                     </div>
-                    <select id="filterTag" class="form-control">
-                    </select>
+
+                    <!-- BY AUTHOR -->
+                    <div class="input-group col-md-6 mb-3" style="padding-left: 0px;">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="filterTag">Autores</label>
+                        </div>
+                        <select id="filterAuthor" class="form-control">
+                        </select>
+                    </div>
                 </div>
 
-                <!-- BY AUTHOR -->
-                <div class="input-group mb-3" style="padding-left: 0px;">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="filterTag">Autores</label>
+                <div class="row">
+                    <!-- BY LIBRARY -->
+                    <div class="input-group col-md-6" style="padding-left: 0px;">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="filterTag">Cidade</label>
+                        </div>
+                        <select id="filterLibraryCity" class="form-control">
+                        </select>
                     </div>
-                    <select id="filterAuthor" class="form-control">
-                    </select>
-                </div>
 
-                <!-- BY LIBRARY -->
-                <div class="input-group mb-3" style="padding-left: 0px;">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="filterTag">Cidade</label>
+                    <div class="input-group col-md-6" style="padding-left: 0px;">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="filterTag">Freguesia</label>
+                        </div>
+                        <select id="filterLibraryParish" class="form-control">
+                            <option value="" selected hidden>...</option>
+                        </select>
                     </div>
-                    <select id="filterLibraryCity" class="form-control">
-                    </select>
-
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="filterTag">Freguesia</label>
-                    </div>
-                    <select id="filterLibraryParish" class="form-control">
-                        <option value="" selected hidden>...</option>
-                    </select>
                 </div>
-                
-                <!-- BUTTON -->         
-                <input type="submit" class="btn btn-primary" value="Filtrar"/>
-                <input type="reset" class="btn btn-primary" value="Limpar"/>
+                    
+                <div class="row mb-4">
+                    <div class="d-flex align-items-start mr-auto">
+                        <!-- BUTTONS -->
+                        <div class="inline" style="padding-left: 0px;">
+                            <input type="submit" class="btn btn-primary" value="Filtrar"/>
+                            <input type="reset" class="btn btn-primary" value="Limpar"/>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-end" style="padding-right: 20px;">
+                        <!-- SORT -->
+                        <div class="inline mr-3">
+                            <select id="selectSort" class="form-control">
+                                <option value="sortNew">Novidades</option>
+                                <option value="sortAZ">Título A-Z</option>
+                                <option value="sortZA">Título Z-A</option>
+                                <option value="sortHighestRate">Maior pontuação</option>
+                                <option value="sortLowestRate">Menor pontuação</option>
+                                <option value="sortOld">Mais antigos</option>
+                            </select>
+                        </div>
+
+                        <!-- VIEW MODE -->
+                        <div class="inline">
+                            <button id="btnList" class="btn"><i class="fa fa-bars"></i></button> 
+                            <button id="btnGrid" class="btn"><i class="fa fa-th-large"></i></button>
+                        </div>
+                    </div>
+                </div>
             </form>
-
-            <div class="d-flex flex-row-reverse mb-3">
-
-                <!-- VIEW MODE -->
-                <div class="inline ml-3 mb-3">
-                    <button id="btnList" class="btn"><i class="fa fa-bars"></i></button> 
-                    <button id="btnGrid" class="btn"><i class="fa fa-th-large"></i></button>
-                </div>
-
-                <!-- SORT -->
-                <div class="inline mb-3">
-                    <select id="selectSort" class="form-control">
-                        <option value="sortNew">Novidades</option>
-                        <option value="sortAZ">Título A-Z</option>
-                        <option value="sortZA">Título Z-A</option>
-                        <option value="sortHighestRate">Maior pontuação</option>
-                        <option value="sortLowestRate">Menor pontuação</option>
-                        <option value="sortOld">Mais antigos</option>
-                    </select>
-                </div>
-            </div>
 
             <!-- BOOKS -->
             <div id="booksCatalog" class="inner">      

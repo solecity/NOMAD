@@ -203,8 +203,8 @@ function addLoadEvent(func) {
 
     /* sort catalog */
     function sortCatalog(sort, viewMode, catalog) {
-        console.log(sort)
-        console.log(catalog.length)
+        console.log("sort   " + sort)
+        console.log("catalog.length   " + catalog.length)
 
         switch (sort) {
             case "sortNew":
@@ -240,8 +240,6 @@ function addLoadEvent(func) {
     /* fill catalog with books */
     function addBooksToCatalog(viewMode, catalog) {
         let strHtml = ""
-
-        console.log(catalog.length)
 
         for (let i = 0; i < catalog.length; i++) {            
             if (viewMode == "grid") {
@@ -379,6 +377,7 @@ addLoadEvent(function() {
                 catalog.push(books[i])
             }
         }
+        sessionStorage.setItem("catalog", catalog)
     //
 
 
@@ -473,28 +472,34 @@ addLoadEvent(function() {
         
         /* filter */
         frmFilter.addEventListener("submit", function(event) {
-            if (filterTag.value != "") {
+           /* if (filterTag.value != "") {
                 filterBooks = Book.getBooksByTag(filterTag.value, categoryCurrent)
-            }
+            }*/
 
+            if (filterTag.value != "" || filterAuthor.value != "" || filterLibraryParish.value != "") {
+                filterBooks = Book.getBooksByFilter(filterTag.value, filterAuthor.value, filterLibraryParish.value, categoryCurrent)
+
+                sessionStorage.setItem("catalog", filterBooks)
+                selectSort.selectedIndex = 0
+                sortCatalog("sortNew", viewMode, filterBooks)
+            }/*
+            else if (filterTag.value == "" && filterAuthor.value == "" && filterLibraryParish.value == "") {
+                sessionStorage.setItem("catalog", JSON.stringify(catalog))
+            }*/
+
+/*
             if (filterAuthor.value != "") {
                 filterBooks.push(Book.getBooksByAuthor(filterAuthor.value, categoryCurrent))
-            }
+            }*/
 
             /*
             if (filterLibraryCity.value != "") {
                 filterBooks.push(Book.getBooksByCity(Library.getLibraryIdByCity(filterLibraryCity.value), categoryCurrent))
             }*/
-
+/*
             if (filterLibraryParish.value != "") {
                 filterBooks = Book.getBooksByLibrary(Library.getLibraryIdByLocation(filterLibraryCity.value, filterLibraryParish.value), categoryCurrent)
-            }
-
-            console.log(filterBooks)
-            
-            sessionStorage.setItem("filterBooks", filterBooks)
-            addBooksToCatalog(viewMode, filterBooks)
-
+            }*/
             event.preventDefault()
         })
         
@@ -504,6 +509,7 @@ addLoadEvent(function() {
             filterAuthor.selectedIndex = 0
             filterLibraryCity.selectedIndex = 0
             filterLibraryParish.selectedIndex = 0
+            selectSort.selectedIndex = 0
 
             sortCatalog("sortNew", viewMode, catalog)
 
@@ -512,7 +518,7 @@ addLoadEvent(function() {
 
         /* sort book catalog */
         selectSort.addEventListener("change", function(event) {
-            sortCatalog(selectSort.value, viewMode, catalog)
+            sortCatalog(selectSort.value, viewMode, sessionStorage.getItem("catalog"))
             event.preventDefault()
         })
 

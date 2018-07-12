@@ -677,12 +677,26 @@
 
             for (let i = 0; i < books.length; i++) {
                 if (books[i].bookCategory == id) {
-                    tempArray.push(books[i].libraryId)
+                    tempArray.push(books[i].libraryId)        
                 }                  
             }
-
             let newArray = [...new Set(tempArray)]
             return newArray
+        }
+
+        // GET BOOKS BY FILTER
+        static getBooksByFilter(tag, author, library, category) {
+            let tempArray = []
+            console.log("tag   " + tag)
+            console.log("author   " + author)
+            console.log("library   " + library)
+
+            for (let i = 0; i < books.length; i++) {
+                if ((books[i].bookTags.includes(parseInt(tag)) || books[i].bookAuthors.includes(author) || books[i].libraryId == library) && books[i].bookCategory == category) {
+                    tempArray.push(books[i])
+                }
+            }
+            return tempArray
         }
 
         // GET BOOKS BY TAG
@@ -2017,7 +2031,6 @@
                                         tempArray[i]._donationDate,
                                         tempArray[i]._bookCover,
                                         tempArray[i]._bookDescription,
-                                        tempArray[i]._bookRatings,
                                         tempArray[i]._libraryId)
                 books.push(newBook)
             }

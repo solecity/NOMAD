@@ -816,7 +816,8 @@
 
                     viewBookCity.value = Library.getLibraryCityById(books[i].libraryId)
                     viewBookCity.selected = viewBookCity.value
-                    viewBookParish.selectedIndex = Library.getLibraryParishById(books[i].libraryId)
+                    viewBookParish.value = Library.getLibraryParishById(books[i].libraryId)
+                    viewBookParish.selected = viewBookParish.value
                     viewBookCategory.selectedIndex = books[i].bookCategory
                     
 

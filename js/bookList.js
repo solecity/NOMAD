@@ -203,6 +203,7 @@ function addLoadEvent(func) {
 
     /* sort catalog */
     function sortCatalog(sort, viewMode, catalog) {
+        console.log(catalog)
         console.log("sort   " + sort)
         console.log("catalog.length   " + catalog.length)
 
@@ -377,7 +378,10 @@ addLoadEvent(function() {
                 catalog.push(books[i])
             }
         }
-        sessionStorage.setItem("catalog", catalog)
+        sessionStorage.setItem("catalog", JSON.stringify(catalog))
+        
+        btnGrid.style.backgroundColor = "rgba(255, 217, 146, 0.603)"
+        btnList.style.backgroundColor = "#ffd892"
     //
 
 
@@ -479,7 +483,7 @@ addLoadEvent(function() {
             if (filterTag.value != "" || filterAuthor.value != "" || filterLibraryParish.value != "") {
                 filterBooks = Book.getBooksByFilter(filterTag.value, filterAuthor.value, filterLibraryParish.value, categoryCurrent)
 
-                sessionStorage.setItem("catalog", filterBooks)
+                sessionStorage.setItem("catalog", JSON.stringify(filterBooks))
                 selectSort.selectedIndex = 0
                 sortCatalog("sortNew", viewMode, filterBooks)
             }/*
@@ -511,6 +515,7 @@ addLoadEvent(function() {
             filterLibraryParish.selectedIndex = 0
             selectSort.selectedIndex = 0
 
+            sessionStorage.setItem("catalog", JSON.stringify(catalog))
             sortCatalog("sortNew", viewMode, catalog)
 
             event.preventDefault()
@@ -518,7 +523,7 @@ addLoadEvent(function() {
 
         /* sort book catalog */
         selectSort.addEventListener("change", function(event) {
-            sortCatalog(selectSort.value, viewMode, sessionStorage.getItem("catalog"))
+            sortCatalog(selectSort.value, viewMode, catalog)
             event.preventDefault()
         })
 

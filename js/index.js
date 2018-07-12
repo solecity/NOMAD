@@ -100,12 +100,12 @@
     function addPopularBooks() {
 
         // prevents original array from new sorting
-        let sortBooksRating = [...books].sort()
+        let sortBooksRating = [...ratings].sort()
         let strHtml = "<h1 class='bottom'>DESTAQUES</h1>"
         
         // sort book by rating
         sortBooksRating.sort(function(a, b) {
-            return Book.calculateRating(b.bookRatings) - Book.calculateRating(a.bookRatings)
+            return Rating.calculateRating(b.bookRatings) - Rating.calculateRating(a.bookRatings)
         })
 
         // creates html for the popular books section
@@ -118,10 +118,10 @@
                 if (i >= 0 & i <= 4) {
                     strHtml += `<div class='book col-md-2 text-center'>                                
                                     <h6 id="badgeNumbers">${i+1}</h6>
-                                    <img src='${sortBooksRating[i].bookCover}' class='img-fluid book-tippy' width='160'/>
-                                    <h5>${sortBooksRating[i].bookTitle}</h5>
-                                    <p>${sortBooksRating[i].bookAuthors}</p>
-                                    <div>${convertRatingToStars(Book.calculateRating(sortBooksRating[i].bookRatings))}</div>
+                                    <img src='${Book.getBookCoverById(sortBooksRating[i].bookId)}' class='img-fluid book-tippy' width='160'/>
+                                    <h5>${Book.getBookTitleById(sortBooksRating[i].bookId)}</h5>
+                                    <p>${Book.getBookAuthorsById(sortBooksRating[i].bookId)}</p>
+                                    <div>${convertRatingToStars(Rating.calculateRating(sortBooksRating[i].bookRatings))}</div>
                                 </div>`
                 }
             }
@@ -129,17 +129,17 @@
                 if (i >= 0 & i <= 4) {
                     strHtml += `<div class='book col-md-2 text-center'>
                                     <h6 id="badgeNumbers">${i+1}</h6>
-                                    <a id='${sortBooksRating[i].id}' href='html/bookSelect.html' class='book-page'>
-                                        <img src='${sortBooksRating[i].bookCover}' class='img-fluid' width='160'/>
+                                    <a id='${sortBooksRating[i].bookId}' href='html/bookSelect.html' class='book-page'>
+                                        <img src='${Book.getBookCoverById(sortBooksRating[i].bookId)}' class='img-fluid' width='160'/>
                                     </a>
-                                    <a id='${sortBooksRating[i].id}' href='html/bookSelect.html' class='book-page'>
-                                        <h5>${sortBooksRating[i].bookTitle}</h5>
+                                    <a id='${sortBooksRating[i].bookId}' href='html/bookSelect.html' class='book-page'>
+                                        <h5>${Book.getBookTitleById(sortBooksRating[i].bookId)}</h5>
                                     </a>
-                                    <a id='${sortBooksRating[i].id}' href='html/bookSelect.html' class='book-page'>
-                                        <p>${sortBooksRating[i].bookAuthors}</p>
+                                    <a id='${sortBooksRating[i].bookId}' href='html/bookSelect.html' class='book-page'>
+                                        <p>${Book.getBookAuthorsById(sortBooksRating[i].bookId)}</p>
                                     </a>
-                                    <a id='${sortBooksRating[i].id}' href='html/bookSelect.html' class='book-page'>
-                                        ${convertRatingToStars(Book.calculateRating(sortBooksRating[i].bookRatings))}
+                                    <a id='${sortBooksRating[i].bookId}' href='html/bookSelect.html' class='book-page'>
+                                        ${convertRatingToStars(Rating.calculateRating(sortBooksRating[i].bookRatings))}
                                     </a>
                                 </div>`
                 }
@@ -176,7 +176,7 @@
                                     <img src='${sortBooksRecent[i].bookCover}' class='img-fluid book-tippy' width='160'/>
                                     <h5>${sortBooksRecent[i].bookTitle}</h5>
                                     <p>${sortBooksRecent[i].bookAuthors}</p>
-                                    <div>${convertRatingToStars(Book.calculateRating(sortBooksRecent[i].bookRatings))}</div>
+                                    <div>${convertRatingToStars(Rating.calculateRatingByBookId(sortBooksRecent[i].id))}</div>
                                 </div>`
                 }
             }
@@ -193,7 +193,7 @@
                                         <p>${sortBooksRecent[i].bookAuthors}</p>
                                     </a>
                                     <a id='${sortBooksRecent[i].id}' href='html/bookSelect.html' class='book-page'>
-                                        ${convertRatingToStars(Book.calculateRating(sortBooksRecent[i].bookRatings))}
+                                        ${convertRatingToStars(Rating.calculateRatingByBookId(sortBooksRecent[i].id))}
                                     </a>
                                 </div>`
                 }
@@ -230,6 +230,9 @@ addLoadEvent(function() {
 
         loadComments()
         console.log(comments)
+
+        loadRatings()
+        console.log(ratings)
 
         loadRequests()
         console.log(requests)

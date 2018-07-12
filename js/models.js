@@ -6,6 +6,7 @@
     let tags = []
     let books = []
     let comments = []
+    let ratings = []
     let requests = []
     let wishlists = []
     let libraries = []
@@ -450,7 +451,7 @@
 
     /* book */
     class Book {
-        constructor(bookTitle, bookAuthors, bookPublisher, bookYear, bookPages, bookCategory, bookTags, bookCondition, donorName, donationDate, bookCover, bookDescription, bookRatings, libraryId) {
+        constructor(bookTitle, bookAuthors, bookPublisher, bookYear, bookPages, bookCategory, bookTags, bookCondition, donorName, donationDate, bookCover, bookDescription, libraryId) {
             this._id = Book.getLastId() + 1
             this.bookTitle = bookTitle
             this.bookAuthors = bookAuthors
@@ -464,7 +465,6 @@
             this.donationDate = donationDate
             this.bookCover = bookCover
             this.bookDescription = bookDescription
-            this.bookRatings = bookRatings
             this.libraryId = libraryId
         }
 
@@ -569,14 +569,6 @@
             this._bookDescription = newBookDescription        
         }
 
-        // RATING
-        get bookRatings() {
-            return this._bookRatings
-        }
-        set bookRatings(newBookRatings) {
-            this._bookRatings = newBookRatings
-        }
-
         // LIBRARY ID
         get libraryId() {
             return this._libraryId
@@ -593,12 +585,6 @@
                 lastId = books[books.length - 1].id
             }
             return lastId
-        }
-
-        // CALCULATE BOOK RATING
-        static calculateRating(ratings) {
-            let tempRating = parseInt(ratings.reduce(function(a, b) { return a + b }))
-            return tempRating / (ratings.length - 1)
         }
 
         // GET BOOK TITLE BY ID
@@ -831,18 +817,6 @@
             }
         }
 
-        // RATE BOOK BY ID
-        static rateBookById(id) {
-            for (let i = 0; i < books.length; i++) {
-                if (books[i].id == id) {
-                    console.log("input:   " + parseInt(modalRatingInput.value))
-                    books[i].bookRatings.push(parseInt(modalRatingInput.value))
-                    console.log("books[i].bookRatings")
-                    console.log(books[i].bookRatings)
-                }                    
-            }
-        }
-
         // UPDATE DELIVERED BOOK LIBRARY ID
         static updateBookLibraryId(id, libraryId) {
             for (let i = 0; i < books.length; i++) {
@@ -900,6 +874,103 @@
             }
             
             return lastId
+        }
+    }
+
+    /* ratings */
+    class Rating {
+        constructor(bookId, usersId, bookRatings) {
+            this._id = Rating.getLastId() + 1
+            this.bookId = bookId
+            this.usersId = usersId
+            this.bookRatings = bookRatings
+        }
+
+        // ID
+        get id() {
+            return this._id
+        }
+        
+        // USER ID
+        get userId() {
+            return this._userId
+        }
+        set userId(newUserId) {
+            this._userId = newUserId      
+        }
+        
+        // BOOK ID
+        get bookId() {
+            return this._bookId
+        }
+        set bookId(newBookId) {
+            this._bookId = newBookId      
+        }
+        
+        // USER ID
+        get usersId() {
+            return this._usersId
+        }
+        set usersId(newUsersId) {
+            this._usersId = newUsersId      
+        }
+        
+        // RATING
+        get bookRatings() {
+            return this._bookRatings
+        }
+        set bookRatings(newBookRatings) {
+            this._bookRatings = newBookRatings
+        }        
+        
+        // GET LAST ID
+        static getLastId() {
+            let lastId = 0
+
+            if (ratings.length > 0) {
+                lastId = ratings[ratings.length - 1].id
+            }            
+            return lastId
+        }
+
+        // CALCULATE BOOK RATING
+        static calculateRating(ratings) {
+            let tempRating = 0
+
+            if (ratings.length != 1) {
+                tempRating = parseInt(ratings.reduce(function(a, b) { return a + b }))
+                return (tempRating / (ratings.length - 1))
+            }
+            else {
+                return 0
+            }
+        }
+
+        // CALCULATE BOOK RATING BY BOOK ID
+        static calculateRatingByBookId(id) {
+            let tempRating = 0
+
+            for (let i = 0; i < ratings.length; i++) {                
+                if (ratings[i].bookId == id) {
+                    if (ratings[i].bookRatings.length != 1) {
+                        tempRating = parseInt(ratings[i].bookRatings.reduce(function(a, b) { return a + b }))
+                        return tempRating / (ratings[i].bookRatings.length - 1)
+                    }
+                    else {
+                        return 0
+                    }
+                }                
+            }
+        }
+
+        // RATE BOOK BY ID
+        static rateBookById(id) {
+            for (let i = 0; i < ratings.length; i++) {
+                if (ratings[i].bookId == id) {
+                    ratings[i].bookRatings.push(parseInt(modalRatingInput.value))
+                    ratings[i].usersId.push(parseInt(userCurrent))
+                }
+            }
         }
     }
 
@@ -1674,45 +1745,44 @@
     let book16 = ""
     let book17 = ""
     let book18 = ""
-    let book19 = ""
 
-                        // bookTitle, bookAuthors, bookPublisher, bookYear, bookPages, bookCategory, bookTags, bookCondition, donorName, donationDate, bookCover, bookDescription, bookRatings, libraryId
+                        // bookTitle, bookAuthors, bookPublisher, bookYear, bookPages, bookCategory, bookTags, bookCondition, donorName, donationDate, bookCover, bookDescription, libraryId
     if (!localStorage.books) {
-        book01 = new Book("Cartas Reencontradas de Fernando Pessoa a Mário de Sá-Carneiro", ["Pedro Eiras"], "Assírio & Alvim", "2016", 160, 1, [19], "Fraco", "Ana", "2018-06-05", "https://img.wook.pt/images/cartas-reencontradas-de-fernando-pessoa-a-mario-de-sa-carneiro-pedro-eiras/MXwxNzQwNTExMXwxMzAzNDczNXwxNDYwOTM0MDAwMDAw/502x", "Ficção, realidade? Na abertura deste livro, Pedro Eiras explica como descobriu, no antigo Hôtel de Nice, em Paris, as cartas que Fernando Pessoa enviou a Mário de Sá-Carneiro entre Julho de 1915 e Abril de 1916. Estas cartas reencontradas deixam entrever o quotidiano de Pessoa, os seus projectos, entusiasmos e dúvidas, cem anos depois de Orpheu. Pedro Eiras nasceu em 1975. É Professor de Literatura Portuguesa na Faculdade de Letras da Universidade do Porto. Desde 2001, publicou diversas obras de ficção (Bach, A Cura, Os Três Desejos de Octávio C.), teatro (Bela Dona, Um Punhado de Terra, Uma Carta a Cassandra, Um Forte Cheiro a Maçã) e ensaio (Platão no Rolls-Royce, Os Ícones de Andrei, Tentações, Esquecer Fausto). Os seus livros têm sido publicados e as peças de teatro apresentadas em mais de dez países.", [0, 1, 5, 3], 2)
+        book01 = new Book("Cartas Reencontradas de Fernando Pessoa a Mário de Sá-Carneiro", ["Pedro Eiras"], "Assírio & Alvim", "2016", 160, 1, [19], "Fraco", "Ana", "2018-06-05", "https://img.wook.pt/images/cartas-reencontradas-de-fernando-pessoa-a-mario-de-sa-carneiro-pedro-eiras/MXwxNzQwNTExMXwxMzAzNDczNXwxNDYwOTM0MDAwMDAw/502x", "Ficção, realidade? Na abertura deste livro, Pedro Eiras explica como descobriu, no antigo Hôtel de Nice, em Paris, as cartas que Fernando Pessoa enviou a Mário de Sá-Carneiro entre Julho de 1915 e Abril de 1916. Estas cartas reencontradas deixam entrever o quotidiano de Pessoa, os seus projectos, entusiasmos e dúvidas, cem anos depois de Orpheu. Pedro Eiras nasceu em 1975. É Professor de Literatura Portuguesa na Faculdade de Letras da Universidade do Porto. Desde 2001, publicou diversas obras de ficção (Bach, A Cura, Os Três Desejos de Octávio C.), teatro (Bela Dona, Um Punhado de Terra, Uma Carta a Cassandra, Um Forte Cheiro a Maçã) e ensaio (Platão no Rolls-Royce, Os Ícones de Andrei, Tentações, Esquecer Fausto). Os seus livros têm sido publicados e as peças de teatro apresentadas em mais de dez países.", 2)
         books.push(book01)
-        book02 = new Book("No Caderno da Tangerina", ["Rita Alfaiate"], "Escorpião Azul", "2017", 98, 1, [5, 28], "Aceitável", "Ana", "2018-05-07", "https://i1.wp.com/bandasdesenhadas.com/wp-content/uploads/2017/06/POSTER-tangerina.jpg?resize=714%2C1000", "Quando conheci a Tangerina, a minha nova colega de escola, fiquei feliz porque ela era diferente, e podia ser minha amiga. Mas a Tangerina era distante, havia algo que eu não compreendia. Ela tinha um caderno, um caderno estranho. Descobri que era nele que residia todo o seu mistério.", [0, 4, 3, 4], 1)
+        book02 = new Book("No Caderno da Tangerina", ["Rita Alfaiate"], "Escorpião Azul", "2017", 98, 1, [5, 28], "Aceitável", "Ana", "2018-05-07", "https://i1.wp.com/bandasdesenhadas.com/wp-content/uploads/2017/06/POSTER-tangerina.jpg?resize=714%2C1000", "Quando conheci a Tangerina, a minha nova colega de escola, fiquei feliz porque ela era diferente, e podia ser minha amiga. Mas a Tangerina era distante, havia algo que eu não compreendia. Ela tinha um caderno, um caderno estranho. Descobri que era nele que residia todo o seu mistério.", 1)
         books.push(book02)
-        book03 = new Book("Southern Bastards - Vol. 3", ["Jason Aaron", "Jason Latour"], "G. Floy Studio", "2017", 160, 4, [1, 7], "Fraco", "Gonçalo", "2018-06-15", "https://imagecomics.com/uploads/releases/southernbastardsvol03_Digital-1.png", "Chegou a semana do Homecoming, o fim das férias e o maior jogo do ano para a equipa do Condado de Craw, os Runnin' Rebs. Mas o Coach Euless Boss tem muito mais inimigos do que os que vai enfrentar no campo de jogo. O xerife cujo passado negro o continua a assombrar. O misterioso caçador sempre pronto a fazer a sua justiça rural muito peculiar. O estranho rapaz em coma. A maquiavélica mulher do Mayor. Os cães selvagens. E há também Roberta Tubb, do Corpo de Fuzileiros dos Estados Unidos. A filha do homem que Euless Boss matou a sangue-frio. Todos estão a regressar a casa, como que atraídos por uma promessa de violência e vingança. Mas o Coach Boss não tem medo de sangrar. Nem de verter o sangue de outros, se isso for necessário para ganhar o jogo. Seis histórias. Seis grandessíssimos cabrões. Uma série <<frita à moda do Sul>>.", [0, 4, 5, 2], 2)
+        book03 = new Book("Southern Bastards - Vol. 3", ["Jason Aaron", "Jason Latour"], "G. Floy Studio", "2017", 160, 4, [1, 7], "Fraco", "Gonçalo", "2018-06-15", "https://imagecomics.com/uploads/releases/southernbastardsvol03_Digital-1.png", "Chegou a semana do Homecoming, o fim das férias e o maior jogo do ano para a equipa do Condado de Craw, os Runnin' Rebs. Mas o Coach Euless Boss tem muito mais inimigos do que os que vai enfrentar no campo de jogo. O xerife cujo passado negro o continua a assombrar. O misterioso caçador sempre pronto a fazer a sua justiça rural muito peculiar. O estranho rapaz em coma. A maquiavélica mulher do Mayor. Os cães selvagens. E há também Roberta Tubb, do Corpo de Fuzileiros dos Estados Unidos. A filha do homem que Euless Boss matou a sangue-frio. Todos estão a regressar a casa, como que atraídos por uma promessa de violência e vingança. Mas o Coach Boss não tem medo de sangrar. Nem de verter o sangue de outros, se isso for necessário para ganhar o jogo. Seis histórias. Seis grandessíssimos cabrões. Uma série <<frita à moda do Sul>>.", 2)
         books.push(book03)
-        book04 = new Book("O Principezinho", ["Antoine de Saint-Exupéry"], "Porto: Porto Editora", "2017", 136, 1, [4, 14], "Aceitável", "Joana", "2018-06-02", "https://img.wook.pt/images/o-principezinho-antoine-de-saint-exupery/MXwxNjAzNTkyOXwxNTY2OTI5M3wxNTA1MTcwODAwMDAw/502x", "Uma história intemporal destinada a todas as crianças: as que ainda o são, as que já o foram um dia e as que nunca deixarão de o ser. Uma edição que, pela primeira vez em Portugal, fixa texto e ilustrações de acordo com a edição original de 1943.", [0, 4, 5, 3, 4, 3], 4)
+        book04 = new Book("O Principezinho", ["Antoine de Saint-Exupéry"], "Porto: Porto Editora", "2017", 136, 1, [4, 14], "Aceitável", "Joana", "2018-06-02", "https://img.wook.pt/images/o-principezinho-antoine-de-saint-exupery/MXwxNjAzNTkyOXwxNTY2OTI5M3wxNTA1MTcwODAwMDAw/502x", "Uma história intemporal destinada a todas as crianças: as que ainda o são, as que já o foram um dia e as que nunca deixarão de o ser. Uma edição que, pela primeira vez em Portugal, fixa texto e ilustrações de acordo com a edição original de 1943.", 4)
         books.push(book04)
-        book05 = new Book("Sete Minutos Depois da Meia-Noite", ["Patrick Ness"], "Editorial Presença", "2015", 216, 4, [5, 4], "Bom", "Bruno", "2018-03-05", "http://3.bp.blogspot.com/-VkTlgOzWN_I/VQS9zXXm5PI/AAAAAAAAAxo/FlT58W4EfAc/s1600/60990283_Sete_Minutos_Meia_Noite.jpg", "Passava pouco da meia-noite quando o monstro apareceu. Inspirado numa ideia original da escritora Siobhan Dowd, que morreu de cancro em 2007, Patrick Ness criou uma história de uma beleza tocante, que aborda verdades dolorosas com elegância e profundidade, sem nunca perder de vista a esperança no futuro. Fala-nos dos sentimentos de perda, medo e solidão e também da coragem e da compaixão necessárias para os ultrapassar. Fantasia e realidade misturam-se num livro de exceção, com ilustrações soberbas que complementam e expandem a beleza do texto.", [0, 2, 4, 3], 3)
+        book05 = new Book("Sete Minutos Depois da Meia-Noite", ["Patrick Ness"], "Editorial Presença", "2015", 216, 4, [5, 4], "Bom", "Bruno", "2018-03-05", "http://3.bp.blogspot.com/-VkTlgOzWN_I/VQS9zXXm5PI/AAAAAAAAAxo/FlT58W4EfAc/s1600/60990283_Sete_Minutos_Meia_Noite.jpg", "Passava pouco da meia-noite quando o monstro apareceu. Inspirado numa ideia original da escritora Siobhan Dowd, que morreu de cancro em 2007, Patrick Ness criou uma história de uma beleza tocante, que aborda verdades dolorosas com elegância e profundidade, sem nunca perder de vista a esperança no futuro. Fala-nos dos sentimentos de perda, medo e solidão e também da coragem e da compaixão necessárias para os ultrapassar. Fantasia e realidade misturam-se num livro de exceção, com ilustrações soberbas que complementam e expandem a beleza do texto.", 3)
         books.push(book05)
-        book06 = new Book("Aquilo que os olhos vêem ou O Adamastor", ["Manuel António Pina"], "Angelus Novus", "2012", 56, 1, [1, 22, 7], "Bom", "Alexandra", "2017-06-05", "https://images.portoeditora.pt/getresourcesservlet/image?EBbDj3QnkSUjgBOkfaUbsKIiGhhTnv74wHCxfUMk1Ojv%2FP6U4Vl2IrY0I7VRGKGY&width=300", "A história é contada, em finais do primeiro quarte do séc. XVI, pelo físico e astrólogo Mestre João, que regressa, velho e doente, a Portugal, depois de muitos anos no Oriente, e que, à passagem do Cabo da Boa Esperança, recorda os acontecimentos de que fora, aí, testemunha muitos anos antes. A acção narrada por Mestre João passa-se no mar, em 1501, no interior de uma nau da frota de Pedro Álvares Cabral, que o mesmo Mestre João acompanhara na sua viagem, primeiro, ao Brasil e, depois, pela rota de Vasco da Gama à Índia. Regressando à Índia, a nau recolhera então na Angra de S. Brás, perto do Cabo da Boa Esperança, onde fazia aguada, um náufrago (Manuel) que contou uma história fantástica e terrível.", [0, 4, 5, 3, 4, 2, 4], 2)
+        book06 = new Book("Aquilo que os olhos vêem ou O Adamastor", ["Manuel António Pina"], "Angelus Novus", "2012", 56, 1, [1, 22, 7], "Bom", "Alexandra", "2017-06-05", "https://images.portoeditora.pt/getresourcesservlet/image?EBbDj3QnkSUjgBOkfaUbsKIiGhhTnv74wHCxfUMk1Ojv%2FP6U4Vl2IrY0I7VRGKGY&width=300", "A história é contada, em finais do primeiro quarte do séc. XVI, pelo físico e astrólogo Mestre João, que regressa, velho e doente, a Portugal, depois de muitos anos no Oriente, e que, à passagem do Cabo da Boa Esperança, recorda os acontecimentos de que fora, aí, testemunha muitos anos antes. A acção narrada por Mestre João passa-se no mar, em 1501, no interior de uma nau da frota de Pedro Álvares Cabral, que o mesmo Mestre João acompanhara na sua viagem, primeiro, ao Brasil e, depois, pela rota de Vasco da Gama à Índia. Regressando à Índia, a nau recolhera então na Angra de S. Brás, perto do Cabo da Boa Esperança, onde fazia aguada, um náufrago (Manuel) que contou uma história fantástica e terrível.", 2)
         books.push(book06)
-        book07 = new Book("Odisseia de Homero", ["Frederico Lourenço"], "Claro Enigma", "2018", 688, 2, [6, 11], "Aceitável", "Alexandre", "2017-04-01", "https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=4238174&qld=90&l=430&a=-1", "A Odisseia não é apenas um dos grandes épicos da literatura grega; é também um dos pilares do cânone ocidental, um poema de rara e extraordinária beleza - e o livro que mais influência exerceu, ao longo dos tempos, no imaginário ocidental.", [0, 5, 5, 3], 3)
+        book07 = new Book("Odisseia de Homero", ["Frederico Lourenço"], "Claro Enigma", "2018", 688, 2, [6, 11], "Aceitável", "Alexandre", "2017-04-01", "https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=4238174&qld=90&l=430&a=-1", "A Odisseia não é apenas um dos grandes épicos da literatura grega; é também um dos pilares do cânone ocidental, um poema de rara e extraordinária beleza - e o livro que mais influência exerceu, ao longo dos tempos, no imaginário ocidental.", 3)
         books.push(book07)
-        book08 = new Book("Livro do Desassossego", ["Fernando Pessoa"], "Assírio & Alvim", "2017", 480, 2, [15], "Bom", "Gustavo", "2017-02-07", "https://img.wook.pt/images/livro-do-desassossego-fernando-pessoa/MXwxMTIzNzI5MXwxNjEyODE1OHwxNTA4ODg2MDAwMDAw/502x", "O que temos aqui não é um livro mas a sua subversão e negação, o livro em potência, o livro em plena ruína, o livro-sonho, o livro-desespero, o anti-livro, além de qualquer literatura. O que temos nestas páginas é o génio de Pessoa no seu auge.", [0, 4, 5, 3, 4], 4)
+        book08 = new Book("Livro do Desassossego", ["Fernando Pessoa"], "Assírio & Alvim", "2017", 480, 2, [15], "Bom", "Gustavo", "2017-02-07", "https://img.wook.pt/images/livro-do-desassossego-fernando-pessoa/MXwxMTIzNzI5MXwxNjEyODE1OHwxNTA4ODg2MDAwMDAw/502x", "O que temos aqui não é um livro mas a sua subversão e negação, o livro em potência, o livro em plena ruína, o livro-sonho, o livro-desespero, o anti-livro, além de qualquer literatura. O que temos nestas páginas é o génio de Pessoa no seu auge.", 4)
         books.push(book08)
-        book09 = new Book("Os Lusíadas", ["Luís de Camões"], "Porto Editora", "2017", 288, 1, [6, 15, 22], "Bom", "Diogo", "2015-12-07", "https://img.wook.pt/images/os-lusiadas-luis-de-camoes/MXwyMTQ1MTU5fDE2NzcxMzYwfDE1MTEzOTUyMDAwMDA=/502x", "A ação central da obra é a viagem de Vasco da Gama para a Índia. Dela se serve o poeta para nos oferecer a visão épica de toda a História de Portugal até à sua época, ora sendo ele o narrador, ora transferindo essa tarefa para figuras da viagem. Para outras figuras - as míticas - transfere os discursos que projetam a ação no futuro em forma profética. O Poema interpreta os anseios dos humanistas numa linha de continuidade das epopeias clássicas, cantando o triunfo do Homem contra as forças da Natureza, e do Homem que <<deu novos mundos ao Mundo>>, iniciando assim um novo período da História.", [0, 3, 4, 3], 2)
+        book09 = new Book("Os Lusíadas", ["Luís de Camões"], "Porto Editora", "2017", 288, 1, [6, 15, 22], "Bom", "Diogo", "2015-12-07", "https://img.wook.pt/images/os-lusiadas-luis-de-camoes/MXwyMTQ1MTU5fDE2NzcxMzYwfDE1MTEzOTUyMDAwMDA=/502x", "A ação central da obra é a viagem de Vasco da Gama para a Índia. Dela se serve o poeta para nos oferecer a visão épica de toda a História de Portugal até à sua época, ora sendo ele o narrador, ora transferindo essa tarefa para figuras da viagem. Para outras figuras - as míticas - transfere os discursos que projetam a ação no futuro em forma profética. O Poema interpreta os anseios dos humanistas numa linha de continuidade das epopeias clássicas, cantando o triunfo do Homem contra as forças da Natureza, e do Homem que <<deu novos mundos ao Mundo>>, iniciando assim um novo período da História.", 2)
         books.push(book09)
-        book10 = new Book("Leite e Mel", ["Rupi Kaur"], "Lua de Papel", "2017", 208, 6, [6, 2], "Fraco", "Gabriela", "2016-02-07", "https://img.wook.pt/images/leite-e-mel-rupi-kaur/MXwxOTE3MzM5MHwxNDk1NzkyOHwxNTIwNDY3MjAwMDAw/502x", "Leite e Mel é um conjunto de poesias sobre o amor, a perda, o abuso infantil e, finalmente, a cura. Transporta os leitores para momentos difíceis da vida, mas leva-os a descobrir neles a doçura e a fragilidade da vida, porque a doçura está em todo o lado, se estivermos abertos a recebê-la. Leite e Mel é uma história de sobrevivência através da poesia. Para a autora, é o sangue, suor e lágrimas dos seus vinte e um anos.", [0, 1, 2, 1, 3], 1)
+        book10 = new Book("Leite e Mel", ["Rupi Kaur"], "Lua de Papel", "2017", 208, 6, [6, 2], "Fraco", "Gabriela", "2016-02-07", "https://img.wook.pt/images/leite-e-mel-rupi-kaur/MXwxOTE3MzM5MHwxNDk1NzkyOHwxNTIwNDY3MjAwMDAw/502x", "Leite e Mel é um conjunto de poesias sobre o amor, a perda, o abuso infantil e, finalmente, a cura. Transporta os leitores para momentos difíceis da vida, mas leva-os a descobrir neles a doçura e a fragilidade da vida, porque a doçura está em todo o lado, se estivermos abertos a recebê-la. Leite e Mel é uma história de sobrevivência através da poesia. Para a autora, é o sangue, suor e lágrimas dos seus vinte e um anos.", 1)
         books.push(book10)
-        book11 = new Book("Uma Pergunta Por Dia 365 Perguntas. 3 Anos. 2190 Respostas.", ["Potter Style"], "Editorial Presença", "2017", 372, 6, [1, 16, 15], "Aceitável", "Maria", "2016-12-07", "https://img.bertrand.pt/images/uma-pergunta-por-dia-potter-style/NDV8MjEwMjQ0MTN8MTY4ODU3ODZ8MTUwOTY2NzIwMDAwMA==/250x", "Um diário inovador concebido para que numa relação a dois se possa criar, de modo simples e acessível, uma espécie de cápsula do tempo correspondente a um período de três anos. Apresenta uma pergunta para cada dia do ano, com espaço suficiente para duas pessoas escreverem as suas respostas. Contém um número muito diversificado de perguntas, algumas das quais visam a relação entre as duas pessoas, e outras questionam sobre o que cada uma pensa da outra. Ao longo de três anos, ambos podem ver como as suas respostas se comparam, contrastam e mudam - ao mesmo tempo que obtêm uma lembrança duradoura da sua relação!", [0, 4, 4, 4], 4)
+        book11 = new Book("Uma Pergunta Por Dia 365 Perguntas. 3 Anos. 2190 Respostas.", ["Potter Style"], "Editorial Presença", "2017", 372, 6, [1, 16, 15], "Aceitável", "Maria", "2016-12-07", "https://img.bertrand.pt/images/uma-pergunta-por-dia-potter-style/NDV8MjEwMjQ0MTN8MTY4ODU3ODZ8MTUwOTY2NzIwMDAwMA==/250x", "Um diário inovador concebido para que numa relação a dois se possa criar, de modo simples e acessível, uma espécie de cápsula do tempo correspondente a um período de três anos. Apresenta uma pergunta para cada dia do ano, com espaço suficiente para duas pessoas escreverem as suas respostas. Contém um número muito diversificado de perguntas, algumas das quais visam a relação entre as duas pessoas, e outras questionam sobre o que cada uma pensa da outra. Ao longo de três anos, ambos podem ver como as suas respostas se comparam, contrastam e mudam - ao mesmo tempo que obtêm uma lembrança duradoura da sua relação!", 4)
         books.push(book11)
-        book12 = new Book("O Sol Também é Uma Estrela", ["Nicola Yoon"], "Editorial Presença", "2017", 352, 4, [1, 7, 4], "Fraco", "Leonor", "2018-02-17", "https://3.bp.blogspot.com/-VQoPa8wYjP4/WOGaaa0lT7I/AAAAAAAAUis/r2RFUCyuYIk1QER1oEQSJ0JrDisaNtBmwCPcB/s1600/131283645SZ.jpg", "A história de uma rapariga, um rapaz e o universo. Natasha: Sou uma rapariga que acredita na ciência e nos factos. Não acredito no destino. Ou nos sonhos que nunca se concretizam. Não sou de todo aquele tipo de rapariga que encontra um rapaz simpático numa rua nova-iorquina cheia de gente e se apaixona por ele. Não quando a minha família está a doze horas de ser deportada para a Jamaica. Apaixonar-me por ele não será a minha história. Daniel: Sou o bom filho, o bom estudante, correspondendo sempre às elevadas expectativas dos meus pais. Nunca fui o poeta. Ou o sonhador. Mas quando a vejo, esqueço tudo isso. Algo em Natasha faz-me pensar que o destino nos reserva, a ambos, alguma coisa muito mais extraordinária. O universo: Cada momento das nossas vidas conduziu-nos a este momento único. Há um milhão de futuros perante nós. Qual deles se tornará realidade?", [0, 3, 2, 3], 3)
+        book12 = new Book("O Sol Também é Uma Estrela", ["Nicola Yoon"], "Editorial Presença", "2017", 352, 4, [1, 7, 4], "Fraco", "Leonor", "2018-02-17", "https://3.bp.blogspot.com/-VQoPa8wYjP4/WOGaaa0lT7I/AAAAAAAAUis/r2RFUCyuYIk1QER1oEQSJ0JrDisaNtBmwCPcB/s1600/131283645SZ.jpg", "A história de uma rapariga, um rapaz e o universo. Natasha: Sou uma rapariga que acredita na ciência e nos factos. Não acredito no destino. Ou nos sonhos que nunca se concretizam. Não sou de todo aquele tipo de rapariga que encontra um rapaz simpático numa rua nova-iorquina cheia de gente e se apaixona por ele. Não quando a minha família está a doze horas de ser deportada para a Jamaica. Apaixonar-me por ele não será a minha história. Daniel: Sou o bom filho, o bom estudante, correspondendo sempre às elevadas expectativas dos meus pais. Nunca fui o poeta. Ou o sonhador. Mas quando a vejo, esqueço tudo isso. Algo em Natasha faz-me pensar que o destino nos reserva, a ambos, alguma coisa muito mais extraordinária. O universo: Cada momento das nossas vidas conduziu-nos a este momento único. Há um milhão de futuros perante nós. Qual deles se tornará realidade?", 3)
         books.push(book12)
-        book13 = new Book("O Complexo de Portnoy", ["Philip Roth"], "Dom Quixote", "2010", 272, 4, [1, 5], "Bom", "João", "2014-02-17", "https://http2.mlstatic.com/livro-complexo-de-portnoy-philip-roth-D_NQ_NP_14587-MLB222746262_8065-F.jpg", "Esta é a famosa confissão de Alexander Portnoy, impelido ao longo da vida por uma sexualidade insaciável, mas ao mesmo tempo refreado pela mão de ferro de uma infância inesquecível.", [0, 4], 2)
+        book13 = new Book("O Complexo de Portnoy", ["Philip Roth"], "Dom Quixote", "2010", 272, 4, [1, 5], "Bom", "João", "2014-02-17", "https://http2.mlstatic.com/livro-complexo-de-portnoy-philip-roth-D_NQ_NP_14587-MLB222746262_8065-F.jpg", "Esta é a famosa confissão de Alexander Portnoy, impelido ao longo da vida por uma sexualidade insaciável, mas ao mesmo tempo refreado pela mão de ferro de uma infância inesquecível.", 2)
         books.push(book13)
-        book14 = new Book("O Livro de Francisco Rodrigues. O Primeiro Atlas do Mundo Moderno", ["Francisco Rodrigues", "José Manuel Garcia"], "Editora da Universidade do Porto", "2008", 380, 7, [19, 20], "Aceitável", "Ricardo", "2015-02-17", "https://img.wook.pt/images/o-livro-de-francisco-rodrigues-francisco-rodrigues/MXwyMDM3NjN8Mjk3OTE2fDEzODM1MjMyMDAwMDA=/502x", "Trata-se do primeiro Atlas da História Moderna relativo ao sudeste asiático, datado de 1511-1515, da autoria do piloto e cartógrafo Francisco Rodrigues, conhecido como O Livro de Francisco Rodrigues. A obra está composta por uma introdução ao trabalho de Francisco Rodrigues, enquadrando-o do ponto de vista histórico e explicando o significado das imagens e a localização actual das ilhas do sudeste asiático. Segue-se o fac-simile integral da obra conservada na Biblioteca da Assembleia Nacional Francesa.", [0, 1, 2, 3], 3)
+        book14 = new Book("O Livro de Francisco Rodrigues. O Primeiro Atlas do Mundo Moderno", ["Francisco Rodrigues", "José Manuel Garcia"], "Editora da Universidade do Porto", "2008", 380, 7, [19, 20], "Aceitável", "Ricardo", "2015-02-17", "https://img.wook.pt/images/o-livro-de-francisco-rodrigues-francisco-rodrigues/MXwyMDM3NjN8Mjk3OTE2fDEzODM1MjMyMDAwMDA=/502x", "Trata-se do primeiro Atlas da História Moderna relativo ao sudeste asiático, datado de 1511-1515, da autoria do piloto e cartógrafo Francisco Rodrigues, conhecido como O Livro de Francisco Rodrigues. A obra está composta por uma introdução ao trabalho de Francisco Rodrigues, enquadrando-o do ponto de vista histórico e explicando o significado das imagens e a localização actual das ilhas do sudeste asiático. Segue-se o fac-simile integral da obra conservada na Biblioteca da Assembleia Nacional Francesa.", 3)
         books.push(book14)
-        book15 = new Book("Praias Escondidas - Lisboa", ["Robert Butler", "Andy Mumford"], "Arte Plural Edições", "2018", 192, 7, [22, 21], "Bom", "João", "2018-05-17", "https://img.wook.pt/images/praias-escondidas---lisboa-robert-butler/MXwyMTUyMTI5N3wxNzM2ODUyOHwxNTI1NjQ3NjAwMDAw/502x", "Lisboa é uma das mais fascinantes e carismáticas capitais europeias, mas para lá das suas ruas sinuosas e dos seus esplêndidos miradouros, a apenas uma hora de carro em direção a oeste ou a sul, encontram-se das mais deslumbrantes praias da Europa. Mas atenção: apesar de esta região ter sido abençoada com belíssimos areais, perfeitos para banhos de sol, ir à praia pode ser bem mais do que isso, e em Praias Escondidas vai descobrir sugestões para as explorar de uma forma diferente. De passeios de caiaque a caminhadas com o seu cão e a snorkeling em águas cristalinas, encontrará aqui indicações sobre praias para todos os gostos, sejam areais <<selvagens>>, enseadas isoladas ou baías recônditas. E se o que gosta mesmo é de passar horas ao sol ou a dar belos mergulhos… bom, este livro também é para si! Com informação detalhada sobre 32 maravilhosas praias a oeste e a sul de Lisboa, listas de locais ideais para uma vasta gama de atividades e fantásticas fotografias, Praias Escondidas é o seu guia essencial para ficar a conhecer a fundo o nosso belíssimo litoral.", [0, 5, 5, 4], 1)
+        book15 = new Book("Praias Escondidas - Lisboa", ["Robert Butler", "Andy Mumford"], "Arte Plural Edições", "2018", 192, 7, [22, 21], "Bom", "João", "2018-05-17", "https://img.wook.pt/images/praias-escondidas---lisboa-robert-butler/MXwyMTUyMTI5N3wxNzM2ODUyOHwxNTI1NjQ3NjAwMDAw/502x", "Lisboa é uma das mais fascinantes e carismáticas capitais europeias, mas para lá das suas ruas sinuosas e dos seus esplêndidos miradouros, a apenas uma hora de carro em direção a oeste ou a sul, encontram-se das mais deslumbrantes praias da Europa. Mas atenção: apesar de esta região ter sido abençoada com belíssimos areais, perfeitos para banhos de sol, ir à praia pode ser bem mais do que isso, e em Praias Escondidas vai descobrir sugestões para as explorar de uma forma diferente. De passeios de caiaque a caminhadas com o seu cão e a snorkeling em águas cristalinas, encontrará aqui indicações sobre praias para todos os gostos, sejam areais <<selvagens>>, enseadas isoladas ou baías recônditas. E se o que gosta mesmo é de passar horas ao sol ou a dar belos mergulhos… bom, este livro também é para si! Com informação detalhada sobre 32 maravilhosas praias a oeste e a sul de Lisboa, listas de locais ideais para uma vasta gama de atividades e fantásticas fotografias, Praias Escondidas é o seu guia essencial para ficar a conhecer a fundo o nosso belíssimo litoral.", 1)
         books.push(book15)
-        book16 = new Book("Lugares Abandonados de Portugal", ["Vanessa Fidalgo"], "A Esfera dos Livros", "2017", 240, 7, [21, 22], "Bom", "Joana", "2017-02-17", "https://img.wook.pt/images/lugares-abandonados-de-portugal-vanessa-fidalgo/MXwxOTc3NDM4N3wxNTYxMDUzNnwxNTAyNDA2MDAwMDAw/502x", "É impossível passar pela Quinta do Comandante, em Oliveira de Azeméis, e ficar indiferente ao edifício em avançado estado de degradação que ali se ergue. Atrás daquelas paredes em ruínas tanto se escondem histórias de amor como episódios trágicos com um final surpreendente. Numa certa noite, o comandante Batista de Carvalho juntou um grupo de amigos e familiares para uma festa. A meio do jantar levantou-se, dirigiu-se ao quarto, pegou num revólver e suicidou-se. Não é caso único nas tragédias que assolam os lugares abandonados de Portugal. A 10 de Julho de 1957, a GNR avançou sobre a população do Colmeal, em Figueira de Castelo Rodrigo. Houve mortos, feridos e no fim da luta,  ninguém ficou na aldeia para contar a história.", [0, 3, 3, 4], 4)
+        book16 = new Book("Lugares Abandonados de Portugal", ["Vanessa Fidalgo"], "A Esfera dos Livros", "2017", 240, 7, [21, 22], "Bom", "Joana", "2017-02-17", "https://img.wook.pt/images/lugares-abandonados-de-portugal-vanessa-fidalgo/MXwxOTc3NDM4N3wxNTYxMDUzNnwxNTAyNDA2MDAwMDAw/502x", "É impossível passar pela Quinta do Comandante, em Oliveira de Azeméis, e ficar indiferente ao edifício em avançado estado de degradação que ali se ergue. Atrás daquelas paredes em ruínas tanto se escondem histórias de amor como episódios trágicos com um final surpreendente. Numa certa noite, o comandante Batista de Carvalho juntou um grupo de amigos e familiares para uma festa. A meio do jantar levantou-se, dirigiu-se ao quarto, pegou num revólver e suicidou-se. Não é caso único nas tragédias que assolam os lugares abandonados de Portugal. A 10 de Julho de 1957, a GNR avançou sobre a população do Colmeal, em Figueira de Castelo Rodrigo. Houve mortos, feridos e no fim da luta,  ninguém ficou na aldeia para contar a história.", 4)
         books.push(book16)
-        book17 = new Book("Parentalidade Nórdica", ["Sofie Münster"], "Editorial Presença", "2018", 192, 8, [26], "Fraco", "Jorge", "2018-02-17", "http://imagens.presenca.pt//products/Liv30990114_f.jpg", "Todos desejamos o melhor para os nossos filhos. Sonhamos com o seu sucesso, tanto na escola como na sua vida futura. No entanto, quando eles enfrentam dificuldades, é frequente não sabermos o que fazer para os ajudar. Desejamos que os nossos filhos ousem perseguir um objetivo, que se esforcem e se tornem melhores, mas o que fazer em situações como as seguintes? - Eles sentem-se inseguros ou contêm-se por medo de falharem. - Não conseguem concentrar-se e o telemóvel ou o computador são tentações irresistíveis. - Desistem imediatamente de uma tarefa se ela lhes parece aborrecida ou exige um pouco mais deles. - Desinteressam-se ou deixam-se levar pela desilusão quando não conseguem fazer algo à primeira tentativa.", [0, 4, 4], 3)
+        book17 = new Book("Parentalidade Nórdica", ["Sofie Münster"], "Editorial Presença", "2018", 192, 8, [26], "Fraco", "Jorge", "2018-02-17", "http://imagens.presenca.pt//products/Liv30990114_f.jpg", "Todos desejamos o melhor para os nossos filhos. Sonhamos com o seu sucesso, tanto na escola como na sua vida futura. No entanto, quando eles enfrentam dificuldades, é frequente não sabermos o que fazer para os ajudar. Desejamos que os nossos filhos ousem perseguir um objetivo, que se esforcem e se tornem melhores, mas o que fazer em situações como as seguintes? - Eles sentem-se inseguros ou contêm-se por medo de falharem. - Não conseguem concentrar-se e o telemóvel ou o computador são tentações irresistíveis. - Desistem imediatamente de uma tarefa se ela lhes parece aborrecida ou exige um pouco mais deles. - Desinteressam-se ou deixam-se levar pela desilusão quando não conseguem fazer algo à primeira tentativa.", 3)
         books.push(book17)
-        book18 = new Book("À Descoberta do Seu Bebé", ["Margarida Lobo Antunes", "Andreia Vidal"], "Manuscrito Editora", "2018", 176, 8, [26], "Fraco", "Hugo", "2018-02-17", "https://img.wook.pt/images/a-descoberta-do-seu-bebe-margarida-lobo-antunes/MXwyMTMyNTU4OXwxNzIxMzQ3NHwxNTE1NDU2MDAwMDAw/502x", "Com a chegada de um bebé, os pais preocupam-se com a sua saúde, alimentação, numa espécie de corrida para alcançar o troféu de melhores pais! E muitas vezes, entre o cansaço do dia a dia, esquecem-se de que, sendo aquelas questões essenciais, há uma que fica para segundo plano e que é, sem dúvida, a mais importante de todas: tempo para estar com o seu bebé, para o gozar, para o descobrir, para brincar com ele.", [0, 4, 2, 3, 2], 4)
+        book18 = new Book("À Descoberta do Seu Bebé", ["Margarida Lobo Antunes", "Andreia Vidal"], "Manuscrito Editora", "2018", 176, 8, [26], "Fraco", "Hugo", "2018-02-17", "https://img.wook.pt/images/a-descoberta-do-seu-bebe-margarida-lobo-antunes/MXwyMTMyNTU4OXwxNzIxMzQ3NHwxNTE1NDU2MDAwMDAw/502x", "Com a chegada de um bebé, os pais preocupam-se com a sua saúde, alimentação, numa espécie de corrida para alcançar o troféu de melhores pais! E muitas vezes, entre o cansaço do dia a dia, esquecem-se de que, sendo aquelas questões essenciais, há uma que fica para segundo plano e que é, sem dúvida, a mais importante de todas: tempo para estar com o seu bebé, para o gozar, para o descobrir, para brincar com ele.", 4)
         books.push(book18)
     }
 
@@ -1755,6 +1825,66 @@
         comments.push(comment11)
         comment12 = new Review(7, 2, "A escritora tem uma mente meia atrofiada para escrever um livro destes!")
         comments.push(comment12)
+    }
+
+    /* ratings */
+    let ratings01 = ""
+    let ratings02 = ""
+    let ratings03 = ""
+    let ratings04 = ""
+    let ratings05 = ""
+    let ratings06 = ""
+    let ratings07 = ""
+    let ratings08 = ""
+    let ratings09 = ""
+    let ratings10 = ""
+    let ratings11 = ""
+    let ratings12 = ""
+    let ratings13 = ""
+    let ratings14 = ""
+    let ratings15 = ""
+    let ratings16 = ""
+    let ratings17 = ""
+    let ratings18 = ""
+
+                        // bookId, usersId, bookRatings
+    if (!localStorage.ratings) {
+        ratings01 = new Rating(1, [3, 4], [0, 4, 5])
+        ratings.push(ratings01)
+        ratings02 = new Rating(2, [3], [0, 5])
+        ratings.push(ratings02)
+        ratings03 = new Rating(3, [3], [0, 4])
+        ratings.push(ratings03)
+        ratings04 = new Rating(4, [4], [0, 3, 4])
+        ratings.push(ratings04)
+        ratings05 = new Rating(5, [], [0])
+        ratings.push(ratings05)
+        ratings06 = new Rating(6, [], [0])
+        ratings.push(ratings06)
+        ratings07 = new Rating(7, [], [0])
+        ratings.push(ratings07)
+        ratings08 = new Rating(8, [], [0])
+        ratings.push(ratings08)
+        ratings09 = new Rating(9, [], [0])
+        ratings.push(ratings09)
+        ratings10 = new Rating(10, [], [0])
+        ratings.push(ratings10)
+        ratings11 = new Rating(11, [], [0])
+        ratings.push(ratings11)
+        ratings12 = new Rating(12, [], [0])
+        ratings.push(ratings12)
+        ratings13 = new Rating(13, [], [0])
+        ratings.push(ratings13)
+        ratings14 = new Rating(14, [], [0])
+        ratings.push(ratings14)
+        ratings15 = new Rating(15, [], [0])
+        ratings.push(ratings15)
+        ratings16 = new Rating(16, [], [0])
+        ratings.push(ratings16)
+        ratings17 = new Rating(17, [], [0])
+        ratings.push(ratings17)
+        ratings18 = new Rating(18, [], [0])
+        ratings.push(ratings18)
     }
 
     /* requests */    
@@ -1910,6 +2040,22 @@
         }
     }
 
+    /* ratings */
+    function loadRatings() {
+        let tempArray = []
+
+        if (localStorage.ratings) {
+            tempArray = JSON.parse(localStorage.getItem("ratings"))
+
+            for (let i = 0; i < tempArray.length; i++) {
+                let newRating = new Rating(tempArray[i]._bookId,
+                                            tempArray[i]._usersId,
+                                            tempArray[i]._bookRatings)
+                ratings.push(newRating)
+            }
+        }
+    }
+
     /* requests */
     function loadRequests() {
         let tempArray = []
@@ -1982,6 +2128,7 @@
         localStorage.setItem("tags", JSON.stringify(tags))
         localStorage.setItem("books", JSON.stringify(books))
         localStorage.setItem("comments", JSON.stringify(comments))
+        localStorage.setItem("ratings", JSON.stringify(ratings))
         localStorage.setItem("requests", JSON.stringify(requests))
         localStorage.setItem("wishlists", JSON.stringify(wishlists))
         localStorage.setItem("libraries", JSON.stringify(libraries))
@@ -2021,6 +2168,12 @@
     function saveComment(newComment) {
         comments.push(newComment)
         localStorage.setItem("comments", JSON.stringify(comments))
+    }
+
+    /* ratings */
+    function saveRating(newRating) {
+        ratings.push(newRating)
+        localStorage.setItem("ratings", JSON.stringify(ratings))
     }
 
     /* requests */

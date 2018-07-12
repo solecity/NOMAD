@@ -24,7 +24,7 @@ function addLoadEvent(func) {
 
     /* book info */
     function addSelectBookInfo(bookCurrent) {
-        for (let i = 0; i < books.length; i++) {
+        for (let i = 0; i < books.length; i++) {bookCurrent
             if (bookCurrent == books[i].id) {
                 let categoryTitle = document.getElementById("categoryTitle")
                 let tagsId = books[i].bookTags
@@ -35,10 +35,7 @@ function addLoadEvent(func) {
                 }
                 
                 categoryTitle.innerHTML += `<h1>${Category.getCategoryById(books[i].bookCategory).toUpperCase()}</h1>`
-
-                if (books[i].bookRatings.length != 0) {
-                    stars.innerHTML = convertRatingToStars(Book.calculateRating(books[i].bookRatings))
-                }
+                stars.innerHTML = convertRatingToStars(Rating.calculateRatingByBookId(bookCurrent))
                 
                 viewBookTitle.innerHTML = books[i].bookTitle
                 viewCover.src = books[i].bookCover
@@ -255,6 +252,7 @@ addLoadEvent(function() {
 
     // --------------------------------------
     // LOAD LOCAL STORAGE
+
         loadUsers()
         console.log(users)
 
@@ -267,18 +265,23 @@ addLoadEvent(function() {
         loadBooks()
         console.log(books)
 
+        loadComments()
+        console.log(comments)
+
+        loadRatings()
+        console.log(ratings)
+
         loadRequests()
         console.log(requests)
 
         loadWishlists()
         console.log(wishlists)
 
-        loadComments()
-        console.log(comments)
-
         loadLibraries()
         console.log(libraries)
 
+        loadConfig()
+        console.log(config)
     //
 
 

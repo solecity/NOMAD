@@ -148,25 +148,42 @@ function addLoadEvent(func) {
 
     /* sort by highest rating */
     function sortByRatingHigher(sortBooks) {
-        let tempBooks = sortBooks.slice(0)
+        let tempIds = ratings.slice(0)
+        let tempArray = []
 
-        tempBooks.sort(function(a,b) {
-            return Book.calculateRating(b.bookRatings) - Book.calculateRating(a.bookRatings)
+        tempIds.sort(function(a,b) {
+            return Rating.calculateRating(b.bookRatings) - Rating.calculateRating(a.bookRatings)
         })
 
-        return tempBooks
+        for (let i = 0; i < tempIds.length; i++) {
+            for (let j = 0; j < sortBooks.length; j++) {
+                if (sortBooks[j].id == tempIds[i].bookId) {
+                    tempArray.push(sortBooks[j])
+                }
+            }
+        }
+        return tempArray
     }
     
     /* sort by lowest rating */
     function sortByRatingLowest(sortBooks) {
-        let tempBooks = sortBooks.slice(0)
+        let tempIds = ratings.slice(0)
+        let tempArray = []
 
-        tempBooks.sort(function(a,b) {
-            return Book.calculateRating(b.bookRatings) - Book.calculateRating(a.bookRatings)
+        tempIds.sort(function(a,b) {
+            return Rating.calculateRating(b.bookRatings) - Rating.calculateRating(a.bookRatings)
         })
 
-        tempBooks.reverse()
-        return tempBooks
+        for (let i = 0; i < tempIds.length; i++) {
+            for (let j = 0; j < sortBooks.length; j++) {
+                if (sortBooks[j].id == tempIds[i].bookId) {
+                    tempArray.push(sortBooks[j])
+                }
+            }
+        }
+
+        tempArray.reverse()
+        return tempArray
     }
     
     /* sort book by old */
@@ -226,28 +243,57 @@ function addLoadEvent(func) {
 
         console.log(catalog.length)
 
-        for (let i = 0; i < catalog.length; i++) {
-            if (i == 0) {
-                strHtml += "<div class='row new-row text-center' style='margin: auto;'>"
-            }
+        for (let i = 0; i < catalog.length; i++) {            
+            if (viewMode == "grid") {
+                if (i == 0) {
+                    strHtml += "<div class='row new-row text-center' style='margin: auto;'>"
+                }
 
-            strHtml += `<div class='book col-md-2'>
-                            <a id='${catalog[i].id}' href='bookSelect.html' class='book-page'>
-                                <img src='${catalog[i].bookCover}' class='img-fluid' width='140'/>
-                            </a>
-                            <a id='${catalog[i].id}' href='bookSelect.html' class='book-page'>
-                                <h5>${catalog[i].bookTitle}</h5>
-                            </a>
+                strHtml += `<div class='book col-md-2'>
                                 <a id='${catalog[i].id}' href='bookSelect.html' class='book-page'>
-                                    <p>${catalog[i].bookAuthors}</p>
+                                    <img src='${catalog[i].bookCover}' class='img-fluid' width='140'/>
                                 </a>
-                            <a id='${catalog[i].id}' href='bookSelect.html' class='book-page'>
-                                ${convertRatingToStars(Book.calculateRating(catalog[i].bookRatings))}
-                            </a>
-                        </div>`
+                                <a id='${catalog[i].id}' href='bookSelect.html' class='book-page'>
+                                    <h5>${catalog[i].bookTitle}</h5>
+                                </a>
+                                    <a id='${catalog[i].id}' href='bookSelect.html' class='book-page'>
+                                        <p>${catalog[i].bookAuthors}</p>
+                                    </a>
+                                <a id='${catalog[i].id}' href='bookSelect.html' class='book-page'>
+                                    ${convertRatingToStars(Rating.calculateRatingByBookId(catalog[i].id))}
+                                </a>
+                            </div>`
 
-            if (i == catalog.length - 1) {
-                strHtml += "</div>"
+                if (i == catalog.length - 1) {
+                    strHtml += "</div>"
+                }
+            }
+            else if (viewMode == "list") {
+                let sinopse = ""
+
+                if (catalog[i].bookDescription.length > 150) {
+                    sinopse = catalog[i].bookDescription.substring(0, catalog[i].bookDescription.indexOf("", 150))
+                }
+
+                strHtml += `<div class='row new-row' style='margin: 40px auto;'>
+                                <div class='book col-md-2'>
+                                    <a id='${catalog[i].id}' href='bookSelect.html' class='book-page'>
+                                        <img src='${catalog[i].bookCover}' class='img-fluid' width='140' style='margin-bottom: 10px;'/>
+                                    </a>
+                                    <a id='${catalog[i].id}' href='bookSelect.html' class='book-page'>
+                                        ${convertRatingToStars(Rating.calculateRatingByBookId(catalog[i].id))}
+                                    </a>
+                                </div>
+                                <div class='book col-md-9'>
+                                    <a id='${catalog[i].id}' href='bookSelect.html' class='book-page'>
+                                        <h5>${catalog[i].bookTitle}</h5>
+                                    </a>
+                                    <a id='${catalog[i].id}' href='bookSelect.html' class='book-page'>
+                                        <p>${catalog[i].bookAuthors}</p>
+                                    </a>
+                                    <p>${sinopse}[...]</p>
+                                </div>
+                            </div>`
             }
 
             booksCatalog.innerHTML = strHtml
@@ -262,6 +308,7 @@ addLoadEvent(function() {
     
     // --------------------------------------
     // LOAD LOCAL STORAGE
+
         loadUsers()
         console.log(users)
 
@@ -277,6 +324,9 @@ addLoadEvent(function() {
         loadComments()
         console.log(comments)
 
+        loadRatings()
+        console.log(ratings)
+
         loadRequests()
         console.log(requests)
 
@@ -287,7 +337,7 @@ addLoadEvent(function() {
         console.log(libraries)
 
         loadConfig()
-        console.log(config) 
+        console.log(config)
     //
 
 
@@ -464,6 +514,24 @@ addLoadEvent(function() {
         selectSort.addEventListener("change", function(event) {
             sortCatalog(selectSort.value, viewMode, catalog)
             event.preventDefault()
+        })
+
+        /* grid view */
+        btnGrid.addEventListener("click", function () {
+            viewMode = "grid"
+            addBooksToCatalog(viewMode, catalog)
+            btnGrid.style.backgroundColor = "rgba(255, 217, 146, 0.603)"
+            btnList.style.backgroundColor = "#ffd892"
+            //getSelectBook()
+        })
+
+        /* list view */
+        btnList.addEventListener("click", function () {
+            viewMode = "list"
+            addBooksToCatalog(viewMode, catalog)
+            btnGrid.style.backgroundColor = "#ffd892"
+            btnList.style.backgroundColor = "rgba(255, 217, 146, 0.603)"
+            //getSelectBook()
         })
     //
 })

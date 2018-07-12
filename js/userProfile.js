@@ -146,6 +146,7 @@ addLoadEvent(function() {
 
     // --------------------------------------
     // LOAD LOCAL STORAGE
+
         loadUsers()
         console.log(users)
 
@@ -161,6 +162,9 @@ addLoadEvent(function() {
         loadComments()
         console.log(comments)
 
+        loadRatings()
+        console.log(ratings)
+
         loadRequests()
         console.log(requests)
 
@@ -171,7 +175,7 @@ addLoadEvent(function() {
         console.log(libraries)
 
         loadConfig()
-        console.log(config) 
+        console.log(config)
     //
     
     

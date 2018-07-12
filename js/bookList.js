@@ -203,10 +203,6 @@ function addLoadEvent(func) {
 
     /* sort catalog */
     function sortCatalog(sort, viewMode, catalog) {
-        console.log(catalog)
-        console.log("sort   " + sort)
-        console.log("catalog.length   " + catalog.length)
-
         switch (sort) {
             case "sortNew":
                 addBooksToCatalog(viewMode, sortByDonationDateNew(catalog))
@@ -294,7 +290,6 @@ function addLoadEvent(func) {
                                 </div>
                             </div>`
             }
-
             booksCatalog.innerHTML = strHtml
         }
     }
@@ -370,6 +365,7 @@ addLoadEvent(function() {
         let booksCatalog = document.getElementById("booksCatalog")
         let viewMode = "grid"
         let sort = "sortNew"
+        sessionStorage.setItem("sort", sort)
         let filterBooks = []
         let catalog = []
 
@@ -486,12 +482,12 @@ addLoadEvent(function() {
                 sessionStorage.setItem("catalog", JSON.stringify(filterBooks))
                 selectSort.selectedIndex = 0
                 sortCatalog("sortNew", viewMode, filterBooks)
-            }/*
+            }
             else if (filterTag.value == "" && filterAuthor.value == "" && filterLibraryParish.value == "") {
                 sessionStorage.setItem("catalog", JSON.stringify(catalog))
-            }*/
+            }
 
-/*
+            /*
             if (filterAuthor.value != "") {
                 filterBooks.push(Book.getBooksByAuthor(filterAuthor.value, categoryCurrent))
             }*/
@@ -500,7 +496,7 @@ addLoadEvent(function() {
             if (filterLibraryCity.value != "") {
                 filterBooks.push(Book.getBooksByCity(Library.getLibraryIdByCity(filterLibraryCity.value), categoryCurrent))
             }*/
-/*
+            /*
             if (filterLibraryParish.value != "") {
                 filterBooks = Book.getBooksByLibrary(Library.getLibraryIdByLocation(filterLibraryCity.value, filterLibraryParish.value), categoryCurrent)
             }*/
@@ -515,22 +511,27 @@ addLoadEvent(function() {
             filterLibraryParish.selectedIndex = 0
             selectSort.selectedIndex = 0
 
-            sessionStorage.setItem("catalog", JSON.stringify(catalog))
             sortCatalog("sortNew", viewMode, catalog)
 
+            sessionStorage.setItem("catalog", JSON.stringify(catalog))
             event.preventDefault()
         })
 
         /* sort book catalog */
         selectSort.addEventListener("change", function(event) {
             sortCatalog(selectSort.value, viewMode, catalog)
+
+            sessionStorage.setItem("sort", selectSort.value)
             event.preventDefault()
         })
 
         /* grid view */
         btnGrid.addEventListener("click", function () {
             viewMode = "grid"
-            addBooksToCatalog(viewMode, catalog)
+            selectSort.value = sort
+
+            sortCatalog(sort, viewMode, catalog)
+
             btnGrid.style.backgroundColor = "rgba(255, 217, 146, 0.603)"
             btnList.style.backgroundColor = "#ffd892"
             //getSelectBook()
@@ -539,7 +540,10 @@ addLoadEvent(function() {
         /* list view */
         btnList.addEventListener("click", function () {
             viewMode = "list"
-            addBooksToCatalog(viewMode, catalog)
+            selectSort.value = sort
+
+            sortCatalog(sort, viewMode, catalog)
+
             btnGrid.style.backgroundColor = "#ffd892"
             btnList.style.backgroundColor = "rgba(255, 217, 146, 0.603)"
             //getSelectBook()

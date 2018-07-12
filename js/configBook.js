@@ -20,13 +20,6 @@ function addLoadEvent(func) {
 
 
 // --------------------------------------
-// COMBOBOX
-
-    /* parishes */
-//
-
-
-// --------------------------------------
 // RENDER TABLES
 
     /* books */
@@ -257,8 +250,7 @@ addLoadEvent(function() {
 
                     localStorage.setItem("books", JSON.stringify(books))
                 }*/
-            }
-             
+            }             
             $('#viewBookModal').modal('hide')
 
             renderTableBooks()

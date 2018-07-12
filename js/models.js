@@ -791,14 +791,40 @@
                         addTagsToModal()                        
                     }*/
     
-                    for (let i = 0; i < libraries.length; i++) {                        
-                        //viewBookCity.innerHTML = addCitiesToModal()
+                    /*for (let i = 0; i < libraries.length; i++) {                        
+                        viewBookCity.innerHTML = addCitiesToModal()*/
                         viewBookParish.innerHTML = addParishToModal(Library.getLibraryParishById(books[i].libraryId))
+                    //}
+/*
+                    let a = Library.getLibraryCityById(books[i].libraryId)
+                    let options = viewBookCity.options
+                    let c
+
+                    for (let j = 0; j < options.length; j++) {
+                        console.log("a   " + a)
+
+                        console.log($("#viewBookCity").val(a))
+                        if (parseInt(options[i].value) == parseInt(a)) {
+                            c = parseInt(options[i].index)
+                        }
                     }
 
-                    viewBookCity.selectedIndex = books[i].libraryId
-                    viewBookParish.selectedIndex = Library.getParishById(Library.getLibraryParishById(books[i].libraryId))
+                    console.log("a   " + a)
+                    console.log(options)
+                    console.log("c   " + c)*/
+
+
+                    viewBookCity.value = Library.getLibraryCityById(books[i].libraryId)
+                    viewBookCity.selected = viewBookCity.value
+                    viewBookParish.selectedIndex = Library.getLibraryParishById(books[i].libraryId)
                     viewBookCategory.selectedIndex = books[i].bookCategory
+                    
+
+
+/*
+                    viewBookCity.selectedIndex = document.getElementById("viewBookCity").value = Library.getCityById(Library.getLibraryCityById(books[i].libraryId))
+                    viewBookParish.selectedIndex = Library.getParishById(Library.getLibraryParishById(books[i].libraryId))
+                    viewBookCategory.selectedIndex = books[i].bookCategory*/
                     
                     for (let j = 0; j < books[i].bookTags; j++) {
                         viewBookTags.selectedIndex = (books[i].bookTags)[j]

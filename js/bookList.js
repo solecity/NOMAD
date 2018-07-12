@@ -477,7 +477,7 @@ addLoadEvent(function() {
             }*/
 
             if (filterTag.value != "" || filterAuthor.value != "" || filterLibraryParish.value != "") {
-                filterBooks = Book.getBooksByFilter(filterTag.value, filterAuthor.value, filterLibraryParish.value, categoryCurrent)
+                filterBooks = Book.getBooksByFilter(filterTag.value, filterAuthor.value, filterLibraryCity.value, filterLibraryParish.value, categoryCurrent)
 
                 sessionStorage.setItem("catalog", JSON.stringify(filterBooks))
                 selectSort.selectedIndex = 0

@@ -707,14 +707,14 @@
         }
 
         // GET BOOKS BY FILTER
-        static getBooksByFilter(tag, author, library, category) {
+        static getBooksByFilter(tag, author, city, parish, category) {
             let tempArray = []
             console.log("tag   " + tag)
             console.log("author   " + author)
-            console.log("library   " + library)
+            console.log("parish   " + parish)
 
             for (let i = 0; i < books.length; i++) {
-                if ((books[i].bookTags.includes(parseInt(tag)) || books[i].bookAuthors.includes(author) || books[i].libraryId == library) && books[i].bookCategory == category) {
+                if ((books[i].bookTags.includes(parseInt(tag)) || books[i].bookAuthors.includes(author) || books[i].libraryId == Library.getLibraryIdByLocation(city, parish)) && books[i].bookCategory == category) {
                     tempArray.push(books[i])
                 }
             }

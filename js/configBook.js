@@ -22,27 +22,7 @@ function addLoadEvent(func) {
 // --------------------------------------
 // COMBOBOX
 
-    /* categories */
-    function addCategories() {
-        let strHtml = "<option value=''>...</option>"    
-        
-        for (let i = 0; i < categories.length; i++) {
-            strHtml += `<option value='${categories[i].id}'>${categories[i].name}</option>`             
-        }
-
-        viewBookCategory.innerHTML = strHtml
-    }
-
-    /* tags */
-    function addTags() {
-        let strHtml = "<option value=''>...</option>"    
-        
-        for (let i = 0; i < tags.length; i++) {
-            strHtml += `<option value='${tags[i].id}'>${tags[i].name}</option>`             
-        }
-
-        viewBookTags.innerHTML = strHtml
-    }
+    /* parishes */
 //
 
 
@@ -220,10 +200,14 @@ addLoadEvent(function() {
         navbarVisible()
 
         /* donate book modal */
-        viewDonateStep(count)
         modalDonateCategories.innerHTML = addCategoriesToModal()
         modalDonateTags.innerHTML = addTagsToModal()
         modalDonateCity.innerHTML = addCitiesToModal()
+
+        /* view book modal */
+        viewBookCategory.innerHTML = addCategoriesToModal()
+        viewBookTags.innerHTML = addTagsToModal()
+        viewBookCity.innerHTML = addCitiesToModal()
 
         /* items disabled */
         viewBookCity.disabled = true
@@ -234,10 +218,6 @@ addLoadEvent(function() {
 
         /* table */
         renderTableBooks()
-        
-        /* combobox */
-        addCategories()
-        addTags()
     //
 
 

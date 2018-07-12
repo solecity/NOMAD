@@ -793,7 +793,7 @@
     
                     /*for (let i = 0; i < libraries.length; i++) {                        
                         viewBookCity.innerHTML = addCitiesToModal()*/
-                        viewBookParish.innerHTML = addParishToModal(Library.getLibraryParishById(books[i].libraryId))
+                        viewBookParish.innerHTML = addParishToModal(Library.getLibraryCityById(books[i].libraryId))
                     //}
 /*
                     let a = Library.getLibraryCityById(books[i].libraryId)
@@ -812,6 +812,8 @@
                     console.log("a   " + a)
                     console.log(options)
                     console.log("c   " + c)*/
+                    console.log(Library.getLibraryParishById(books[i].libraryId))
+                    console.log(addParishToModal(Library.getLibraryCityById(books[i].libraryId)))
 
 
                     viewBookCity.value = Library.getLibraryCityById(books[i].libraryId)

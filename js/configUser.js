@@ -66,6 +66,7 @@ function addLoadEvent(func) {
                                 <th class='w-30'>E-MAIL</th>
                                 <th class='w-10'>PASSWORD</th>
                                 <th class='w-3'>PERMISSÕES</th>
+                                <th class='w-3'>ESTADO</th>
                                 <th class='w-5'>MULTA</th>
                                 <th class='w-2'></th>
                             </tr>
@@ -78,6 +79,7 @@ function addLoadEvent(func) {
                             <td>${users[i].userEmail}</td>
                             <td>${users[i].userPassword}</td>
                             <td>${User.convertPermissions(parseInt(users[i].userPermissions))}</td>
+                            <td>${User.convertStatus(parseInt(users[i].userStatus))}</td>
                             <td>${User.checkFineByPermissions(users[i].userPermissions, users[i].fineValue)} €</td>
                             <td>
                                 <a id=' ${users[i].id}' class='view mr-1' data-toggle='modal' data-target='#viewUserModal'><i class='fa fa-info-circle'></i></a>
@@ -94,8 +96,44 @@ function addLoadEvent(func) {
         for (let i = 0; i < userView.length; i++) {
             userView[i].addEventListener("click", function(event) {
                 let userId = userView[i].getAttribute("id")
-                User.viewUserById(userId)     
-                event.preventDefault()           
+                User.viewUserById(userId)
+    
+                /* block user */
+                btnBlock.addEventListener("click", function(event) {            
+                    swal({
+                        type: 'warning',
+                        title: `Tem a certeza que pretende bloquear o utilizador "${User.getUserNameById(userId)}"?`,
+                        showCancelButton: true,
+                        confirmButtonColor: '#9fc490',
+                        cancelButtonColor: '#ba9378',
+                        confirmButtonText: 'Sim',
+                        cancelButtonText: 'Não',
+                        allowOutsideClick: false,
+                    }).then((result) => {
+                        if (result.value) {
+                            swal({
+                                type: 'success',
+                                title: 'Bloqueado!',
+                                text: `O utilizador "${User.getUserNameById(userId)}" foi bloqueado.`,
+                                showConfirmButton: true,
+                                confirmButtonColor: '#9fc490',
+                                allowOutsideClick: false
+                            })
+                            
+                            viewUserStatus.value = User.convertStatus(0)
+
+                            User.editUserStatusById(userId)
+                            localStorage.setItem("users", JSON.stringify(users))
+
+                            renderTableUsers()
+                        }
+                    })
+                    
+                    event.preventDefault()
+                })
+
+
+                event.preventDefault()
             })        
         }
 
@@ -199,12 +237,14 @@ addLoadEvent(function() {
         let viewUserName = document.getElementById("viewUserName")
         let viewUserEmail = document.getElementById("viewUserEmail")
         let viewUserPassword = document.getElementById("viewUserPassword")
-        let viewUserFine = document.getElementById("viewUserFine")
         let viewUserPermissions = document.getElementById("viewUserPermissions")
+        let viewUserStatus = document.getElementById("viewUserStatus")
+        let viewUserFine = document.getElementById("viewUserFine")
         let viewUserPhoto = document.getElementById("viewUserPhoto")
 
         /* buttons */
         let btnEdit = document.getElementById("btnEdit")
+        let btnBlock = document.getElementById("btnBlock")
         let btnClose = document.getElementById("btnClose")
         let count = 0
 

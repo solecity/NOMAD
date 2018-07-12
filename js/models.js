@@ -204,6 +204,18 @@
             }
         }
 
+        // CONVERT STATUS VALUE
+        static convertStatus(status) {
+            switch (status) {
+                case 0:
+                    return "Bloqueado"
+                    break
+                case 1:
+                    return "Autorizado"
+                    break
+            }
+        }
+
         // CHECK USER FINE BY PERMISSIONS
         static checkFineByPermissions(permissions, fine) {
             if (permissions == 2) {
@@ -257,8 +269,9 @@
                     viewUserName.value= users[i].userName
                     viewUserEmail.value = users[i].userEmail
                     viewUserPassword.value =  users[i].userPassword
-                    viewUserFine.value =  users[i].fineValue
                     viewUserPermissions.value =  users[i].userPermissions
+                    viewUserStatus.value = User.convertStatus(parseInt(users[i].userStatus))
+                    viewUserFine.value =  users[i].fineValue
                     viewUserPhoto.setAttribute("src", users[i].userPhoto)
                 }                  
             }
@@ -269,6 +282,15 @@
             for (let i = 0; i < users.length; i++) {
                 if (users[i].id == id) {
                     users[i].userPermissions = parseInt(viewUserPermissions.value)
+                }
+            }
+        }
+
+        // EDIT USER STATUS BY ID
+        static editUserStatusById(id) {
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].id == id) {
+                    users[i].userStatus = 0
                 }
             }
         }
@@ -1608,7 +1630,7 @@
     let user07 = ""
     let user08 = ""
     
-                        // userName, userEmail, userPassword, userPhoto, userPermissions, status, fineValue, favourites, last login
+                        // userName, userEmail, userPassword, userPhoto, userPermissions, userStatus, fineValue, favourites, last login
     if (!localStorage.users) {
         user01 = new User("Administrador", "admin@nomad.pt", 12345, "https://image.flaticon.com/icons/svg/270/270023.svg", 0, 1, 0, [], "2018-06-02")
         users.push(user01)

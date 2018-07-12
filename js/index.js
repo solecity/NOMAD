@@ -23,25 +23,40 @@
 // VALIDATION
 
     /* log in */
-    function checkLoginValid(email, pass) {    
+    function checkLoginValid(email, pass) {
+        let status = 1
+
         for (let i = 0; i < users.length; i++) {        
             if (users[i].userEmail == email && users[i].userPassword == pass) {
                 userCurrent = users[i].id
                 userPermissions = users[i].userPermissions
+                status = users[i].userStatus
                 users[i].lastLogIn = getCurrentDate()
             }
         }
 
         if (userCurrent != -1) {
-            $('#modalLogin').modal('hide')
+            if (status != 0) {
+                $('#modalLogin').modal('hide')
 
-            location.reload()
-            navbarVisible()
-            
-            // saves in session storage the logged user and the permissions
-            sessionStorage.setItem("userCurrent", userCurrent)
-            sessionStorage.setItem("userPermissions", userPermissions)
-            localStorage.setItem("users", JSON.stringify(users))
+                location.reload()
+                navbarVisible()
+                
+                // saves in session storage the logged user and the permissions
+                sessionStorage.setItem("userCurrent", userCurrent)
+                sessionStorage.setItem("userPermissions", userPermissions)
+                localStorage.setItem("users", JSON.stringify(users))
+            }
+            else {
+                swal({
+                    position: 'top',
+                    type: 'error',
+                    title: 'Ohoh...',
+                    text: 'Parece que a sua conta está bloqueada! Por favor contacte a central para mais informações.',
+                    confirmButtonColor: '#FFD892',
+                    allowOutsideClick: false
+                })
+            }
         }
         else {
             swal({

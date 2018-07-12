@@ -812,8 +812,6 @@
                     console.log("a   " + a)
                     console.log(options)
                     console.log("c   " + c)*/
-                    console.log(Library.getLibraryParishById(books[i].libraryId))
-                    console.log(addParishToModal(Library.getLibraryCityById(books[i].libraryId)))
 
 
                     viewBookCity.value = Library.getLibraryCityById(books[i].libraryId)
@@ -822,20 +820,13 @@
                     viewBookParish.selected = viewBookParish.value
                     viewBookCategory.selectedIndex = books[i].bookCategory
                     
-
-
-/*
-                    viewBookCity.selectedIndex = document.getElementById("viewBookCity").value = Library.getCityById(Library.getLibraryCityById(books[i].libraryId))
-                    viewBookParish.selectedIndex = Library.getParishById(Library.getLibraryParishById(books[i].libraryId))
-                    viewBookCategory.selectedIndex = books[i].bookCategory*/
-                    
                     for (let j = 0; j < books[i].bookTags; j++) {
                         viewBookTags.selectedIndex = (books[i].bookTags)[j]
                     }    
 
                     viewBookCondition.value = books[i].bookCondition
-                    viewBookDonor.value = books[i].bookDonor
-                    viewBookDonate.value = books[i].bookDonation
+                    viewBookDonor.value = books[i].donorName
+                    viewBookDonate.value = books[i].donationDate
                     viewBookCover.src = books[i].bookCover
                     viewBookDescription.value = books[i].bookDescription
                 }                  

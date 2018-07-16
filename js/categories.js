@@ -121,6 +121,7 @@ function addLoadEvent(func) {
     function addAllCategories(favouritesLength) {
         let strHtml = "<h1>Todas</h1>"
         let sortCategories = [...categories].sort()
+        let tempFavourites = []
 
         // sorts categories alphabetically
         sortCategories.sort(function(a, b) {
@@ -130,45 +131,113 @@ function addLoadEvent(func) {
             return (txtA < txtB) ? -1 : (txtA > txtB) ? 1 : 0
         })
 
+        // checks if category is already in favourites
+        for (let i = 0; i < users.length; i++) {
+            if (users[i].id == userCurrent) {
+                tempFavourites = users[i].favourites
+            }
+        }
+
         for (let i = 0; i < sortCategories.length; i++) {
-            if (i == 0) {
-                strHtml += "<div class='row new-row text-center' style='margin: auto;'>"
+            if (tempFavourites.indexOf(sortCategories[i].id) == -1) {
+                if (i == 0) {
+                    strHtml += "<div class='row new-row text-center' style='margin: auto;'>"
+                }
+
+                if (userPermissions == 2) {
+                    strHtml += `<div class='new-category rounded col-md-2'>
+                                    <a id='${sortCategories[i].id}' href='#' class='add category-favourite'><i class='fas fa-heart'></i></a><br>
+                                    <a id='${sortCategories[i].id}' href='bookList.html' class='category-filter'>
+                                        <p>${convertFirstToUpperCase(sortCategories[i].name)}</p>
+                                    </a>
+                                </div>`
+                }
+                else {
+                    strHtml += `<div class='new-category rounded col-md-2'>
+                                    <br>
+                                    <a id='${sortCategories[i].id}' href='bookList.html' class='category-filter'>
+                                        <p>${convertFirstToUpperCase(sortCategories[i].name)}</p>
+                                    </a>
+                                </div>`
+                }
+
+                if (i == sortCategories.length - 1) {
+                    strHtml += "</div>"   
+                }
+
+                categoriesAll.innerHTML = strHtml
+            
+                // adds selected category to favourites
+                let favouriteAdd = document.getElementsByClassName("add")
+
+                for (let i = 0; i < favouriteAdd.length; i++) {
+                    favouriteAdd[i].addEventListener("click", function() {
+                        let categoryId = parseInt(favouriteAdd[i].getAttribute("id"))
+                        favouritesLength = User.getFavouritesLengthById(userCurrent)
+
+                        if (favouritesLength < 5) {
+                            User.addFavouriteCategoryById(categoryId)
+                            localStorage.setItem("users", JSON.stringify(users))
+                            //addCategoriesFavourites(favouritesLength)
+                            location.reload()
+                        }
+
+                        if (favouritesLength > 4) {
+                            $(".add").removeAttr("href")
+                        }
+                    })
+                }
             }
+            else {
+                if (i == 0) {
+                    strHtml += "<div class='row new-row text-center' style='margin: auto;'>"
+                }
 
-            strHtml += `<div class='new-category rounded col-md-2'>
-                            <a id='${sortCategories[i].id}' href='#' class='add category-favourite'><i class='fas fa-heart'></i></a><br>
-                            <a id='${sortCategories[i].id}' href='bookList.html' class='category-filter'>
-                                <p>${convertFirstToUpperCase(sortCategories[i].name)}</p>
-                            </a>
-                        </div>`
+                if (userPermissions == 2) {
+                    strHtml += `<div class='new-category rounded col-md-2'>
+                                    <a id='${sortCategories[i].id}' class='add category-favourite'><i class='fas fa-heart'></i></a><br>
+                                    <a id='${sortCategories[i].id}' href='bookList.html' class='category-filter'>
+                                        <p>${convertFirstToUpperCase(sortCategories[i].name)}</p>
+                                    </a>
+                                </div>`
+                }
+                else {
+                    strHtml += `<div class='new-category rounded col-md-2'>
+                                    <br>
+                                    <a id='${sortCategories[i].id}' href='bookList.html' class='category-filter'>
+                                        <p>${convertFirstToUpperCase(sortCategories[i].name)}</p>
+                                    </a>
+                                </div>`
+                }
 
-            if (i == sortCategories.length - 1) {
-                strHtml += "</div>"   
+                if (i == sortCategories.length - 1) {
+                    strHtml += "</div>"   
+                }
+
+                categoriesAll.innerHTML = strHtml
+            
+                // adds selected category to favourites
+                let favouriteAdd = document.getElementsByClassName("add")
+
+                for (let i = 0; i < favouriteAdd.length; i++) {
+                    favouriteAdd[i].addEventListener("click", function() {
+                        let categoryId = parseInt(favouriteAdd[i].getAttribute("id"))
+                        favouritesLength = User.getFavouritesLengthById(userCurrent)
+
+                        if (favouritesLength < 5) {
+                            User.addFavouriteCategoryById(categoryId)
+                            localStorage.setItem("users", JSON.stringify(users))
+                            //addCategoriesFavourites(favouritesLength)
+                            location.reload()
+                        }
+
+                        if (favouritesLength > 4) {
+                            $(".add").removeAttr("href")
+                        }
+                    })
+                }
             }
-
-            categoriesAll.innerHTML = strHtml
-        
-            // adds selected category to favourites
-            let favouriteAdd = document.getElementsByClassName("add")
-
-            for (let i = 0; i < favouriteAdd.length; i++) {
-                favouriteAdd[i].addEventListener("click", function() {
-                    let categoryId = parseInt(favouriteAdd[i].getAttribute("id"))
-                    favouritesLength = User.getFavouritesLengthById(userCurrent)
-
-                    if (favouritesLength < 5) {
-                        User.addFavouriteCategoryById(categoryId)
-                        localStorage.setItem("users", JSON.stringify(users))
-                        //addCategoriesFavourites(favouritesLength)
-                        location.reload()
-                    }
-
-                    if (favouritesLength > 4) {
-                        $(".add").removeAttr("href")
-                    }
-                })
-            }
-        }        
+        }
     }
 //
 

@@ -77,6 +77,19 @@ body {
     background-color: transparent !important;
 }
 
+#btnSearch {
+    background-color: transparent;
+    padding: 0px;
+}
+
+#inputSearch {
+    border-radius: 0px;
+    margin-left: 5px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
 h1 {
     margin: 60px 0px 40px 0px;
     font-size: 34px;

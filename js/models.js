@@ -3012,9 +3012,15 @@
 
         if (word) {
             let tempBooks = Book.getBookIdBySearch(search)
+            let pagePath = (window.location.pathname).substring((window.location.pathname).lastIndexOf('/') + 1)
 
-            console.log(tempBooks)
-            window.location.href = "html/bookList.html"
+            if (pagePath != "index.html") {
+                window.location.href = "bookList.html"
+            }
+            else {
+                window.location.href = "html/bookList.html"
+            }
+            
             sessionStorage.setItem("categoryCurrent", -1)
             sessionStorage.setItem("catalog", JSON.stringify(tempBooks))
         }

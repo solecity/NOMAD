@@ -425,7 +425,7 @@ addLoadEvent(function() {
                 }
             }
         }
-        sessionStorage.setItem("catalog", JSON.stringify(books))
+        sessionStorage.setItem("catalog", JSON.stringify(catalog))
 
         console.log(catalog)
         console.log(categoryCurrent)

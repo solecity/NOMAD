@@ -26,30 +26,38 @@ function addLoadEvent(func) {
     /* tags */
     function addTagsToFilter() {
         let strHtml = "<option value=''>...</option>"
-        let tempIds = Book.getBookTagsByCategory(categoryCurrent)
-        let tempTags = []
-        let newTags = [...new Set(tempIds)]
-        
-        for (let i = 0; i < newTags.length; i++) {
-            let tempTag = {
-                            id: newTags[i],
-                            name: Tag.getTagById(newTags[i])
+
+        if (categoryCurrent != 0) {
+            let tempIds = Book.getBookTagsByCategory(categoryCurrent)
+            let tempTags = []
+            let newTags = [...new Set(tempIds)]
+            
+            for (let i = 0; i < newTags.length; i++) {
+                let tempTag = {
+                                id: newTags[i],
+                                name: Tag.getTagById(newTags[i])
+                }
+
+                tempTags.push(tempTag)            
             }
 
-            tempTags.push(tempTag)            
+            let sortTags = [...tempTags].sort()
+
+            sortTags.sort(function(a, b) {
+                let txtA = a.name
+                let txtB = b.name
+
+                return (txtA < txtB) ? -1 : (txtA > txtB) ? 1 : 0
+            })
+            
+            for (let i = 0; i < sortTags.length; i++) {
+                strHtml += `<option value='${sortTags[i].id}'>${convertFirstToUpperCase(sortTags[i].name)}</option>`
+            }
         }
-
-        let sortTags = [...tempTags].sort()
-
-        sortTags.sort(function(a, b) {
-            let txtA = a.name
-            let txtB = b.name
-
-            return (txtA < txtB) ? -1 : (txtA > txtB) ? 1 : 0
-        })
-        
-        for (let i = 0; i < sortTags.length; i++) {
-            strHtml += `<option value='${sortTags[i].id}'>${convertFirstToUpperCase(sortTags[i].name)}</option>`
+        else {
+            for (let i = 0; i < tags.length; i++) {
+                strHtml += `<option value='${tags[i].id}'>${convertFirstToUpperCase(tags[i].name)}</option>`                
+            }
         }
 
         filterTag.innerHTML = strHtml
@@ -58,7 +66,15 @@ function addLoadEvent(func) {
     /* authors */
     function addAuthorsToFilter() {
         let strHtml = "<option value=''>...</option>"
-        let tempAuthors = Book.getBookAuthorsByCategory(categoryCurrent)
+        let tempAuthors = []
+
+        if (categoryCurrent != 0) {
+            tempAuthors = Book.getBookAuthorsByCategory(categoryCurrent)
+        }
+        else {
+            tempAuthors = Book.getAllBookAuthors()
+        }
+
         let sortAuthors = [...tempAuthors].sort()
 
         sortAuthors.sort(function(a, b) {
@@ -78,9 +94,16 @@ function addLoadEvent(func) {
     /* libraries */
     function addLibrariesCityToFilter() {
         let strHtml = "<option value=''>...</option>"
-        let tempLibraries = Book.getBookLibraryByCategory(categoryCurrent)
+        let tempLibraries = []
         let tempCity = []
-        
+
+        if (categoryCurrent != 0) {
+            tempLibraries = Book.getBookLibraryByCategory(categoryCurrent)
+        }
+        else {
+            tempLibraries = Book.getAllBookLibraries()
+        }
+            
         for (let i = 0; i < tempLibraries.length; i++) {
             tempCity.push(Library.getLibraryCityById(tempLibraries[i]))
         }
@@ -97,7 +120,7 @@ function addLoadEvent(func) {
     /* parishes */
     function addParishToFilter(inputCity) {
         let strHtml = "<option value=''>...</option>"
-        
+
         for (let i = 0; i < libraries.length; i++) {
             if (libraries[i].city == inputCity) {
                 strHtml += `<option value='${libraries[i].parish}'>${Library.getParishById(libraries[i].parish)}</option>`
@@ -369,11 +392,17 @@ addLoadEvent(function() {
         let filterBooks = []
         let catalog = []
 
-        for (let i = 0; i < books.length; i++) {            
-            if (books[i].bookCategory == categoryCurrent) {
-                catalog.push(books[i])
+        for (let i = 0; i < books.length; i++) {
+            if (categoryCurrent != 0) {
+                if (books[i].bookCategory == categoryCurrent) {
+                    catalog.push(books[i])
+                }
+            }
+            else {
+                catalog = books
             }
         }
+
         sessionStorage.setItem("catalog", JSON.stringify(catalog))
         
         btnGrid.style.backgroundColor = "rgba(255, 217, 146, 0.603)"

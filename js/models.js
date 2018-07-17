@@ -662,6 +662,31 @@
                 }
             }
         }
+        
+        // GET ALL BOOK AUTHORS
+        static getAllBookAuthors() {
+            let tempArray = []
+
+            for (let i = 0; i < books.length; i++) {
+                tempArray.push(books[i].bookAuthors)
+            }
+
+            let newArray = [...new Set(tempArray)]
+
+            return newArray
+        }
+        
+        // GET All BOOK LIBRARIES
+        static getAllBookLibraries() {
+            let tempArray = []
+
+            for (let i = 0; i < books.length; i++) {
+                tempArray.push(books[i].libraryId)
+            }
+
+            let newArray = [...new Set(tempArray)]
+            return newArray
+        }
 
         // GET BOOK TAGS BY CATEGORY
         static getBookTagsByCategory(id) {
@@ -714,8 +739,19 @@
             console.log("parish   " + parish)
 
             for (let i = 0; i < books.length; i++) {
-                if ((books[i].bookTags.includes(parseInt(tag)) || books[i].bookAuthors.includes(author) || books[i].libraryId == Library.getLibraryIdByLocation(city, parish)) && books[i].bookCategory == category) {
-                    tempArray.push(books[i])
+                if (books[i].bookCategory == category) {
+                    if ((books[i].bookTags.includes(parseInt(tag)) || books[i].bookAuthors.includes(author) || books[i].libraryId == Library.getLibraryIdByLocation(city, parish))) {
+                        tempArray.push(books[i])
+                    }
+                }
+                else if (category == 0) {
+                    if ((books[i].bookTags.includes(parseInt(tag)) || books[i].bookAuthors.includes(author) || books[i].libraryId == Library.getLibraryIdByLocation(city, parish))) {
+                        tempArray.push(books[i])
+                    }
+
+                    /*if ((books[i].bookTags.includes(parseInt(tag)) || tag == "") && (books[i].bookAuthors.includes(author) || author == "") && (books[i].libraryId == Library.getLibraryIdByLocation(city, parish) || parish == "")) {
+                        tempArray.push(books[i])
+                    }*/
                 }
             }
             return tempArray
@@ -2869,9 +2905,17 @@
     /* select category to title */
     function addSelectCategoryToTitle(id) {
         let categoryTitle = document.getElementById("categoryTitle")
-        let tempCategory = Category.getCategoryById(id)  // gets category name
-
-        categoryTitle.innerHTML += `<h1 id='${id}'>${tempCategory.toUpperCase()}</h1>`
+        let strHtml = ""
+        
+        if (id != 0) {
+            let tempCategory = Category.getCategoryById(id)  // gets category name
+            strHtml = `<h1 id='${id}'>${tempCategory.toUpperCase()}</h1>`
+        }
+        else {
+            strHtml = `<h1 id='0'>...</h1>`
+        }
+        
+        categoryTitle.innerHTML += strHtml
     }
 
     /* select book */

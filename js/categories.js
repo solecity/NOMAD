@@ -141,7 +141,13 @@ function addLoadEvent(func) {
         for (let i = 0; i < sortCategories.length; i++) {
             if (tempFavourites.indexOf(sortCategories[i].id) == -1) {
                 if (i == 0) {
-                    strHtml += "<div class='row new-row text-center' style='margin: auto;'>"
+                    strHtml += `<div class='row new-row text-center' style='margin: auto;'>
+                                    <div class='new-category rounded col-md-2'>
+                                        <a id='0' href='bookList.html' class='category-filter'>
+                                            <br>
+                                            <h2>...</h2>
+                                        </a>
+                                    </div>`
                 }
 
                 if (userPermissions == 2) {
@@ -190,7 +196,13 @@ function addLoadEvent(func) {
             }
             else {
                 if (i == 0) {
-                    strHtml += "<div class='row new-row text-center' style='margin: auto;'>"
+                    strHtml += `<div class='row new-row text-center' style='margin: auto;'>
+                                    <div class='new-category rounded col-md-2'>
+                                        <a id='0' href='bookList.html' class='category-filter'>
+                                            <br>
+                                            <h2>...</h2>
+                                        </a>
+                                    </div>`
                 }
 
                 if (userPermissions == 2) {
@@ -317,7 +329,12 @@ addLoadEvent(function() {
         }
 
         /* categories */
-        addCategoriesFavourites(favouritesLength)
+        if (userPermissions == 2) {
+            addCategoriesFavourites(favouritesLength)
+        }
+        else {
+            categoriesFavourites.removeAttribute("class")
+        }
         addAllCategories(favouritesLength)
 
         if (favouritesLength > 4) {

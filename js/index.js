@@ -20,6 +20,31 @@
 
 
 // --------------------------------------
+// SEARCH
+
+    function searchBooksByWord(word) {
+        let strHtml = ""
+
+        if (word) {
+            let tempBooks = Book.getBookIdBySearch(word)
+
+            for (let i = 0; i < tempBooks.length; i++) {
+                for (let j = 0; j < books.length; j++) {
+                    if (books[j].id === tempBooks[i]) {
+                        str += `<option value="${books[j].bookTitle}" data-value="${books[j].id}">`
+                    }
+                }                
+            }
+
+            strHtml += "<datalist>"
+            bookSearch.innerHTML = strHtml
+        }
+    }
+
+//
+
+
+// --------------------------------------
 // VALIDATION
 
     /* log in */
@@ -284,6 +309,7 @@ addLoadEvent(function() {
         let modalRegisterEmail = document.getElementById("modalRegisterEmail")
         let modalRegisterPassword = document.getElementById("modalRegisterPassword")
         let modalRegisterPhoto = document.getElementById("modalRegisterPhoto")
+        let bookSearch = document.getElementById("bookSearch")
 
         /* buttons */
         let optDonate = document.getElementById("optDonate")

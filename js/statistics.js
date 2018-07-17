@@ -205,8 +205,11 @@ addLoadEvent(function() {
         let counterRequests = document.getElementById("counterRequests")
 
         /* bars */
-        let barBookCapacity = document.getElementById("barBookCapacity")        
+        let barBookCapacity = document.getElementById("barBookCapacity")
         let barBookAvailable = document.getElementById("barBookAvailable")
+
+        /* buttons */
+        let btnSearch = document.getElementById("btnSearch")
     //
 
 
@@ -227,5 +230,18 @@ addLoadEvent(function() {
         /* percentages */
         percentageBookCapacity()
         percentageBooksAvailable()
+    //
+
+    
+    // --------------------------------------
+    // BUTTONS
+
+        /* search */
+        btnSearch.addEventListener("click", function(event) {
+            searchBooksByWord(inputSearch.value)
+            inputSearch.value = ""
+
+            event.preventDefault()
+        })
     //
 })

@@ -201,6 +201,7 @@ addLoadEvent(function() {
         let viewFinePay = document.getElementById("viewFinePay")
     
         /* buttons */
+        let btnSearch = document.getElementById("btnSearch")
         let btnViewFine = document.getElementById("btnViewFine")
     //
 
@@ -234,6 +235,19 @@ addLoadEvent(function() {
         /* edit password */
         frmPassword.addEventListener("submit", function(event) {            
             editUserPassword(changePasswordNew.value, changePasswordConfirm.value)
+            event.preventDefault()
+        })
+    //
+
+    
+    // --------------------------------------
+    // BUTTONS
+
+        /* search */
+        btnSearch.addEventListener("click", function(event) {
+            searchBooksByWord(inputSearch.value)
+            inputSearch.value = ""
+
             event.preventDefault()
         })
     //

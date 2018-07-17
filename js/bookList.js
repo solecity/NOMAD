@@ -378,6 +378,7 @@ addLoadEvent(function() {
 
         /* buttons */
         let btnClose = document.getElementById("btnClose")
+        let btnSearch = document.getElementById("btnSearch")
         let btnList = document.getElementById("btnList")
         let btnGrid = document.getElementById("btnGrid")
 
@@ -390,20 +391,44 @@ addLoadEvent(function() {
         let sort = "sortNew"
         sessionStorage.setItem("sort", sort)
         let filterBooks = []
-        let catalog = []
 
-        for (let i = 0; i < books.length; i++) {
-            if (categoryCurrent != 0) {
+        if (categoryCurrent == 0) {
+            console.log("1")
+            catalog = books
+        }
+        else if (categoryCurrent == -1) {
+            console.log("2")
+            tempArray = JSON.parse(sessionStorage.getItem("catalog"))
+            
+            for (let i = 0; i < tempArray.length; i++) {
+                let newBook = new Book(tempArray[i]._bookTitle,
+                                        tempArray[i]._bookAuthors,
+                                        tempArray[i]._bookPublisher,
+                                        tempArray[i]._bookYear,
+                                        tempArray[i]._bookPages,
+                                        tempArray[i]._bookCategory,
+                                        tempArray[i]._bookTags,
+                                        tempArray[i]._bookCondition,
+                                        tempArray[i]._donorName,
+                                        tempArray[i]._donationDate,
+                                        tempArray[i]._bookCover,
+                                        tempArray[i]._bookDescription,
+                                        tempArray[i]._libraryId)
+                catalog.push(newBook)
+            }
+        }
+        else if (categoryCurrent != 0) {
+            console.log("3")
+            for (let i = 0; i < books.length; i++) {
                 if (books[i].bookCategory == categoryCurrent) {
                     catalog.push(books[i])
                 }
             }
-            else {
-                catalog = books
-            }
         }
+        sessionStorage.setItem("catalog", JSON.stringify(books))
 
-        sessionStorage.setItem("catalog", JSON.stringify(catalog))
+        console.log(catalog)
+        console.log(categoryCurrent)
         
         btnGrid.style.backgroundColor = "rgba(255, 217, 146, 0.603)"
         btnList.style.backgroundColor = "#ffd892"
@@ -496,6 +521,14 @@ addLoadEvent(function() {
             frmDonate.reset()        
             count = 0
             viewDonateStep(count)
+            event.preventDefault()
+        })
+
+        /* search */
+        btnSearch.addEventListener("click", function(event) {
+            searchBooksByWord(inputSearch.value)
+            inputSearch.value = ""
+
             event.preventDefault()
         })
         

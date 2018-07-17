@@ -225,6 +225,7 @@ addLoadEvent(function() {
         /* forms */
         let frmUsers = document.getElementById("frmUsers")
         let frmViewUser = document.getElementById("frmViewUser")
+        let count = 0
 
         /* inputs */
         let inputName = document.getElementById("inputName")
@@ -246,7 +247,7 @@ addLoadEvent(function() {
         let btnEdit = document.getElementById("btnEdit")
         let btnBlock = document.getElementById("btnBlock")
         let btnClose = document.getElementById("btnClose")
-        let count = 0
+        let btnSearch = document.getElementById("btnSearch")
 
         /* tables */
         let tblUsers = document.getElementById("tblUsers")
@@ -330,6 +331,14 @@ addLoadEvent(function() {
         /* close modal */
         btnClose.addEventListener("click", function(event){
             renderTableUsers()
+            event.preventDefault()
+        })
+
+        /* search */
+        btnSearch.addEventListener("click", function(event) {
+            searchBooksByWord(inputSearch.value)
+            inputSearch.value = ""
+
             event.preventDefault()
         })
     //

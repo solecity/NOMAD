@@ -470,6 +470,9 @@ addLoadEvent(function() {
         /* input */
         let inputPreference = document.getElementById("inputPreference")
 
+        /* buttons */
+        let btnSearch = document.getElementById("btnSearch")
+
         /* tables */
         let tblCategories = document.getElementById("tblTags")
         let tblTags = document.getElementById("tblTags")
@@ -532,4 +535,18 @@ addLoadEvent(function() {
             addLibrariesToInput()
             event.preventDefault()
         })
+    //
+    
+    
+    // --------------------------------------
+    // BUTTONS
+
+        /* search */
+        btnSearch.addEventListener("click", function(event) {
+            searchBooksByWord(inputSearch.value)
+            inputSearch.value = ""
+
+            event.preventDefault()
+        })
+    //
 })

@@ -205,12 +205,11 @@ addLoadEvent(function() {
 
         /* forms */
         let frmDonate = document.getElementById("frmDonate")
+        let count = 0
 
         /* buttons */
         let btnClose = document.getElementById("btnClose")
-
-        /* others */
-        let count = 0
+        let btnSearch = document.getElementById("btnSearch")
     //
 
 
@@ -287,6 +286,14 @@ addLoadEvent(function() {
             frmDonate.reset()        
             count = 0
             viewDonateStep(count)
+            event.preventDefault()
+        })
+
+        /* search */
+        btnSearch.addEventListener("click", function(event) {
+            searchBooksByWord(inputSearch.value)
+            inputSearch.value = ""
+
             event.preventDefault()
         })
     //

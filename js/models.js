@@ -10,6 +10,7 @@
     let requests = []
     let wishlists = []
     let libraries = []
+    let catalog = []
 //
 
 
@@ -824,6 +825,22 @@
                 }
             }
             return tempArray
+        }
+
+        // GET BOOKS BY SEARCH
+        static getBookIdBySearch(words) {
+            let tempArray = []
+            console.log(words)
+
+            for (let i = 0; i < books.length; i++) {
+                for (let j = 0; j < words.length; j++) {
+                    if (((books[i].bookTitle).toLowerCase()).indexOf(words[j]) != -1) {
+                        tempArray.push(books[i])
+                    }
+                }
+            }
+            let newArray = [...new Set(tempArray)]
+            return newArray
         }
 
         // VIEW BOOK BY ID
@@ -2907,12 +2924,12 @@
         let categoryTitle = document.getElementById("categoryTitle")
         let strHtml = ""
         
-        if (id != 0) {
-            let tempCategory = Category.getCategoryById(id)  // gets category name
-            strHtml = `<h1 id='${id}'>${tempCategory.toUpperCase()}</h1>`
+        if (id == 0 || id == -1) {
+            strHtml = `<h1 id='0'>...</h1>`
         }
         else {
-            strHtml = `<h1 id='0'>...</h1>`
+            let tempCategory = Category.getCategoryById(id)  // gets category name
+            strHtml = `<h1 id='${id}'>${tempCategory.toUpperCase()}</h1>`
         }
         
         categoryTitle.innerHTML += strHtml
@@ -2981,5 +2998,25 @@
     /* year */
     function getCurrentYear() {
         return new Date().getFullYear()
+    }
+//
+
+
+// --------------------------------------
+// SEARCH
+
+    /* books */
+    function searchBooksByWord(word) {
+        let strHtml = ""
+        let search = word.split(" ")
+
+        if (word) {
+            let tempBooks = Book.getBookIdBySearch(search)
+
+            console.log(tempBooks)
+            window.location.href = "html/bookList.html"
+            sessionStorage.setItem("categoryCurrent", -1)
+            sessionStorage.setItem("catalog", JSON.stringify(tempBooks))
+        }
     }
 //

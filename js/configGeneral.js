@@ -247,6 +247,7 @@ addLoadEvent(function() {
         let inputRequestFineMax = document.getElementById("inputRequestFineMax")
 
         /* buttons */
+        let btnSearch = document.getElementById("btnSearch")
         let btnCategory = document.getElementById("btnCategory")
         let btnTag = document.getElementById("btnTag")
         let btnConfig = document.getElementById("btnConfig")
@@ -318,6 +319,14 @@ addLoadEvent(function() {
     
     // --------------------------------------
     // TABS
+
+        /* search */
+        btnSearch.addEventListener("click", function(event) {
+            searchBooksByWord(inputSearch.value)
+            inputSearch.value = ""
+
+            event.preventDefault()
+        })
 
         /* categories */
         btnCategory.addEventListener("click", function () {

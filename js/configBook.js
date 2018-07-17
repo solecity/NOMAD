@@ -159,6 +159,7 @@ addLoadEvent(function() {
 
         /* forms */
         let frmViewBooks = document.getElementById("frmViewBooks")
+        let count = 0
 
         /* modal */
         let viewBookTitle = document.getElementById("viewBookTitle")
@@ -179,7 +180,7 @@ addLoadEvent(function() {
         /* buttons */
         let btnEdit = document.getElementById("btnEdit")
         let btnClose = document.getElementById("btnClose")
-        let count = 0
+        let btnSearch = document.getElementById("btnSearch")
         
         /* tables */
         let tblBooks = document.getElementById("tblBooks")
@@ -308,6 +309,14 @@ addLoadEvent(function() {
         /* close modal */
         btnClose.addEventListener("click", function(event){
             renderTableBooks()
+            event.preventDefault()
+        })
+
+        /* search */
+        btnSearch.addEventListener("click", function(event) {
+            searchBooksByWord(inputSearch.value)
+            inputSearch.value = ""
+
             event.preventDefault()
         })
     //

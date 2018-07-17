@@ -310,6 +310,7 @@ addLoadEvent(function() {
 
         /* buttons */
         let btnClose = document.getElementById("btnClose")
+        let btnSearch = document.getElementById("btnSearch")
         let btnAddComment = document.getElementById("btnAddComment")
         let btnCancelComment = document.getElementById("btnCancelComment")
 
@@ -404,6 +405,14 @@ addLoadEvent(function() {
             frmDonate.reset()
             count = 0
             viewDonateStep(count)
+            event.preventDefault()
+        })
+
+        /* search */
+        btnSearch.addEventListener("click", function(event) {
+            searchBooksByWord(inputSearch.value)
+            inputSearch.value = ""
+
             event.preventDefault()
         })
 

@@ -446,6 +446,7 @@ addLoadEvent(function() {
         
         /* buttons */
         let btnModalRating = document.getElementById("btnModalRating")
+        let btnSearch = document.getElementById("btnSearch")
     //
 
 
@@ -470,6 +471,19 @@ addLoadEvent(function() {
         /* add parish to modal: deliver */
         modalDeliverCity.addEventListener("change", function(event){
             modalDeliverParish.innerHTML = addParishToModal(modalDeliverCity.value)
+            event.preventDefault()
+        })
+    //
+
+    
+    // --------------------------------------
+    // BUTTONS
+
+        /* search */
+        btnSearch.addEventListener("click", function(event) {
+            searchBooksByWord(inputSearch.value)
+            inputSearch.value = ""
+
             event.preventDefault()
         })
     //
